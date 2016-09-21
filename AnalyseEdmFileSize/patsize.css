@@ -1,0 +1,7 @@
+body { font-family: 'Consolas', 'Courier New', courier, monospace; font-size: x-small; }
+td, th { border-bottom: 1px solid black; padding: 1px 1em; vertical-align: top; }
+a { text-decoration: none; color: black; }
+a:hover { color: blue; }
+tr + tr > th { text-align: left; }
+td { text-align: right; }
+td.img { text-align: left; }

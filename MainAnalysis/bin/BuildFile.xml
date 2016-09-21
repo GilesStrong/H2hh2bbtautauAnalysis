@@ -1,0 +1,10 @@
+<use   name="root"/>
+<use   name="boost"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/FWLite"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="FWCore/FWLite"/>
+<use name="PhysicsTools/FWLite"/>
+<environment>
+    <bin   file="MainAnalysis.cc"></bin>
+</environment>

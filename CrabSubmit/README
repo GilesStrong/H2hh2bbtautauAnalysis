@@ -1,0 +1,26 @@
+crabControl.py
+
+Specify your data/MC samples in datasamples.cfg, then use crabControl.py to submit your jobs to the grid and retrieve the output files. Create your VOMS proxy and set up your shell via:
+$ env -i voms-proxy-init -voms cms:/cms -valid 192:00
+$ source /cvmfs/cms.cern.ch/crab3/crab.sh
+
+EXAMPLES
+========
+
+Create CRAB3 submit scripts and submit to grid:
+$ ./crabControl.py --config datasamples.cfg --submit
+
+Collect and merge job output files:
+$ ./crabControl.py --config datasets.cfg --merge
+
+Merged output files will be saved into current directory, specify other directory:
+$ ./crabControl.py --config datasets.cfg --merge --outputfolder /scratch/MergedOutput
+
+Collect and merge job output files, but run hadd only on 4 cores:
+$ ./crabControl.py --config datasets.cfg --merge --cores 4
+
+Get all processed lumisections in JSON output format:
+$ ./crabControl.py --config datasets.cfg --report
+
+Don't actually run any commands:
+$ ./crabControl.py --config datasets.cfg --merge --dryrun

@@ -1,0 +1,15 @@
+<use name="DataFormats/PatCandidates"/>
+<use name="DataFormats/RecoCandidate"/>
+<use name="DataFormats/VertexReco"/>
+<use name="FWCore/Framework"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/Utilities"/>
+<use name="FWCore/ServiceRegistry"/>
+<use name="CommonTools/UtilAlgos"/>
+<use name="root"/>
+
+<use name="rootrflx"/>
+<use name="TauAnalysis/SVfitStandalone" /> 
+
+<flags EDM_PLUGIN="1"/>
+

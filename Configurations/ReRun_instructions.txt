@@ -1,0 +1,8 @@
+For bug fix on the post-fix option and unscheduled running please checkout the update: It also contain the tune for metSignificance and puppET.
+
+git cms-init
+echo /PhysicsTools/PatUtils/ >> .git/info/sparse-checkout
+git cms-merge-topic cms-met:metTool80X
+
+
+https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription
