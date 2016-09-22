@@ -69,7 +69,8 @@ int main(int argc, char* argv[])
   TFileDirectory dir_noPU = fs.mkdir("noPU");
   TFileDirectory dir_weighted = fs.mkdir("weighted");
   TH1F* hmuonPt      = dir_weighted.make<TH1F>("muonPt"  , "pt"  ,   100,   0., 300.);
-
+  TH1F* h_nPrimaryVtx = dir_weighted.make<TH1F>("nPrimaryVtx"  , "Number of primary vertices"  ,   100,   0., 100.);
+  TH1F* h_nPrimaryVtx_unweighted = dir_weighted.make<TH1F>("nPrimaryVtx_unweighted"  , "Number of primary vertices"  ,   100,   0., 100.);
   // ...
 
   double weight = 1;
@@ -133,10 +134,21 @@ int main(int argc, char* argv[])
         if(maxEvents_>0 ? ievt+1>maxEvents_ : false) break;
         if(outputEvery_!=0 ? (ievt>0 && ievt%outputEvery_==0) : false)
            std::cout << "  processing event: " << ievt << std::endl;
-
-        // ...
-
         
+        // get all handles present in both data and MC:
+        edm::Handle<vector<reco::Vertex> > vertices;
+        ev.getByLabel(std::string("offlineSlimmedPrimaryVertices"), vertices);
+        
+        if(!runOnData){
+            edm::Handle<double> PUweight;
+            event.getByLabel(edm::InputTag("PUWeightProducer", "PUWeight"), PUweight);
+            weight = *PUweight.product();
+            std::cout << " weight_PU = " << weight << std::endl;
+            weight *= weight_lumi;
+        }
+ 
+        h_nPrimaryVtx->Fill(vertices.size(), weight);
+        h_nPrimaryVtx_unweighted->Fill(vertices.size(), weight_lumi);
       }
     
       inFile->Close();
