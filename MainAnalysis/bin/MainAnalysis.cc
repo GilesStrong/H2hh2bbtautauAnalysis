@@ -288,13 +288,13 @@ int main(int argc, char* argv[])
         hnVert->Fill( nVert, weight );
         hnVert_noPU->Fill( nVert, weight_noPU );
         
-        h_kinFit->Fill(kinfit_mH, weight);
+        h_kinFit->Fill(kinfit_mH.product(), weight);
 
-        mu4v = TLorentzVector(handle_muons.product()[0].px(),handle_muons.product()[0].py(),handle_muons.product()[0].pz(),handle_muons.product()[0].energy())
-        tau4v = TLorentzVector(handle_taus.product()[0].px(),handle_taus.product()[0].py(),handle_taus.product()[0].pz(),handle_taus.product()[0].energy())
-        jet14v = TLorentzVector(handle_jets.product()[0].px(),handle_jets.product()[0].py(),handle_jets.product()[0].pz(),handle_jets.product()[0].energy())
-        jet24v = TLorentzVector(handle_jets.product()[1].px(),handle_jets.product()[1].py(),handle_jets.product()[1].pz(),handle_jets.product()[1].energy())
-        met4v = TLorentzVector(handle_mets.product()[0].px(),handle_mets.product()[0].py(),handle_mets.product()[0].pz(),handle_mets.product()[0].energy())
+        TLorentzVector mu4v = TLorentzVector(selectedmuons.product()[0].px(),selectedmuons.product()[0].py(),selectedmuons.product()[0].pz(),selectedmuons.product()[0].energy())
+        TLorentzVector tau4v = TLorentzVector(selectedtaus.product()[0].px(),selectedtaus.product()[0].py(),selectedtaus.product()[0].pz(),selectedtaus.product()[0].energy())
+        TLorentzVector jet14v = TLorentzVector(selectedjets.product()[0].px(),selectedjets.product()[0].py(),selectedjets.product()[0].pz(),selectedjets.product()[0].energy())
+        TLorentzVector jet24v = TLorentzVector(selectedjets.product()[1].px(),selectedjets.product()[1].py(),selectedjets.product()[1].pz(),selectedjets.product()[1].energy())
+        TLorentzVector met4v = TLorentzVector(selectedmets.product()[0].px(),selectedmets.product()[0].py(),selectedmets.product()[0].pz(),selectedmets.product()[0].energy())
         h_mH.Fill((mu4v+tau4v+jet14v+jet24v+met4v).M())
         
         } catch (cms::Exception& iException) {
