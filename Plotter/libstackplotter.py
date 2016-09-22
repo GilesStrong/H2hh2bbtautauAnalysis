@@ -22,6 +22,7 @@ ROOT.gStyle.SetOptTitle(1)
 ROOT.gStyle.SetPalette(1)
 ROOT.TH1.SetDefaultSumw2(True)
 
+gsf=0.55
 
 def constructQCD(rootFiles, path, histoName, binSize, storage, lumi, noNegativeEntries=True):
 
@@ -79,7 +80,7 @@ def constructQCD(rootFiles, path, histoName, binSize, storage, lumi, noNegativeE
 
     # lumi weighting (luminosity assumed to be in fb, xsections in pb):
     for addFile in hists:
-        hists[addFile]["addedBG"].Scale(lumi*1e3)
+        hists[addFile]["addedBG"].Scale(gsf*lumi*1e3)
     
     # for like-sign leptons and isolation criteria (LS_Iso), get difference between data/added BG:
     ddQCD = hists["_LS_Iso_selection"]["Data_LS_Iso_selection"].Clone()
@@ -163,7 +164,7 @@ def stackplotter(rootFiles, path, histoName, outputfilename, lumi, xtitle,
     for label in hists:
         if rootFiles[label][0] != 'd':
             if label != 'QCD':
-                hists[label].Scale(lumi*1e3)
+                hists[label].Scale(gsf*lumi*1e3)
             
     # get data/MC ratio from added MC background histogram
     addedBG = None
@@ -178,8 +179,8 @@ def stackplotter(rootFiles, path, histoName, outputfilename, lumi, xtitle,
     binmaxValue = addedBG.GetBinContent(binmax)
     
     if logy:
-        binmaxValue = binmaxValue * 1e5
-        ymin = 1e-2
+        binmaxValue = binmaxValue * 1e4
+        ymin = 1e-8
     else:
         binmaxValue = binmaxValue + 50
         ymin = 0

@@ -6,5 +6,6 @@
 <use name="FWCore/FWLite"/>
 <use name="PhysicsTools/FWLite"/>
 <environment>
+    <bin   file="PileUpComparison.cc"></bin>
     <bin   file="MainAnalysis.cc"></bin>
 </environment>
