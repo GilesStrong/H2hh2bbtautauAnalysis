@@ -70,7 +70,9 @@ int main(int argc, char* argv[])
   TH1F* hnVert_noPU  = dir_noPU.make<TH1F>("nVert" ,   "nVert" ,  50,    0,   50);
   
   TFileDirectory dir_weighted = fs.mkdir("weighted");
-  TH1F* hnVert       = dir_weighted.make<TH1F>("nVert" ,   "nVert" ,  50,    0,   50);   
+  TH1F* hnVert       = dir_weighted.make<TH1F>("nVert" ,   "nVert" ,  50,    0,   50);
+  TH1F* h_mH = dir_weighted.make<TH1F>("mH", "H Mass [GeV]", 50, 0, 1000);    
+  TH1F* h_kinFit = dir_weighted.make<TH1F>("mH", "KinFit H Mass [GeV]", 50, 0, 1000); 
     
   TFileDirectory dir_weights = fs.mkdir("weights");
   TH1F* hPUWeight = dir_weights.make<TH1F>("hPUWeight" ,   "hPUWeight" ,  400,    -2,   2);   
@@ -286,6 +288,14 @@ int main(int argc, char* argv[])
         hnVert->Fill( nVert, weight );
         hnVert_noPU->Fill( nVert, weight_noPU );
         
+        h_kinFit->Fill(kinfit_mH, weight);
+
+        mu4v = TLorentzVector(handle_muons.product()[0].px(),handle_muons.product()[0].py(),handle_muons.product()[0].pz(),handle_muons.product()[0].energy())
+        tau4v = TLorentzVector(handle_taus.product()[0].px(),handle_taus.product()[0].py(),handle_taus.product()[0].pz(),handle_taus.product()[0].energy())
+        jet14v = TLorentzVector(handle_jets.product()[0].px(),handle_jets.product()[0].py(),handle_jets.product()[0].pz(),handle_jets.product()[0].energy())
+        jet24v = TLorentzVector(handle_jets.product()[1].px(),handle_jets.product()[1].py(),handle_jets.product()[1].pz(),handle_jets.product()[1].energy())
+        met4v = TLorentzVector(handle_mets.product()[0].px(),handle_mets.product()[0].py(),handle_mets.product()[0].pz(),handle_mets.product()[0].energy())
+        h_mH.Fill((mu4v+tau4v+jet14v+jet24v+met4v).M())
         
         } catch (cms::Exception& iException) {
             std::cout << "  critical: no suff. info in event! " << std::endl;
