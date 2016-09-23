@@ -63,7 +63,8 @@ if __name__ == "__main__":
     for edmfile in edmfiles:
         
         # ignore inverted selection
-        if "Inv" in edmfile: continue
+        #if "Inv" in edmfile: continue
+        #if "selection" in edmfile: continue
        
         # ignore non-edm files
         if "monitor" in edmfile: continue

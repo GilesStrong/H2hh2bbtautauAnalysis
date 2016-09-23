@@ -12,7 +12,7 @@ dataDrivenQCD = True
 suffix = ""
 #~ dataDrivenQCD = False
 #~ suffix = "_LS_Iso_selection"
-logy = True
+logy = False #True
 
 # specify file locations
 rootFiles = collections.OrderedDict({})

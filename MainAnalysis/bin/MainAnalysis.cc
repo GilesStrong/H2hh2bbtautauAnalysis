@@ -54,12 +54,13 @@ int main(int argc, char* argv[])
   parser.stringValue  ("outputFile" ) = "analyzeFWLiteHistograms.root";
   parser.addOption ("runOnData",     optutl::CommandLineParser::kBool, "", false);
   parser.addOption ("setdebug",      optutl::CommandLineParser::kBool, "", false);
-
+  parser.addOption ("monitorFile",   optutl::CommandLineParser::kString, "", "");
 
   parser.parseArguments (argc, argv);
   int maxEvents_ = parser.integerValue("maxEvents");
   unsigned int outputEvery_ = parser.integerValue("outputEvery");
   std::string outputFile_ = parser.stringValue("outputFile");
+  std::string monitorFile_ = parser.stringValue("monitorFile");
   std::vector<std::string> inputFiles_ = parser.stringVector("inputFiles");
   bool runOnData = parser.boolValue("runOnData");
   bool debug = parser.boolValue("setdebug");
@@ -70,9 +71,24 @@ int main(int argc, char* argv[])
   TH1F* hnVert_noPU  = dir_noPU.make<TH1F>("nVert" ,   "nVert" ,  50,    0,   50);
   
   TFileDirectory dir_weighted = fs.mkdir("weighted");
-  TH1F* hnVert       = dir_weighted.make<TH1F>("nVert" ,   "nVert" ,  50,    0,   50);
-  TH1F* h_mH = dir_weighted.make<TH1F>("mH", "H Mass [GeV]", 50, 0, 1000);    
-  TH1F* h_kinFit = dir_weighted.make<TH1F>("mH", "KinFit H Mass [GeV]", 50, 0, 1000); 
+  TH1F* hmuonPt      = dir_weighted.make<TH1F>("muonPt"  , "pt"  ,   30,   0., 300.);
+  TH1F* hmuonEta     = dir_weighted.make<TH1F>("muonEta" , "eta" ,   100,  -3.,   3.);
+  TH1F* hmuonPhi     = dir_weighted.make<TH1F>("muonPhi" , "phi" ,   100,  -5.,   5.); 
+  TH1F* hnVert       = dir_weighted.make<TH1F>("nVert" ,   "nVert" ,  50,    0,   50);   
+  TH1F* hSVFit       = dir_weighted.make<TH1F>("svFitMass"  , "svFitMass"  ,   50,   0., 500.);
+  TH1F* h_m_kinfit   = dir_weighted.make<TH1F>("m_kinfit", "KinFit Mass" ,  50,    0,   500);
+  TH1F* h_P_fit      = dir_weighted.make<TH1F>("P_chi2" ,  "FitProb" ,  22,    0,   1.1);
+  TH1F* h_m_bbar     = dir_weighted.make<TH1F>("m_bbar" ,  "invariant di-bjet mass" ,  40,    0,   400);
+  TH1F* h_m_tauvis   = dir_weighted.make<TH1F>("m_tauvis" ,"invariant visible di-tau mass" ,  40,    0,   400);
+  TH1F* h_m_t_mu     = dir_weighted.make<TH1F>("m_t_mu" ,  "transverse mass" ,  30,    0,   300);
+  TH1F* h_met        = dir_weighted.make<TH1F>("m_met" ,  "missing transverse energy" ,  30,    0,   300);
+  
+  TH1F* h_cov_xx     = dir_weighted.make<TH1F>("h_cov_xx" ,  "h_cov_xx" ,  20,    0,   100);
+  TH1F* h_cov_xy     = dir_weighted.make<TH1F>("h_cov_xy" ,  "h_cov_xy" ,  40,    -200,   200);
+  TH1F* h_cov_yx     = dir_weighted.make<TH1F>("h_cov_yx" ,  "h_cov_yx" ,  40,    -200,   200);
+  TH1F* h_cov_yy     = dir_weighted.make<TH1F>("h_cov_yy" ,  "h_cov_yy" ,  20,    0,   100);
+  
+  TH1F* h_monitor       = dir_weighted.make<TH1F>("h_monitor" ,  "h_monitor" ,  10,    0,  10);
     
   TFileDirectory dir_weights = fs.mkdir("weights");
   TH1F* hPUWeight = dir_weights.make<TH1F>("hPUWeight" ,   "hPUWeight" ,  400,    -2,   2);   
@@ -94,6 +110,7 @@ int main(int argc, char* argv[])
   double weight_muon_triggerScaleFactor = 1;
 
   double m_kinfit = -1;
+  double FitProb = -1;
   double m_t_mu = -1;
 
   bool invIso = false;
@@ -111,6 +128,31 @@ int main(int argc, char* argv[])
     std::string filename = inputFiles_[iFile];
     TFile* inFile = TFile::Open(filename.c_str());
     
+    if(monitorFile_ != "none") {
+        TFile *monitorfile = new TFile(monitorFile_.c_str());
+        TH1F *tmphisto = new TH1F("tmphisto","" , 10, 0, 10);
+        // fill monitor histogram:
+        tmphisto = (TH1F*)monitorfile->Get("mon1/yield");
+        double normpar = 2402;
+        h_monitor->SetBinContent(1, tmphisto->GetEntries()/normpar);
+        
+        tmphisto = (TH1F*)monitorfile->Get("mon2/yield");
+        h_monitor->SetBinContent(2, tmphisto->GetEntries()/normpar);
+        
+        tmphisto = (TH1F*)monitorfile->Get("mon3/yield");
+        h_monitor->SetBinContent(3, tmphisto->GetEntries()/normpar);
+        
+        tmphisto = (TH1F*)monitorfile->Get("mon4/yield");
+        h_monitor->SetBinContent(4, tmphisto->GetEntries()/normpar);
+        
+        tmphisto = (TH1F*)monitorfile->Get("mon5/yield");
+        h_monitor->SetBinContent(5, tmphisto->GetEntries()/normpar);
+        
+        tmphisto = (TH1F*)monitorfile->Get("mon6/yield");
+        h_monitor->SetBinContent(6, tmphisto->GetEntries()/normpar);
+        
+        monitorfile->Close();
+    }
 
     if(filename.find("Data") != std::string::npos || filename.find("Run201") != std::string::npos ) runOnData = true;
     if(filename.find("InvIso") != std::string::npos) invIso = true;
@@ -151,7 +193,7 @@ int main(int argc, char* argv[])
           
           if(filename.find("GluGluToRadionToHHTo2B2Tau") != std::string::npos){
               weight_lumi = 100*0.58*0.063*2 / nev_total;   // HARD CODED WEIGTHS FOR MCSIGNAL //*0.58*0.063
-          }
+          } 
 
           if(filename.find("TT_TuneCUETP8M1") != std::string::npos) {
               weight_lumi = 831.76 / nev_total;
@@ -159,7 +201,13 @@ int main(int argc, char* argv[])
           if(filename.find("WJetsToLNu") != std::string::npos) {
               weight_lumi = 61526.7 / nev_total;
           }
-
+          
+          if(filename.find("GluGluToRadionToHHTo2B2Tau") == std::string::npos){
+              weight_lumi *= 0.55;
+          } 
+          
+          weight_lumi *= 12.876*1000;
+          
           if(debug){
             std::cout << " xsec = " << xsec << "\n";
             std::cout << " nev_total = " << nev_total << "\n";
@@ -236,6 +284,7 @@ int main(int argc, char* argv[])
         edm::Handle<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepSym<double,2>>> covMatrixHandle;
         event.getByLabel(edm::InputTag("METSignificance", "METCovariance"), covMatrixHandle);
 
+        FitProb = *kinfit_p.product();
         edm::Handle<double> svfitmassHandle;
         if (!invIso) event.getByLabel(edm::InputTag("SVFit", ""), svfitmassHandle);
         else event.getByLabel(edm::InputTag("SVFitInvTauIso", ""), svfitmassHandle);
@@ -282,23 +331,67 @@ int main(int argc, char* argv[])
         
         if(debug) std::cout << " weight = " << weight << std::endl;
         
+        //Getting objects
+        pat::Muon muon = selectedmuons->at(0);
+        pat::Tau  tau = selectedtaus->at(0);
+        pat::Jet  bjet1 = selectedjets->at(0);
+        pat::Jet  bjet2 = selectedjets->at(1);
+        pat::MET  met = slimmedMET->at(0);
+
+        muon_p4 = muon.p4();
+        tau_p4 = tau.p4();
+        bjet1_p4 = bjet1.p4();
+        bjet2_p4 = bjet2.p4();
+        met_p4 = met.p4();
+
+        //Observables
+        m_t_mu = sqrt(2 * muon_p4.Pt() * met_p4.Pt() * (1-cos(muon_p4.Phi()-met_p4.Phi())) );
+               
+    
+        // fill histograms:
+        for(std::vector<Muon>::const_iterator mu1=selectedmuons->begin(); mu1!=selectedmuons->end(); ++mu1){
+            hmuonPt->Fill( mu1->pt (), weight );
+            hmuonEta->Fill( mu1->eta(), weight );
+            hmuonPhi->Fill( mu1->phi(), weight );
+        }
+
+        h_m_bbar->Fill((bjet1_p4+bjet2_p4).M(), weight);  
+        h_m_tauvis->Fill((tau_p4+muon_p4+met_p4).M(), weight);
+        h_m_t_mu->Fill(m_t_mu, weight);    
 
         // fill number of vertices:
         double nVert = offlineSlimmedPrimaryVertices->size();
         hnVert->Fill( nVert, weight );
         hnVert_noPU->Fill( nVert, weight_noPU );
         
-        h_kinFit->Fill(kinfit_mH.product(), weight);
-
-        TLorentzVector mu4v = TLorentzVector(selectedmuons.product()[0].px(),selectedmuons.product()[0].py(),selectedmuons.product()[0].pz(),selectedmuons.product()[0].energy())
-        TLorentzVector tau4v = TLorentzVector(selectedtaus.product()[0].px(),selectedtaus.product()[0].py(),selectedtaus.product()[0].pz(),selectedtaus.product()[0].energy())
-        TLorentzVector jet14v = TLorentzVector(selectedjets.product()[0].px(),selectedjets.product()[0].py(),selectedjets.product()[0].pz(),selectedjets.product()[0].energy())
-        TLorentzVector jet24v = TLorentzVector(selectedjets.product()[1].px(),selectedjets.product()[1].py(),selectedjets.product()[1].pz(),selectedjets.product()[1].energy())
-        TLorentzVector met4v = TLorentzVector(selectedmets.product()[0].px(),selectedmets.product()[0].py(),selectedmets.product()[0].pz(),selectedmets.product()[0].energy())
-        h_mH.Fill((mu4v+tau4v+jet14v+jet24v+met4v).M())
+        if (svfitmass != -1) hSVFit->Fill(svfitmass, weight);
+        
+        // plot Fitprob
+        m_kinfit = *kinfit_mH.product();
+        h_m_kinfit->Fill(m_kinfit, weight);
+	    h_P_fit->Fill(FitProb, weight);
+        h_m_kinfit->Fill(m_kinfit, weight);
+	    h_P_fit->Fill(FitProb, weight);
+        
+        // fill weight histograms:
+        hLumiWeight->Fill(weight_lumi);
+        hPUWeight->Fill(weight_PU);
+        hMuonIdScaleFactor->Fill(weight_muon_IdScaleFactor);
+        hMuonTriggerScaleFactor->Fill(weight_muon_triggerScaleFactor);
+        hBTaggingSF->Fill(weight_btag);
+        
+        // fill covmatrix histos:
+        ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepSym<double,2>> mymatrix;
+        mymatrix = *covMatrixHandle.product();
+        h_cov_xx->Fill( sqrt(mymatrix[0][0]) );
+        h_cov_xy->Fill( mymatrix[0][1] );
+        h_cov_yx->Fill( mymatrix[1][0] );
+        h_cov_yy->Fill( sqrt(mymatrix[1][1]) );
+        
+        h_met->Fill(met_p4.Pt(), weight);
         
         } catch (cms::Exception& iException) {
-            std::cout << "  critical: no suff. info in event! " << std::endl;
+            std::cout << " skipping single event " << std::endl;
             continue;
         }
         

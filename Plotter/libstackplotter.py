@@ -22,7 +22,6 @@ ROOT.gStyle.SetOptTitle(1)
 ROOT.gStyle.SetPalette(1)
 ROOT.TH1.SetDefaultSumw2(True)
 
-gsf=0.55
 
 def constructQCD(rootFiles, path, histoName, binSize, storage, lumi, noNegativeEntries=True):
 
@@ -79,8 +78,8 @@ def constructQCD(rootFiles, path, histoName, binSize, storage, lumi, noNegativeE
                     hists[htype]["addedBG"].Add(hists[htype][label])
 
     # lumi weighting (luminosity assumed to be in fb, xsections in pb):
-    for addFile in hists:
-        hists[addFile]["addedBG"].Scale(gsf*lumi*1e3)
+    #for addFile in hists:
+        #hists[addFile]["addedBG"].Scale(lumi)
     
     # for like-sign leptons and isolation criteria (LS_Iso), get difference between data/added BG:
     ddQCD = hists["_LS_Iso_selection"]["Data_LS_Iso_selection"].Clone()
@@ -161,10 +160,10 @@ def stackplotter(rootFiles, path, histoName, outputfilename, lumi, xtitle,
     currentDrawOptions = ""
 
     # lumi weighting (luminosity assumed to be in fb, xsections in pb):
-    for label in hists:
-        if rootFiles[label][0] != 'd':
-            if label != 'QCD':
-                hists[label].Scale(gsf*lumi*1e3)
+    #for label in hists:
+        #if rootFiles[label][0] != 'd':
+            #if label != 'QCD':
+                #hists[label].Scale(lumi)
             
     # get data/MC ratio from added MC background histogram
     addedBG = None
@@ -320,10 +319,18 @@ def stackplotter(rootFiles, path, histoName, outputfilename, lumi, xtitle,
         canvas.SaveAs(outputfilename + "." + saveFormat)
         
     # print dd qcd:
-    #if "QCD" in hists:
-    #    hists["QCD"].Draw()
-    #    canvas.SaveAs(outputfilename + "_qcd.pdf")
-        
+    if "QCD" in hists:
+        # hists["QCD"].Draw()
+        # canvas.SaveAs(outputfilename + "_qcd.pdf")
+        folder=histoName.split("/")[0]
+        histo=histoName.split("/")[-1]
+        outputfile = ROOT.TFile(outputfilename + "_qcd.root","UPDATE")
+        outputfolder = outputfile.mkdir(folder)
+        outputfolder.cd()
+        hists["QCD"].SetName(histo)
+        hists["QCD"].Write()
+        outputfile.Close() 
+                
     return 0
     
         
