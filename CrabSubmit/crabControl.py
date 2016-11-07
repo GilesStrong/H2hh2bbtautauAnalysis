@@ -90,7 +90,7 @@ def readConfig(configFileName):
 
     return samples
 
-logo = "          ,__,\n     (/__/\oo/\__(/\n       _/\/__\/\_\n        _/    \_   "
+logo = "          ,__,\n     (/__/\oo/\__\)\n       _/\/__\/\_\n        _/    \_   "
 
 def crabSubmit(samples):
 
