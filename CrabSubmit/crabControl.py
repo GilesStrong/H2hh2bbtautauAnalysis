@@ -147,7 +147,7 @@ def buildCrabSubmitScripts(samples):
         f.write("config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())\n")
         f.write("config.Data.publication = True\n")
         f.write("config.Data.outputDatasetTag = '%s'\n\n" % tagname)
-        f.write("config.Site.storageSite = 'T2_DE_DESY'\n")
+        f.write("config.Site.storageSite = 'T2_PT_NCG_Lisbon'\n")
         
         f.close()
 
@@ -299,7 +299,7 @@ if __name__ == "__main__":
     parser = optparse.OptionParser()
     
     parser.add_option("--config", action="store", type="string", default="", dest="config")
-    parser.add_option("--folderprefix", action="store", type="string", default="/pnfs/desy.de/cms/tier2", dest="folderprefix")
+    parser.add_option("--folderprefix", action="store", type="string", default="/gstore/t3cms/store/user/giles/", dest="folderprefix")
     parser.add_option("--outputfolder", action="store", type="string", default=".", dest="outputfolder")
     parser.add_option("--cores", action="store", type="int", default=-1, dest="cores")
     parser.add_option("--dryrun", action="store_true", dest="dryrun")
