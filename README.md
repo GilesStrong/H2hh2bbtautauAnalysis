@@ -1,5 +1,6 @@
 # H2hh2bbtautauAnalysis
 
+N.B. Basis forked from DESY CMSSW School 2016
 Quick tutorial on how to run the analysis:
 
 ## Skimming
