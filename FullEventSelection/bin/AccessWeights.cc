@@ -8,8 +8,6 @@
 #include "DataFormats/FWLite/interface/Event.h"
 #include "DataFormats/FWLite/interface/LuminosityBlock.h"
 #include "DataFormats/FWLite/interface/Run.h"
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/FWLite/interface/FWLiteEnabler.h"
@@ -56,7 +54,7 @@ int main(int argc, char* argv[])
         lumiBlock.getByLabel(std::string("nEventsTotal"), hCnt);
         nev_total = nev_total + hCnt->value;
         
-        edm::Handle<reco::VertexCollection> vertices;
+        edm::Handle<edm::MergeableCounter> hCntSel;
         lumiBlock.getByLabel(std::string("nEventsSelected"), hCntSel);
         nev_selected = nev_selected + hCntSel->value;
       }
