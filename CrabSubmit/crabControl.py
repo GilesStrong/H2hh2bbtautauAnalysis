@@ -300,7 +300,7 @@ if __name__ == "__main__":
     
     parser.add_option("--config", action="store", type="string", default="", dest="config")
     parser.add_option("--folderprefix", action="store", type="string", default="/gstore/t3cms/store/user/gstrong/", dest="folderprefix")
-    parser.add_option("--outputfolder", action="store", type="string", default=".", dest="outputfolder")
+    parser.add_option("--outputfolder", action="store", type="string", default="/eos/user/g/gstrong/cms/", dest="outputfolder")
     parser.add_option("--cores", action="store", type="int", default=-1, dest="cores")
     parser.add_option("--dryrun", action="store_true", dest="dryrun")
     parser.add_option("--submit", action="store_true", dest="submit")
