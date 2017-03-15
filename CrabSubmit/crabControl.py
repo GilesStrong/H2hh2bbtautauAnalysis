@@ -299,7 +299,7 @@ if __name__ == "__main__":
     parser = optparse.OptionParser()
     
     parser.add_option("--config", action="store", type="string", default="", dest="config")
-    parser.add_option("--folderprefix", action="store", type="string", default="root://eoscms.cern.ch//gstore/t3cms/", dest="folderprefix")
+    parser.add_option("--folderprefix", action="store", type="string", default="root://eoscms.cern.ch//eos/cms/", dest="folderprefix")
     parser.add_option("--outputfolder", action="store", type="string", default="/eos/user/g/gstrong/cms/", dest="outputfolder")
     parser.add_option("--cores", action="store", type="int", default=-1, dest="cores")
     parser.add_option("--dryrun", action="store_true", dest="dryrun")
