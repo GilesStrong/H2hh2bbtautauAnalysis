@@ -157,8 +157,8 @@ int main(int argc, char* argv[])
 	//___________________________________________
 
 	//Data tree__________________________________
-	TFileDirectory dir_noPU = fs.mkdir("data");
-	TTree* mu_tau_b_b = dir_weighted.make<TTree>("mu_tau_b_b", "#mu #tau_{h} b #bar{b}");
+	TFileDirectory flatData = fs.mkdir("data");
+	TTree* mu_tau_b_b = flatData.make<TTree>("mu_tau_b_b", "#mu #tau_{h} b #bar{b}");
 	mu_tau_b_b->Branch("t_0_pT", &t_0_pT);
 	mu_tau_b_b->Branch("t_0_eta", &t_0_eta);
 	mu_tau_b_b->Branch("t_0_phi", &t_0_phi);
