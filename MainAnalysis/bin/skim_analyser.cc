@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 	double h_tt_pT, h_tt_eta, h_tt_phi, h_tt_mass, h_tt_svFit_mass; //Higgs 0 variables
 	double h_bb_pT, h_bb_eta, h_bb_phi, h_bb_mass; //Higgs 1 variables
 	double diH_pT, diH_eta, diH_phi, diH_mass, diH_kinFit_mass, diH_kinFit_prob; //di-Higgs variables
-	double mT //Transverse mass
+	double mT; //Transverse mass
 	//___________________________________________
 	//Global event variables_____________________
 	double hT, sT, centrality, eVis; //Global kinematics
