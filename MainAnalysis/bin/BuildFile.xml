@@ -8,4 +8,5 @@
 <environment>
     <bin   file="PileUpComparison.cc"></bin>
     <bin   file="MainAnalysis.cc"></bin>
+    <bin   file="skim_analyser.cc"></bin>
 </environment>
