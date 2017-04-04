@@ -39,7 +39,7 @@ if __name__ == "__main__":
     sys.dont_write_bytecode = True
     
     if options.edmfolder == "":
-        print "run analysis with: ./runMainAnalysis.py --edmfolder /path/to/edm-files"
+        print "run analysis with: ./runSkimAnalyser.py --edmfolder /path/to/edm-files"
         print "uses all available cpu cores, control with --cores option."
         quit()
     if options.fwoutputfolder == "":
@@ -63,7 +63,8 @@ if __name__ == "__main__":
     for edmfile in edmfiles:
         
         # ignore inverted selection
-        if "Inv" in edmfile: continue
+        #if "Inv" in edmfile: continue
+        #if "selection" in edmfile: continue
        
         # ignore non-edm files
         if "monitor" in edmfile: continue
@@ -77,6 +78,9 @@ if __name__ == "__main__":
         if options.debug:
             more = "debug=True"
         
-        commands.append( "$(echo $CMSSW_BASE)/bin/$(echo $SCRAM_ARCH)/MainAnalysis inputFiles=%s outputFile=%s %s" % (edmfile, outputfile, more ) )
+        if "selection" not in edmfile:
+            commands.append( "$(echo $CMSSW_BASE)/bin/$(echo $SCRAM_ARCH)/skim_analyser inputFiles=%s outputFile=%s monitorFile=%s %s" % (edmfile, outputfile, edmfile.split(".root")[0]+"_monitor.root", more ) )
+        else:
+            commands.append( "$(echo $CMSSW_BASE)/bin/$(echo $SCRAM_ARCH)/skim_analyser inputFiles=%s outputFile=%s monitorFile=none %s" % (edmfile, outputfile, more ) )
        
     results = pool.map(ShellExec, commands)
