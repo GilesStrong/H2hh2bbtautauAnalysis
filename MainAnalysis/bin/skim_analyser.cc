@@ -54,7 +54,6 @@ int main(int argc, char* argv[])
 	parser.integerValue ("maxEvents"  ) =    -1;
 	parser.integerValue ("outputEvery") = 10000;
 	parser.stringValue  ("outputFile" ) = "analyzeFWLiteHistograms.root";
-	parser.stringValue  ("flatFile" ) = "analyzeFWLiteHistograms.root";
 	parser.addOption ("runOnData",     optutl::CommandLineParser::kBool, "", false);
 	parser.addOption ("setdebug",      optutl::CommandLineParser::kBool, "", false);
 	parser.addOption ("monitorFile",   optutl::CommandLineParser::kString, "", "");
