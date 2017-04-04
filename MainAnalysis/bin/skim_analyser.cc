@@ -119,8 +119,8 @@ int main(int argc, char* argv[])
 	bool invIso = false;
 	bool LS = false;
 
-	math::XYZTLorentzVector muon_p4, tau_p4, bjet1_p4, bjet2_p4, met_p4, hbb_p4, htt_p4, hh_p4;
-	math::XYZTLorentzVector gen_muon_p4, gen_tau_p4, gen_bjet1_p4, gen_bjet2_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
+	math::XYZTLorentzVector muon_p4, tau_p4, bjet0_p4, bjet1_p4, met_p4, hbb_p4, htt_p4, hh_p4;
+	math::XYZTLorentzVector gen_muon_p4, gen_tau_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
 
 	//Low-level variables________________________
 	double t_0_pT, t_0_eta, t_0_phi, t_0_mass; //Tau 0 variables
@@ -473,10 +473,10 @@ int main(int argc, char* argv[])
 
 					muon_p4 = muon.p4();
 					tau_p4 = tau.p4();
-					bjet1_p4 = bjet1.p4();
-					bjet2_p4 = bjet2.p4();
+					bjet0_p4 = bjet1.p4();
+					bjet1_p4 = bjet2.p4();
 					met_p4 = met.p4();
-					hbb_p4 = bjet1_p4+bjet2_p4;
+					hbb_p4 = bjet0_p4+bjet1_p4;
 					htt_p4 = tau_p4+muon_p4+met_p4;
 					hh_p4 = hbb_p4+htt_p4;
 
@@ -491,7 +491,7 @@ int main(int argc, char* argv[])
 						hmuonPhi->Fill( mu1->phi(), weight );
 					}
 
-					h_m_bbar->Fill(hnn_p4.M(), weight);  
+					h_m_bbar->Fill(hbb_p4.M(), weight);  
 					h_m_tauvis->Fill(htt_p4.M(), weight);
 					h_m_t_mu->Fill(m_t_mu, weight);    
 
@@ -558,7 +558,7 @@ int main(int argc, char* argv[])
 					diH_phi = hh_p4.Phi();
 					diH_mass = hh_p4.M();
 					diH_kinFit_mass = m_kinfit;
-					diH_kinFit_prob = FitProb
+					diH_kinFit_prob = FitProb;
 					mT = m_t_mu;
 					//________________________________
 					//Shapes__________________________
@@ -572,7 +572,7 @@ int main(int argc, char* argv[])
 						&sphericityA, &spherocityA,
 						&aplanarityA, &aplanorityA,
 						&upsilonA, &dShapeA);
-					getPrimaryEventShapes(tau_p4, muon_p4, bjet0_p4, bjet1_p4,
+					getPrimaryEventShapes(tau_p4, muon_p4, bjet0_p4, bjet0_p4,
 						&sphericityP, &spherocityP,
 						&aplanarityP, &aplanorityP,
 						&upsilonP, &dShapeP);
