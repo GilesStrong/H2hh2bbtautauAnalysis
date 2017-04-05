@@ -45,7 +45,7 @@ const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
-TMatrixD decomposeVector(TLorentzVector* in) {
+TMatrixD decomposeVector(math::XYZTLorentzVector* in) {
 	TMatrixD out(3, 3);
 	out(0, 0) = in->Px()*in->Px();
 	out(0, 1) = in->Px()*in->Py();
@@ -59,13 +59,13 @@ TMatrixD decomposeVector(TLorentzVector* in) {
 	return out;
 }
 
-void appendSphericity(TMatrixD* mat, double* div, TLorentzVector* mom) {
+void appendSphericity(TMatrixD* mat, double* div, math::XYZTLorentzVector* mom) {
 	TMatrixD decomp = decomposeVector(mom);
 	*mat += decomp;
 	*div += pow(mom->P(), 2);
 }
 
-void appendSpherocity(TMatrixD* mat, double* div, TLorentzVector* mom) {
+void appendSpherocity(TMatrixD* mat, double* div, math::XYZTLorentzVector* mom) {
 	TMatrixD decomp = decomposeVector(mom);
 	decomp *= 1/std::abs(mom->P());
 	*mat += decomp;
@@ -99,8 +99,8 @@ void getEventShapes(std::vector<double> sphericityV, std::vector<double> spheroc
 	*dShape = 27*spherocityV[0]*spherocityV[1]*spherocityV[2];
 }
 
-void getGlobalEventInfo(TLorentzVector* v_tau_0, TLorentzVector* v_tau_1,
-	TLorentzVector* v_bJet_0, TLorentzVector* v_bJet_1, TLorentzVector* v_met,
+void getGlobalEventInfo(math::XYZTLorentzVector* v_tau_0, math::XYZTLorentzVector* v_tau_1,
+	math::XYZTLorentzVector* v_bJet_0, math::XYZTLorentzVector* v_bJet_1, math::XYZTLorentzVector* v_met,
 	double*  hT, double*  sT, double* centrality, double* eVis) {
 	/*Fills referenced variables with global event information*/
 	if (debug) std::cout << "Getting global event info\n";
@@ -111,9 +111,9 @@ void getGlobalEventInfo(TLorentzVector* v_tau_0, TLorentzVector* v_tau_1,
 	*eVis = 0;
 	//____________________________________________
 	//HT__________________________________________
-	*hT += sqrt(pow(v_bJet_0->M(), 2)+pow(v_bJet_0->Pt(), 2));
-	*hT += sqrt(pow(v_bJet_1->M(), 2)+pow(v_bJet_1->Pt(), 2));
-	*hT += sqrt(pow(v_tau_0->M(), 2)+pow(v_tau_0->Pt(), 2));
+	*hT += v_bJet_0->Et();
+	*hT += v_bJet_1->Et();
+	*hT += v_tau_0->Et();
 	//____________________________________________
 	//ST__________________________________________
 	*sT += *hT;
@@ -133,8 +133,8 @@ void getGlobalEventInfo(TLorentzVector* v_tau_0, TLorentzVector* v_tau_1,
 	//___________________________________________
 }
 
-void getPrimaryEventShapes(TLorentzVector* v_tau_0, TLorentzVector* v_tau_1,
-	TLorentzVector* v_bJet_0, TLorentzVector* v_bJet_1,
+void getPrimaryEventShapes(math::XYZTLorentzVector* v_tau_0, math::XYZTLorentzVector* v_tau_1,
+	math::XYZTLorentzVector* v_bJet_0, math::XYZTLorentzVector* v_bJet_1,
 	double* sphericity, double* spherocity,
 	double* aplanarity, double* aplanority,
 	double* upsilon, double* dShape,
