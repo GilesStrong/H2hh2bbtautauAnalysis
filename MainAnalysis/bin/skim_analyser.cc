@@ -43,6 +43,7 @@
 
 const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
+bool debug = false;
 
 TMatrixD decomposeVector(TLorentzVector* in) {
 	TMatrixD out(3, 3);
@@ -115,7 +116,7 @@ void getGlobalEventInfo(TLorentzVector* v_tau_0, TLorentzVector* v_tau_1,
 	*hT += sqrt(pow(v_tau_0->M(), 2)+pow(v_tau_0->Pt(), 2));
 	//____________________________________________
 	//ST__________________________________________
-	*sT += *hT
+	*sT += *hT;
 	*sT += v_tau_1->Pt();
 	*sT += v_met->Pt();
 	//____________________________________________
@@ -209,7 +210,7 @@ int main(int argc, char* argv[])
 	std::string monitorFile_ = parser.stringValue("monitorFile");
 	std::vector<std::string> inputFiles_ = parser.stringVector("inputFiles");
 	bool runOnData = parser.boolValue("runOnData");
-	bool debug = parser.boolValue("setdebug");
+	debug = parser.boolValue("setdebug");
 
 	// book a set of histograms:
 	fwlite::TFileService fs = fwlite::TFileService(outputFile_.c_str());
@@ -281,8 +282,8 @@ int main(int argc, char* argv[])
 	//Global event variables_____________________
 	double hT, sT, centrality, eVis; //Global kinematics
 	double sphericity, spherocity, aplanarity, aplanority, upsilon, dShape; //Event shapes for primary objects
-	double sphericityEigen0, sphericityEigen1, sphericityEigen2 //Eigenvalues for sphericity of primary objects
-	double spherocityEigen0, spherocityEigen1, spherocityEigen2 //Eigenvalues for spherocity of primary objects
+	double sphericityEigen0, sphericityEigen1, sphericityEigen2; //Eigenvalues for sphericity of primary objects
+	double spherocityEigen0, spherocityEigen1, spherocityEigen2; //Eigenvalues for spherocity of primary objects
 	//___________________________________________
 	//Generator-level variables for regression and cuts
 	double gen_t_0_pT, gen_t_0_eta, gen_t_0_phi, gen_t_0_E; //Tau 0 variables
@@ -696,7 +697,6 @@ int main(int argc, char* argv[])
 							&upsilon, &dShape,
 							&sphericityEigen0, &sphericityEigen1, &sphericityEigen2,
 							&spherocityEigen0, &spherocityEigen1, &spherocityEigen2);
-						weight = (double)*reader->Event_Weight;
 					//________________________________
 					//Gen FS info_____________________
 					/*
