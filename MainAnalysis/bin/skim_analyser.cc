@@ -55,7 +55,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
-	for (int i = 0; i < genParticles->GetEntriesFast(); ++i) {
+	for (int i = 0; i < genParticles->GetEntries(); ++i) {
 		const reco::GenParticle* p = (*genParticles)[i];
 		if (std::abs(p->pdgId) == 25) { //Particle is Higgs
 			if (p->numberOfDaughters() >= 2) { //Daughters exists
