@@ -41,6 +41,8 @@
 
 #include "DataFormats/Common/interface/MergeableCounter.h"
 
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+
 const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
@@ -565,7 +567,7 @@ int main(int argc, char* argv[])
 						edm::Handle<edm::ValueMap<float>> offlineSlimmedPrimaryVertices;
 						event.getByLabel(edm::InputTag("offlineSlimmedPrimaryVertices"), offlineSlimmedPrimaryVertices);
 
-						edm::Handle<GenParticleCollection> genParticles;
+						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
 
 						edm::Handle<double> bTaggingSF;
