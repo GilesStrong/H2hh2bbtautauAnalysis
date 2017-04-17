@@ -48,56 +48,47 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
 
-// bool correctDecayChannel(std::string input, Long64_t cEvent,
-// 		std::map<std::string, TH1D*>* plots=NULL, int* hBB=NULL, int* hTauTau=NULL) {
-// 	/*Make sure event is hh->bbtautau, and point hbb and htautau to the Higgs*/
-// 	TChain *chain = new TChain("Delphes");
-// 	chain->Add(input.c_str());
-// 	ExRootTreeReader *treeReader = new ExRootTreeReader(chain);
-// 	TClonesArray *branchParticle = treeReader->UseBranch("Particle");
-// 	treeReader->ReadEntry(cEvent);
-// 	bool hBBFound = false, hTauTauFound = false;
-// 	int nHiggs = 0;
-// 	if (plots != NULL) (*plots)["cuts"]->Fill("hh->bb#tau#tau check", 1);
-// 	for (int p = 0; p < branchParticle->GetEntriesFast(); ++p) {
-// 		if (std::abs(((GenParticle*)branchParticle->At(p))->PID) == 25) { //Particle is Higgs
-// 			if (((GenParticle*)branchParticle->At(p))->D1 >= 0 && ((GenParticle*)branchParticle->At(p))->D2 >= 0) { //Daughters exists
-// 				if (((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D1))->PID != 25 &&
-// 						((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D2))->PID != 25) {
-// 					nHiggs++;
-// 					if (plots != NULL) (*plots)["higgsDecay"]->Fill(std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D1))->PID));
-// 					if (plots != NULL) (*plots)["higgsDecay"]->Fill(std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D2))->PID));
-// 					if (std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D1))->PID) == 5
-// 							&& std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D2))->PID) == 5) { //Daughters are b quarks
-// 						hBBFound = true;
-// 						if (hBB != NULL) *hBB = p; //Point to Higgs
-// 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
-// 							if (plots != NULL) (*plots)["cuts"]->Fill("hh->bb#tau#tau pass", 1);
-// 							chain->Delete();
-// 							delete treeReader;
-// 							return true;
-// 						}
-// 					}
-// 					if (std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D1))->PID) == 15
-// 							&& std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D2))->PID) == 15) { //Daughters are taus
-// 						hTauTauFound = true;
-// 						if (hTauTau != NULL) *hTauTau = p; //Point to Higgs
-// 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
-// 							if (plots != NULL) (*plots)["cuts"]->Fill("hh->bb#tau#tau pass", 1);
-// 							chain->Delete();
-// 							delete treeReader;
-// 							return true;
-// 						}
-// 					}
-// 				}
-// 			}
-// 			if (nHiggs >= 2) break; //Both Higgs found
-// 		}
-// 	}
-// 	chain->Delete();
-// 	delete treeReader;
-// 	return false; //Both h->bb and h->tautau not found
-// }
+bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
+	GenParticle* gen_hBB, GenParticle* gen_hTauTau,
+   GenParticle* gen_bjet0, GenParticle* gen_bjet1,
+   GenParticle* gen_tau0, GenParticle* gen_tau1) {
+	/*Point hbb and htautau to the Higgs*/
+	bool hBBFound = false, hTauTauFound = false;
+	int nHiggs = 0;
+	for (int i = 0; i < genParticles->size(); ++i) {
+		const GenParticle* p = (*genParticles)[i];
+		if (std::abs(p->pdgId) == 25) { //Particle is Higgs
+			if (p->numberOfDaughters() >= 2) { //Daughters exists
+				std::cout << "N daughters: " << p->numberOfDaughters() << "\n";
+				const GenParticle* d0 = p->daughter(0);
+				const GenParticle* d1 = p->daughter(1);
+				if (d0->pdgId != 25 && d1->pdgId != 25) {
+					nHiggs++;
+					if (std::abs(d0->pdgId) == 5 && std::abs(d1->pdgId) == 5) { //Daughters are b quarks
+						hBBFound = true;
+						*hBB = p; //Point to Higgs
+						*gen_bjet0 = d0; //Point to daughters
+						*gen_bjet1 = d1;
+						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
+							return true;
+						}
+					}
+					if (std::abs(d0->pdgId) == 15 && std::abs(d1->pdgId) == 15) { //Daughters are taus
+						hTauTauFound = true;
+						*hTT = p; //Point to Higgs
+						*gen_tau0 = d0; //Point to daughters
+						*gen_tau1 = d1;
+						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
+							return true;
+						}
+					}
+				}
+			}
+			if (nHiggs >= 2) break; //Both Higgs found
+		}
+	}
+	return false; //Both h->bb and h->tautau not found
+}
 
 TMatrixD decomposeVector(math::XYZTLorentzVector* in) {
 	TMatrixD out(3, 3);
@@ -567,9 +558,6 @@ int main(int argc, char* argv[])
 						edm::Handle<edm::ValueMap<float>> offlineSlimmedPrimaryVertices;
 						event.getByLabel(edm::InputTag("offlineSlimmedPrimaryVertices"), offlineSlimmedPrimaryVertices);
 
-						edm::Handle<reco::GenParticleCollection> genParticles;
-   					event.getByLabel(edm::InputTag("generator"), genParticles);
-
 						edm::Handle<double> bTaggingSF;
 						if(!invIso){
 							if(!LS) event.getByLabel(edm::InputTag("bTaggingSF", "BTaggingSF"), bTaggingSF);
@@ -709,6 +697,14 @@ int main(int argc, char* argv[])
 
 						h_met->Fill(met_p4.Pt(), weight);
 
+						//MC truth_____________________
+						edm::Handle<reco::GenParticleCollection> genParticles;
+   					event.getByLabel(edm::InputTag("generator"), genParticles);
+   					GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
+   					getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
+						//_____________________________
+
+
 					//Fill flat data__________________
 					//Reco FS info____________________
 						t_0_pT = tau_p4.Pt();
@@ -757,6 +753,8 @@ int main(int argc, char* argv[])
 							&spherocityEigen0, &spherocityEigen1, &spherocityEigen2);
 					//________________________________
 					//Gen FS info_____________________
+
+
 					/*
 						v_gen_diHiggs = getDiHiggs(v_gen_higgs_tt, v_gen_higgs_bb);
 						gen_t_0_pT = v_gen_tau_0.Pt();
