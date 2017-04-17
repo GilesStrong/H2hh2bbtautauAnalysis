@@ -49,19 +49,19 @@ bool debug = false;
 
 
 bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
-	GenParticle* gen_hBB, GenParticle* gen_hTauTau,
-   GenParticle* gen_bjet0, GenParticle* gen_bjet1,
-   GenParticle* gen_tau0, GenParticle* gen_tau1) {
+	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
+   reco::GenParticle* gen_bjet0, reco::GenParticle* gen_bjet1,
+   reco::GenParticle* gen_tau0, reco::GenParticle* gen_tau1) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
-	for (int i = 0; i < genParticles->size(); ++i) {
-		const GenParticle* p = (*genParticles)[i];
+	for (int i = 0; i < genParticles->GetEntriesFast(); ++i) {
+		const reco::GenParticle* p = (*genParticles)[i];
 		if (std::abs(p->pdgId) == 25) { //Particle is Higgs
 			if (p->numberOfDaughters() >= 2) { //Daughters exists
 				std::cout << "N daughters: " << p->numberOfDaughters() << "\n";
-				const GenParticle* d0 = p->daughter(0);
-				const GenParticle* d1 = p->daughter(1);
+				const reco::GenParticle* d0 = p->daughter(0);
+				const reco::GenParticle* d1 = p->daughter(1);
 				if (d0->pdgId != 25 && d1->pdgId != 25) {
 					nHiggs++;
 					if (std::abs(d0->pdgId) == 5 && std::abs(d1->pdgId) == 5) { //Daughters are b quarks
@@ -700,7 +700,7 @@ int main(int argc, char* argv[])
 						//MC truth_____________________
 						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
-   					GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
+   					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
    					getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
 						//_____________________________
 
