@@ -56,7 +56,7 @@ bool getGenParticles(reco::GenParticleCollection* genParticles,
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
 	for(size_t i = 0; i < genParticles->size(); ++ i) {
-		const reco::GenParticle& p = genParticles[i];
+		reco::GenParticle p = genParticles[i];
 		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
 			if (p.numberOfDaughters() >= 2) { //Daughters exists
 				std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
