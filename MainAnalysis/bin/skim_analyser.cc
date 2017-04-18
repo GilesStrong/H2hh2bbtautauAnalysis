@@ -67,8 +67,8 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
 						gen_hBB = &p; //Point to Higgs
-						gen_bjet0 = d0; //Point to daughters
-						gen_bjet1 = d1;
+						*gen_bjet0 = &d0; //Point to daughters
+						*gen_bjet1 = &d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
 							return true;
 						}
@@ -76,8 +76,8 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 					if (std::abs(d0->pdgId()) == 15 && std::abs(d1->pdgId()) == 15) { //Daughters are taus
 						hTauTauFound = true;
 						gen_hTauTau = &p; //Point to Higgs
-						gen_tau0 = d0; //Point to daughters
-						gen_tau1 = d1;
+						*gen_tau0 = &d0; //Point to daughters
+						*gen_tau1 = &d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
 							return true;
 						}
@@ -750,7 +750,7 @@ int main(int argc, char* argv[])
 								gen_hbb_p4 = gen_hBB->p4();
 								gen_htt_p4 = gen_hTauTau->p4();
 								gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
-							//	gen_tau0_p4 = gen_tau0->p4();
+								gen_tau0_p4 = gen_tau0->p4();
 							// 	gen_tau1_p4 = gen_tau1->p4();
 							// 	gen_bjet0_p4 = gen_bjet0->p4();
 							// 	gen_bjet1_p4 = gen_bjet1->p4();
