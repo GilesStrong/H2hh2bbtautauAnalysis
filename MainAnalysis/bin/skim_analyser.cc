@@ -797,7 +797,7 @@ int main(int argc, char* argv[])
 					//________________________________
 
 					} catch (cms::Exception& iException) {
-						std::cout << iException << "\n"
+						std::cout << iException << "\n";
 						std::cout << " skipping single event " << std::endl;
 						continue;
 					}
