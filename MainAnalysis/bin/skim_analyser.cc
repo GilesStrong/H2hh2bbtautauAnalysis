@@ -50,8 +50,8 @@ bool debug = false;
 
 bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
-   const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1,
-   const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1) {
+	const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1,
+	const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
@@ -307,9 +307,10 @@ int main(int argc, char* argv[])
 
 	bool invIso = false;
 	bool LS = false;
+	bool runOnSignal = false;
 
 	math::XYZTLorentzVector muon_p4, tau_p4, bjet0_p4, bjet1_p4, met_p4, hbb_p4, htt_p4, hh_p4;
-	math::XYZTLorentzVector gen_muon_p4, gen_tau_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
+	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
 
 	//Low-level variables________________________
 	double t_0_pT, t_0_eta, t_0_phi, t_0_mass; //Tau 0 variables
@@ -461,6 +462,7 @@ int main(int argc, char* argv[])
 
 		if(filename.find("Data") != std::string::npos || filename.find("Run201") != std::string::npos ) runOnData = true;
 		if(filename.find("InvIso") != std::string::npos) invIso = true;
+		if(filename.find("ToHHTo2B2Tau") != std::string::npos) runOnSignal = true;
 		if(filename.find("LS_") != std::string::npos) LS = true;
 
 		if( inFile ){
@@ -698,15 +700,93 @@ int main(int argc, char* argv[])
 						h_met->Fill(met_p4.Pt(), weight);
 
 						//MC truth_____________________
-						edm::Handle<reco::GenParticleCollection> genParticles;
-   					event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
-   					reco::GenParticle* gen_hBB = NULL;
-   					reco::GenParticle* gen_hTauTau = NULL;
-   					reco::Candidate* gen_bjet0 = NULL;
-   					reco::Candidate* gen_bjet1 = NULL;
-   					reco::Candidate* gen_tau0 = NULL;
-   					reco::Candidate* gen_tau1 = NULL;
-   					getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
+						//Reset variables______________
+						gen_t_0_pT = 0;
+						gen_t_0_eta = 0;
+						gen_t_0_phi = 0;
+						gen_t_0_E = 0;
+						gen_t_1_pT = 0;
+						gen_t_1_eta = 0;
+						gen_t_1_phi = 0;
+						gen_t_1_E = 0;
+						gen_b_0_pT = 0;
+						gen_b_0_eta = 0;
+						gen_b_0_phi = 0;
+						gen_b_0_E = 0;
+						gen_b_1_pT = 0;
+						gen_b_1_eta = 0;
+						gen_b_1_phi = 0;
+						gen_b_1_E = 0;
+						gen_diH_pT = 0;
+						gen_diH_eta = 0;
+						gen_diH_phi = 0;
+						gen_diH_E = 0;
+						gen_diH_mass = 0;
+						gen_h_bb_pT = 0;
+						gen_h_bb_eta = 0;
+						gen_h_bb_phi = 0;
+						gen_h_bb_E = 0;
+						gen_h_tt_pT = 0;
+						gen_h_tt_eta = 0;
+						gen_h_tt_phi = 0;
+						gen_h_tt_E = 0;
+						//_____________________________
+						if (runOnSignal) {
+							//Get gen info______________
+							edm::Handle<reco::GenParticleCollection> genParticles;
+							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
+							reco::GenParticle* gen_hBB = NULL;
+							reco::GenParticle* gen_hTauTau = NULL;
+							reco::Candidate* gen_bjet0 = NULL;
+							reco::Candidate* gen_bjet1 = NULL;
+							reco::Candidate* gen_tau0 = NULL;
+							reco::Candidate* gen_tau1 = NULL;
+							getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
+							//__________________________
+							//Check FSs_________________
+							//__________________________
+							//Get 4-momenta_____________
+							gen_hbb_p4 = gen_hBB->p4();
+							gen_htt_p4 = gen_hTauTau->p4();
+							gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
+							gen_tau0_p4 = gen_tau0->p4();
+							gen_tau1_p4 = gen_tau1->p4();
+							gen_bjet0_p4 = gen_bjet0->p4();
+							gen_bjet1_p4 = gen_bjet1->p4();
+							//__________________________
+							//Decompose info____________
+							gen_t_0_pT = gen_tau0_p4.Pt();
+							gen_t_0_eta = gen_tau0_p4.Eta();
+							gen_t_0_phi = gen_tau0_p4.Phi();
+							gen_t_0_E = gen_tau0_p4.E();
+							gen_t_1_pT = gen_tau1_p4.Pt();
+							gen_t_1_eta = gen_tau1_p4.Eta();
+							gen_t_1_phi = gen_tau1_p4.Phi();
+							gen_t_1_E = gen_tau1_p4.E();
+							gen_b_0_pT = gen_bjet0_p4.Pt();
+							gen_b_0_eta = gen_bjet0_p4.Eta();
+							gen_b_0_phi = gen_bjet0_p4.Phi();
+							gen_b_0_E = gen_bjet0_p4.E();
+							gen_b_1_pT = gen_bjet1_p4.Pt();
+							gen_b_1_eta = gen_bjet1_p4.Eta();
+							gen_b_1_phi = gen_bjet1_p4.Phi();
+							gen_b_1_E = gen_bjet1_p4.E();
+							gen_diH_pT = gen_hh_p4.Pt();
+							gen_diH_eta = gen_hh_p4.Eta();
+							gen_diH_phi = gen_hh_p4.Phi();
+							gen_diH_E = gen_hh_p4.E();
+							gen_diH_mass = gen_hh_p4.M();
+							gen_h_bb_pT = gen_hbb_p4.Pt();
+							gen_h_bb_eta = gen_hbb_p4.Eta();
+							gen_h_bb_phi = gen_hbb_p4.Phi();
+							gen_h_bb_E = gen_hbb_p4.E();
+							gen_h_tt_pT = gen_htt_p4.Pt();
+							gen_h_tt_eta = gen_htt_p4.Eta();
+							gen_h_tt_phi = gen_htt_p4.Phi();
+							gen_h_tt_E = gen_htt_p4.E();
+							//__________________________
+						}
+						//_____________________________
 						//_____________________________
 
 
@@ -757,41 +837,6 @@ int main(int argc, char* argv[])
 							&sphericityEigen0, &sphericityEigen1, &sphericityEigen2,
 							&spherocityEigen0, &spherocityEigen1, &spherocityEigen2);
 					//________________________________
-					//Gen FS info_____________________
-
-
-					/*
-						v_gen_diHiggs = getDiHiggs(v_gen_higgs_tt, v_gen_higgs_bb);
-						gen_t_0_pT = v_gen_tau_0.Pt();
-						gen_t_0_eta = v_gen_tau_0.Eta();
-						gen_t_0_phi = v_gen_tau_0.Phi();
-						gen_t_0_E = v_gen_tau_0.E();
-						gen_t_1_pT = v_gen_tau_1.Pt();
-						gen_t_1_eta = v_gen_tau_1.Eta();
-						gen_t_1_phi = v_gen_tau_1.Phi();
-						gen_t_1_E = v_gen_tau_1.E();
-						gen_b_0_pT = v_gen_bJet_0.Pt();
-						gen_b_0_eta = v_gen_bJet_0.Eta();
-						gen_b_0_phi = v_gen_bJet_0.Phi();
-						gen_b_0_E = v_gen_bJet_0.E();
-						gen_b_1_pT = v_gen_bJet_1.Pt();
-						gen_b_1_eta = v_gen_bJet_1.Eta();
-						gen_b_1_phi = v_gen_bJet_1.Phi();
-						gen_b_1_E = v_gen_bJet_1.E();
-						gen_diH_pT = v_gen_diHiggs.Pt();
-						gen_diH_eta = v_gen_diHiggs.Eta();
-						gen_diH_phi = v_gen_diHiggs.Phi();
-						gen_diH_E = v_gen_diHiggs.E();
-						gen_diH_mass = v_gen_diHiggs.M();
-						gen_h_bb_pT = v_gen_higgs_bb.Pt();
-						gen_h_bb_eta = v_gen_higgs_bb.Eta();
-						gen_h_bb_phi = v_gen_higgs_bb.Phi();
-						gen_h_bb_E = v_gen_higgs_bb.E();
-						gen_h_tt_pT = v_gen_higgs_tt.Pt();
-						gen_h_tt_eta = v_gen_higgs_tt.Eta();
-						gen_h_tt_phi = v_gen_higgs_tt.Phi();
-						gen_h_tt_E = v_gen_higgs_tt.E();
-					*/
 					//________________________________
 						mu_tau_b_b->Fill();
 					//________________________________
