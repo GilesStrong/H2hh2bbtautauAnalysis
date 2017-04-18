@@ -48,7 +48,7 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
 
-bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
+bool getGenParticles(reco::Handle<reco::GenParticleCollection>* genParticles,
 	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
    reco::GenParticle* gen_bjet0, reco::GenParticle* gen_bjet1,
    reco::GenParticle* gen_tau0, reco::GenParticle* gen_tau1) {
@@ -57,14 +57,14 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
 	int nHiggs = 0;
 	for(size_t i = 0; i < genParticles->size(); ++ i) {
 		//const reco::GenParticle* p = (*genParticles)[i];
-		if (std::abs(p->pdgId) == 25) { //Particle is Higgs
+		if (std::abs(p->pdgId()) == 25) { //Particle is Higgs
 			if (p->numberOfDaughters() >= 2) { //Daughters exists
 				std::cout << "N daughters: " << p->numberOfDaughters() << "\n";
 				const reco::GenParticle* d0 = p->daughter(0);
 				const reco::GenParticle* d1 = p->daughter(1);
-				if (d0->pdgId != 25 && d1->pdgId != 25) {
+				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
 					nHiggs++;
-					if (std::abs(d0->pdgId) == 5 && std::abs(d1->pdgId) == 5) { //Daughters are b quarks
+					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
 						*hBB = p; //Point to Higgs
 						*gen_bjet0 = d0; //Point to daughters
@@ -73,7 +73,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
 							return true;
 						}
 					}
-					if (std::abs(d0->pdgId) == 15 && std::abs(d1->pdgId) == 15) { //Daughters are taus
+					if (std::abs(d0->pdgId()) == 15 && std::abs(d1->pdgId()) == 15) { //Daughters are taus
 						hTauTauFound = true;
 						*hTT = p; //Point to Higgs
 						*gen_tau0 = d0; //Point to daughters
@@ -701,9 +701,6 @@ int main(int argc, char* argv[])
 						reco::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
    					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
-   					for(size_t i = 0; i < genParticles->size(); ++ i) {
-   						std::cout << i << "\n"
-   					}
    					getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
 						//_____________________________
 
