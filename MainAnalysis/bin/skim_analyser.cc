@@ -702,7 +702,7 @@ int main(int argc, char* argv[])
    					event.getByLabel(edm::InputTag("generator"), genParticles);
    					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
    					for(size_t i = 0; i < genParticles->size(); ++ i) {
-     						const GenParticle & p = (*genParticles)[i];
+     						const reco::GenParticle & p = (*genParticles)[i];
 					 	}
    					//getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
 						//_____________________________
