@@ -87,6 +87,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 			if (nHiggs >= 2) break; //Both Higgs found
 		}
 	}
+	std::cout << nHiggs << " Higgs found in signal event\n";
 	return false; //Both h->bb and h->tautau not found
 }
 
@@ -741,50 +742,51 @@ int main(int argc, char* argv[])
 							reco::Candidate* gen_bjet1 = NULL;
 							reco::Candidate* gen_tau0 = NULL;
 							reco::Candidate* gen_tau1 = NULL;
-							getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
+							if (getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1)) {
 							//__________________________
 							//Check FSs_________________
 							//__________________________
 							//Get 4-momenta_____________
-							gen_hbb_p4 = gen_hBB->p4();
-							gen_htt_p4 = gen_hTauTau->p4();
-							gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
-							gen_tau0_p4 = gen_tau0->p4();
-							gen_tau1_p4 = gen_tau1->p4();
-							gen_bjet0_p4 = gen_bjet0->p4();
-							gen_bjet1_p4 = gen_bjet1->p4();
+								gen_hbb_p4 = gen_hBB->p4();
+								gen_htt_p4 = gen_hTauTau->p4();
+								gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
+								gen_tau0_p4 = gen_tau0->p4();
+								gen_tau1_p4 = gen_tau1->p4();
+								gen_bjet0_p4 = gen_bjet0->p4();
+								gen_bjet1_p4 = gen_bjet1->p4();
 							//__________________________
 							//Decompose info____________
-							gen_t_0_pT = gen_tau0_p4.Pt();
-							gen_t_0_eta = gen_tau0_p4.Eta();
-							gen_t_0_phi = gen_tau0_p4.Phi();
-							gen_t_0_E = gen_tau0_p4.E();
-							gen_t_1_pT = gen_tau1_p4.Pt();
-							gen_t_1_eta = gen_tau1_p4.Eta();
-							gen_t_1_phi = gen_tau1_p4.Phi();
-							gen_t_1_E = gen_tau1_p4.E();
-							gen_b_0_pT = gen_bjet0_p4.Pt();
-							gen_b_0_eta = gen_bjet0_p4.Eta();
-							gen_b_0_phi = gen_bjet0_p4.Phi();
-							gen_b_0_E = gen_bjet0_p4.E();
-							gen_b_1_pT = gen_bjet1_p4.Pt();
-							gen_b_1_eta = gen_bjet1_p4.Eta();
-							gen_b_1_phi = gen_bjet1_p4.Phi();
-							gen_b_1_E = gen_bjet1_p4.E();
-							gen_diH_pT = gen_hh_p4.Pt();
-							gen_diH_eta = gen_hh_p4.Eta();
-							gen_diH_phi = gen_hh_p4.Phi();
-							gen_diH_E = gen_hh_p4.E();
-							gen_diH_mass = gen_hh_p4.M();
-							gen_h_bb_pT = gen_hbb_p4.Pt();
-							gen_h_bb_eta = gen_hbb_p4.Eta();
-							gen_h_bb_phi = gen_hbb_p4.Phi();
-							gen_h_bb_E = gen_hbb_p4.E();
-							gen_h_tt_pT = gen_htt_p4.Pt();
-							gen_h_tt_eta = gen_htt_p4.Eta();
-							gen_h_tt_phi = gen_htt_p4.Phi();
-							gen_h_tt_E = gen_htt_p4.E();
+								gen_t_0_pT = gen_tau0_p4.Pt();
+								gen_t_0_eta = gen_tau0_p4.Eta();
+								gen_t_0_phi = gen_tau0_p4.Phi();
+								gen_t_0_E = gen_tau0_p4.E();
+								gen_t_1_pT = gen_tau1_p4.Pt();
+								gen_t_1_eta = gen_tau1_p4.Eta();
+								gen_t_1_phi = gen_tau1_p4.Phi();
+								gen_t_1_E = gen_tau1_p4.E();
+								gen_b_0_pT = gen_bjet0_p4.Pt();
+								gen_b_0_eta = gen_bjet0_p4.Eta();
+								gen_b_0_phi = gen_bjet0_p4.Phi();
+								gen_b_0_E = gen_bjet0_p4.E();
+								gen_b_1_pT = gen_bjet1_p4.Pt();
+								gen_b_1_eta = gen_bjet1_p4.Eta();
+								gen_b_1_phi = gen_bjet1_p4.Phi();
+								gen_b_1_E = gen_bjet1_p4.E();
+								gen_diH_pT = gen_hh_p4.Pt();
+								gen_diH_eta = gen_hh_p4.Eta();
+								gen_diH_phi = gen_hh_p4.Phi();
+								gen_diH_E = gen_hh_p4.E();
+								gen_diH_mass = gen_hh_p4.M();
+								gen_h_bb_pT = gen_hbb_p4.Pt();
+								gen_h_bb_eta = gen_hbb_p4.Eta();
+								gen_h_bb_phi = gen_hbb_p4.Phi();
+								gen_h_bb_E = gen_hbb_p4.E();
+								gen_h_tt_pT = gen_htt_p4.Pt();
+								gen_h_tt_eta = gen_htt_p4.Eta();
+								gen_h_tt_phi = gen_htt_p4.Phi();
+								gen_h_tt_E = gen_htt_p4.E();
 							//__________________________
+							}
 						}
 						//_____________________________
 						//_____________________________
