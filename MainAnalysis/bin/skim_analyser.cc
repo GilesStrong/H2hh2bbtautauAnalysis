@@ -698,7 +698,7 @@ int main(int argc, char* argv[])
 						h_met->Fill(met_p4.Pt(), weight);
 
 						//MC truth_____________________
-						reco::Handle<reco::GenParticleCollection> genParticles;
+						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
    					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
    					getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
