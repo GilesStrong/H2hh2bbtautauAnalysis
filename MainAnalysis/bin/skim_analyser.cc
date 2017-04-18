@@ -60,13 +60,13 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
 			if (p.numberOfDaughters() >= 2) { //Daughters exists
 				std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
-				const Candidate* d0 = p.daughter(0);
-				const Candidate* d1 = p.daughter(1);
+				const reco::Candidate* d0 = p.daughter(0);
+				const reco::Candidate* d1 = p.daughter(1);
 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
 					nHiggs++;
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
-						*hBB = p; //Point to Higgs
+						*gen_hBB = p; //Point to Higgs
 						*gen_bjet0 = d0; //Point to daughters
 						*gen_bjet1 = d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
@@ -75,7 +75,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 					}
 					if (std::abs(d0->pdgId()) == 15 && std::abs(d1->pdgId()) == 15) { //Daughters are taus
 						hTauTauFound = true;
-						*hTT = p; //Point to Higgs
+						*gen_hTT = p; //Point to Higgs
 						*gen_tau0 = d0; //Point to daughters
 						*gen_tau1 = d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
