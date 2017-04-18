@@ -48,47 +48,47 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
 
-// bool getGenParticles(reco::GenParticleCollection* genParticles,
-// 	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
-//    reco::GenParticle* gen_bjet0, reco::GenParticle* gen_bjet1,
-//    reco::GenParticle* gen_tau0, reco::GenParticle* gen_tau1) {
-// 	/*Point hbb and htautau to the Higgs*/
-// 	bool hBBFound = false, hTauTauFound = false;
-// 	int nHiggs = 0;
-// 	for(size_t i = 0; i < genParticles->size(); ++ i) {
-// 		const GenParticle & p = (*genParticles)[i];
-// 		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
-// 			if (p.numberOfDaughters() >= 2) { //Daughters exists
-// 				std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
-// 				const reco::GenParticle* d0 = p.daughter(0);
-// 				const reco::GenParticle* d1 = p.daughter(1);
-// 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
-// 					nHiggs++;
-// 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
-// 						hBBFound = true;
-// 						*hBB = p; //Point to Higgs
-// 						*gen_bjet0 = d0; //Point to daughters
-// 						*gen_bjet1 = d1;
-// 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
-// 							return true;
-// 						}
-// 					}
-// 					if (std::abs(d0->pdgId()) == 15 && std::abs(d1->pdgId()) == 15) { //Daughters are taus
-// 						hTauTauFound = true;
-// 						*hTT = p; //Point to Higgs
-// 						*gen_tau0 = d0; //Point to daughters
-// 						*gen_tau1 = d1;
-// 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
-// 							return true;
-// 						}
-// 					}
-// 				}
-// 			}
-// 			if (nHiggs >= 2) break; //Both Higgs found
-// 		}
-// 	}
-// 	return false; //Both h->bb and h->tautau not found
-// }
+bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
+	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
+   reco::GenParticle* gen_bjet0, reco::GenParticle* gen_bjet1,
+   reco::GenParticle* gen_tau0, reco::GenParticle* gen_tau1) {
+	/*Point hbb and htautau to the Higgs*/
+	bool hBBFound = false, hTauTauFound = false;
+	int nHiggs = 0;
+	for(size_t i = 0; i < genParticles->size(); ++ i) {
+		const reco::GenParticle & p = (*genParticles)[i];
+		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
+			if (p.numberOfDaughters() >= 2) { //Daughters exists
+				std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
+				const reco::GenParticle* d0 = p.daughter(0);
+				const reco::GenParticle* d1 = p.daughter(1);
+				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
+					nHiggs++;
+					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
+						hBBFound = true;
+						*hBB = p; //Point to Higgs
+						*gen_bjet0 = d0; //Point to daughters
+						*gen_bjet1 = d1;
+						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
+							return true;
+						}
+					}
+					if (std::abs(d0->pdgId()) == 15 && std::abs(d1->pdgId()) == 15) { //Daughters are taus
+						hTauTauFound = true;
+						*hTT = p; //Point to Higgs
+						*gen_tau0 = d0; //Point to daughters
+						*gen_tau1 = d1;
+						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
+							return true;
+						}
+					}
+				}
+			}
+			if (nHiggs >= 2) break; //Both Higgs found
+		}
+	}
+	return false; //Both h->bb and h->tautau not found
+}
 
 TMatrixD decomposeVector(math::XYZTLorentzVector* in) {
 	TMatrixD out(3, 3);
@@ -701,10 +701,7 @@ int main(int argc, char* argv[])
 						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
    					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
-   					for(size_t i = 0; i < genParticles->size(); ++ i) {
-     						const reco::GenParticle & p = (*genParticles)[i];
-					 	}
-   					//getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
+   					getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
 						//_____________________________
 
 
