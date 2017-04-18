@@ -699,7 +699,7 @@ int main(int argc, char* argv[])
 
 						//MC truth_____________________
 						edm::Handle<reco::GenParticleCollection> genParticles;
-   					event.getByLabel(edm::InputTag("genParticles"), genParticles);
+   					event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
    					reco::GenParticle* gen_hBB = NULL;
    					reco::GenParticle* gen_hTauTau = NULL;
    					reco::Candidate* gen_bjet0 = NULL;
