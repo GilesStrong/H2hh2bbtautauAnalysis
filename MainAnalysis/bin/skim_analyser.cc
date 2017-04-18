@@ -699,7 +699,7 @@ int main(int argc, char* argv[])
 
 						//MC truth_____________________
 						edm::Handle<reco::GenParticleCollection> genParticles;
-   					event.getByLabel(edm::InputTag("generator"), genParticles);
+   					event.getByLabel(edm::InputTag("genParticles"), genParticles);
    					reco::GenParticle* gen_hBB = NULL;
    					reco::GenParticle* gen_hTauTau = NULL;
    					reco::Candidate* gen_bjet0 = NULL;
@@ -798,7 +798,7 @@ int main(int argc, char* argv[])
 
 					} catch (cms::Exception& iException) {
 						std::cout << iException << "\n";
-						std::cout << " skipping single event " << std::endl;
+						std::cout << " skipping single event\n\n";
 						continue;
 					}
 
