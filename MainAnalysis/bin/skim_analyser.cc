@@ -55,7 +55,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
-	for (reco::GenParticleCollection::const_iterator p = genParticles->begin(); p != genParticles->end(); ++p) {
+	for(size_t i = 0; i < genParticles->size(); ++ i) {
 		//const reco::GenParticle* p = (*genParticles)[i];
 		if (std::abs(p->pdgId) == 25) { //Particle is Higgs
 			if (p->numberOfDaughters() >= 2) { //Daughters exists
@@ -701,6 +701,9 @@ int main(int argc, char* argv[])
 						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
    					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
+   					for(size_t i = 0; i < genParticles->size(); ++ i) {
+   						std::cout << i << "\n"
+   					}
    					getGenParticles(&genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
 						//_____________________________
 
