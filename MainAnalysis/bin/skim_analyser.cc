@@ -66,7 +66,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 					nHiggs++;
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
-						gen_hBB = p; //Point to Higgs
+						gen_hBB = *p; //Point to Higgs
 						gen_bjet0 = d0; //Point to daughters
 						gen_bjet1 = d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
