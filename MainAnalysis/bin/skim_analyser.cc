@@ -56,12 +56,12 @@ bool getGenParticles(reco::GenParticleCollection* genParticles,
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
 	for(size_t i = 0; i < genParticles->size(); ++ i) {
-		const reco::GenParticle* p = genParticles[i];
-		if (std::abs(p->pdgId()) == 25) { //Particle is Higgs
-			if (p->numberOfDaughters() >= 2) { //Daughters exists
-				std::cout << "N daughters: " << p->numberOfDaughters() << "\n";
-				const reco::GenParticle* d0 = p->daughter(0);
-				const reco::GenParticle* d1 = p->daughter(1);
+		const reco::GenParticle p = genParticles[i];
+		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
+			if (p.numberOfDaughters() >= 2) { //Daughters exists
+				std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
+				const reco::GenParticle* d0 = p.daughter(0);
+				const reco::GenParticle* d1 = p.daughter(1);
 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
 					nHiggs++;
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
