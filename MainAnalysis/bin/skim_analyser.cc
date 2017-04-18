@@ -700,8 +700,12 @@ int main(int argc, char* argv[])
 						//MC truth_____________________
 						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
-   					reco::GenParticle *gen_hBB, *gen_hTauTau;
-   					reco::Candidate *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
+   					reco::GenParticle* gen_hBB = NULL;
+   					reco::GenParticle* gen_hTauTau = NULL;
+   					reco::Candidate* gen_bjet0 = NULL;
+   					reco::Candidate* gen_bjet1 = NULL;
+   					reco::Candidate* gen_tau0 = NULL;
+   					reco::Candidate* gen_tau1 = NULL;
    					getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1);
 						//_____________________________
 
