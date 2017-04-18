@@ -701,6 +701,7 @@ int main(int argc, char* argv[])
 						edm::Handle<reco::GenParticleCollection> genParticles;
    					event.getByLabel(edm::InputTag("generator"), genParticles);
    					reco::GenParticle *gen_hBB, *gen_hTauTau, *gen_bjet0, *gen_bjet1, *gen_tau0, *gen_tau1;
+   					using namespace reco;
    					for(size_t i = 0; i < genParticles->size(); ++ i) {
    						std::cout << i << "\n"
    					}
