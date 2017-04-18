@@ -50,8 +50,8 @@ bool debug = false;
 
 bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
-   reco::Candidate* gen_bjet0, reco::Candidate* gen_bjet1,
-   reco::Candidate* gen_tau0, reco::Candidate* gen_tau1) {
+   const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1,
+   const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
