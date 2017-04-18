@@ -59,7 +59,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 		const reco::GenParticle& p = (*genParticles)[i];
 		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
 			if (p.numberOfDaughters() >= 2) { //Daughters exists
-				std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
+				if (p.numberOfDaughters() > 2) std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
 				const reco::Candidate* d0 = p.daughter(0);
 				const reco::Candidate* d1 = p.daughter(1);
 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
