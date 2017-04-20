@@ -744,17 +744,17 @@ int main(int argc, char* argv[])
 							reco::Candidate* gen_tau1 = NULL;
 							if (getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1)) { //If both Higgs found
 								gen_bjet0 = gen_hBB->daughter(0);
-								gen_bjet1 = gen_hBB->daughter(1);
-								gen_tau0 = gen_hTauTau->daughter(0);
-								gen_tau1 = gen_hTauTau->daughter(1);
+								// gen_bjet1 = gen_hBB->daughter(1);
+								// gen_tau0 = gen_hTauTau->daughter(0);
+								// gen_tau1 = gen_hTauTau->daughter(1);
 							//__________________________
 							//Check FSs_________________
 							//__________________________
 							//Get 4-momenta_____________
-								gen_hbb_p4 = gen_hBB->p4();
-								gen_htt_p4 = gen_hTauTau->p4();
-								gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
-								gen_tau0_p4 = gen_tau0->p4();
+								// gen_hbb_p4 = gen_hBB->p4();
+								// gen_htt_p4 = gen_hTauTau->p4();
+								// gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
+								// gen_tau0_p4 = gen_tau0->p4();
 							// 	gen_tau1_p4 = gen_tau1->p4();
 							// 	gen_bjet0_p4 = gen_bjet0->p4();
 							// 	gen_bjet1_p4 = gen_bjet1->p4();
