@@ -741,12 +741,12 @@ int main(int argc, char* argv[])
 							//Check FSs_________________
 							//__________________________
 							//Get 4-momenta_____________
-								// gen_hbb_p4 = gen_hBB->p4();
+								gen_hbb_p4 = gen_hBB.p4();
 								// gen_htt_p4 = gen_hTauTau->p4();
 								// gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
 								// gen_tau0_p4 = gen_tau0->p4();
-							// 	gen_tau1_p4 = gen_tau1->p4();
-							// 	gen_bjet0_p4 = gen_bjet0->p4();
+								// gen_tau1_p4 = gen_tau1->p4();
+								gen_bjet0_p4 = gen_bjet0->p4();
 							// 	gen_bjet1_p4 = gen_bjet1->p4();
 							// //__________________________
 							// //Decompose info____________
