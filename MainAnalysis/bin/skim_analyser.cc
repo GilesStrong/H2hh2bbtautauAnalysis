@@ -51,7 +51,7 @@ bool debug = false;
 bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, std::string mode,
 	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
 	reco::Candidate* gen_bjet0, reco::Candidate* gen_bjet1, reco::Candidate* gen_tau0, reco::Candidate* gen_tau1,
-	pat::Jet* bjet0, pat::Jet* bjet1, pat::PATObject* tau0, pat::PATObject* tau1) {
+	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
 	/*Checks whether selected final states are correct*/
 // 	double jetRadius = 0.5;
 // 	int swap;
