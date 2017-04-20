@@ -28,6 +28,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoProduct.h"
 
+#include "DataFormats/PatCandidates/interface/Candidate.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
@@ -898,7 +899,7 @@ int main(int argc, char* argv[])
 								//__________________________
 								//Check FSs_________________
 								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
-									gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
+									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
 								//__________________________
 								//Get 4-momenta_____________
