@@ -48,13 +48,13 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
 
-bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
+bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 	int* gen_hBB_key, int* gen_hTauTau_key) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
-	for(size_t i = 0; i < (*genParticles)->size(); ++ i) {
-		const reco::GenParticle p = genParticles[i];
+	for(size_t i = 0; i < genParticles->size(); ++ i) {
+		const reco::GenParticle& p = (*genParticles)[i];
 		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
 			if (p.numberOfDaughters() >= 2) { //Daughters exists
 				if (p.numberOfDaughters() > 2) std::cout << "N daughters: " << p.numberOfDaughters() << "\n";
