@@ -67,8 +67,8 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
 						gen_hBB = &p; //Point to Higgs
-						gen_bjet0 = d0; //Point to daughters
-						gen_bjet1 = d1;
+						// gen_bjet0 = d0; //Point to daughters
+						// gen_bjet1 = d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
 							return true;
 						}
@@ -76,8 +76,8 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 					if (std::abs(d0->pdgId()) == 15 && std::abs(d1->pdgId()) == 15) { //Daughters are taus
 						hTauTauFound = true;
 						gen_hTauTau = &p; //Point to Higgs
-						gen_tau0 = d0; //Point to daughters
-						gen_tau1 = d1;
+						// gen_tau0 = d0; //Point to daughters
+						// gen_tau1 = d1;
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
 							return true;
 						}
@@ -743,6 +743,10 @@ int main(int argc, char* argv[])
 							reco::Candidate* gen_tau0 = NULL;
 							reco::Candidate* gen_tau1 = NULL;
 							if (getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1)) { //If both Higgs found
+								gen_bjet0 = gen_hBB.daughter(0);
+								gen_bjet1 = gen_hBB.daughter(1);
+								gen_tau0 = gen_hTauTau.daughter(0);
+								gen_tau1 = gen_hTauTau.daughter(1);
 							//__________________________
 							//Check FSs_________________
 							//__________________________
