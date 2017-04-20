@@ -892,10 +892,10 @@ int main(int argc, char* argv[])
 							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
 								const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
-								reco::GenParticle gen_bjet0 = new reco::GenParticle(*gen_hBB.daughter(0));
-								reco::GenParticle gen_bjet1 = new reco::GenParticle(*gen_hBB.daughter(1));
-								reco::GenParticle gen_tau0 = new reco::GenParticle(*gen_hTauTau.daughter(0));
-								reco::GenParticle gen_tau1 = new reco::GenParticle(*gen_hTauTau.daughter(1));
+								reco::GenParticle gen_bjet0 = new reco::GenParticle(gen_hBB.daughter(0));
+								reco::GenParticle gen_bjet1 = new reco::GenParticle(gen_hBB.daughter(1));
+								reco::GenParticle gen_tau0 = new reco::GenParticle(gen_hTauTau.daughter(0));
+								reco::GenParticle gen_tau1 = new reco::GenParticle(gen_hTauTau.daughter(1));
 								//__________________________
 								//Check FSs_________________
 								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
