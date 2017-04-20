@@ -48,7 +48,7 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
 
-bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
+bool getGenParticles(edm::Handle<reco::GenParticleCollection>* genParticles,
 	int* gen_hBB_key, int* gen_hTauTau_key) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
@@ -731,7 +731,7 @@ int main(int argc, char* argv[])
 							edm::Handle<reco::GenParticleCollection> genParticles;
 							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
 							int gen_hBB_key, gen_hTauTau_key;
-							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
+							if (getGenParticles(&genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
 								const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
 								const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
