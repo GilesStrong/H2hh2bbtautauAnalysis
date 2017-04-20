@@ -892,14 +892,14 @@ int main(int argc, char* argv[])
 							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
 								const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
-								const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
-								const reco::Candidate* gen_bjet1 = gen_hBB.daughter(1);
-								const reco::Candidate* gen_tau0 = gen_hTauTau.daughter(0);
-								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
+								const reco::Candidate gen_bjet0 = &(gen_hBB.daughter(0));
+								const reco::Candidate gen_bjet1 = &(gen_hBB.daughter(1));
+								const reco::Candidate gen_tau0 = &(gen_hTauTau.daughter(0));
+								const reco::Candidate gen_tau1 = &(gen_hTauTau.daughter(1));
 								//__________________________
 								//Check FSs_________________
 								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
-									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
+									&gen_hBB, &gen_hTauTau, &gen_bjet0, &gen_bjet1, &gen_tau0, &gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
 								//__________________________
 								//Get 4-momenta_____________
