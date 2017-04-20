@@ -730,7 +730,7 @@ int main(int argc, char* argv[])
 							//Get gen info______________
 							edm::Handle<reco::GenParticleCollection> genParticles;
 							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
-							int gen_hBB_key, gen_hTauTau_key
+							int gen_hBB_key, gen_hTauTau_key;
 							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
 								const reco::GenParticle gen_hBB = genParticles.At(gen_hBB_key);
 								// reco::GenParticle* gen_hTauTau = NULL;
