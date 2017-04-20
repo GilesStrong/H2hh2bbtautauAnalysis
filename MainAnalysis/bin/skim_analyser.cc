@@ -28,7 +28,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenLumiInfoProduct.h"
 
-#include "DataFormats/PatCandidates/interface/Candidate.h"
+#include "DataFormats/PatCandidates/interface/PATObject.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
@@ -51,7 +51,7 @@ bool debug = false;
 bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, std::string mode,
 	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
 	reco::Candidate* gen_bjet0, reco::Candidate* gen_bjet1, reco::Candidate* gen_tau0, reco::Candidate* gen_tau1,
-	pat::Candidate* bjet0, pat::Candidate* bjet1, pat::Candidate* tau0, pat::Candidate* tau1) {
+	pat::PATObject* bjet0, pat::PATObject* bjet1, pat::PATObject* tau0, pat::PATObject* tau1) {
 	/*Checks whether selected final states are correct*/
 // 	double jetRadius = 0.5;
 // 	int swap;
