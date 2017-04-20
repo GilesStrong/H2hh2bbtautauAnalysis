@@ -743,10 +743,10 @@ int main(int argc, char* argv[])
 							reco::Candidate* gen_tau0 = NULL;
 							reco::Candidate* gen_tau1 = NULL;
 							if (getGenParticles(genParticles, gen_hBB, gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1)) { //If both Higgs found
-								gen_bjet0 = gen_hBB.daughter(0);
-								gen_bjet1 = gen_hBB.daughter(1);
-								gen_tau0 = gen_hTauTau.daughter(0);
-								gen_tau1 = gen_hTauTau.daughter(1);
+								gen_bjet0 = gen_hBB->daughter(0);
+								gen_bjet1 = gen_hBB->daughter(1);
+								gen_tau0 = gen_hTauTau->daughter(0);
+								gen_tau1 = gen_hTauTau->daughter(1);
 							//__________________________
 							//Check FSs_________________
 							//__________________________
