@@ -732,13 +732,8 @@ int main(int argc, char* argv[])
 							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
 							int gen_hBB_key, gen_hTauTau_key;
 							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
-								const reco::GenParticle gen_hBB = (*genParticles)[gen_hBB_key];
-								// reco::GenParticle* gen_hTauTau = NULL;
-								// reco::Candidate* gen_bjet0 = NULL;
-								// reco::Candidate* gen_bjet1 = NULL;
-								// reco::Candidate* gen_tau0 = NULL;
-								// reco::Candidate* gen_tau1 = NULL;
-								// gen_bjet0 = gen_hBB->daughter(0);
+								reco::GenParticle gen_hBB = (*genParticles)[gen_hBB_key];
+								reco::Candidate gen_bjet0 = gen_hBB.daughter(0);
 								// gen_bjet1 = gen_hBB->daughter(1);
 								// gen_tau0 = gen_hTauTau->daughter(0);
 								// gen_tau1 = gen_hTauTau->daughter(1);
