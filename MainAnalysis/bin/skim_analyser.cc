@@ -49,8 +49,8 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
 bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, std::string mode,
-	reco::GenParticle* gen_hBB, reco::GenParticle* gen_hTauTau,
-	reco::Candidate* gen_bjet0, reco::Candidate* gen_bjet1, reco::Candidate* gen_tau0, reco::Candidate* gen_tau1,
+	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
+	const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1, const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1,
 	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
 	/*Checks whether selected final states are correct*/
 // 	double jetRadius = 0.5;
@@ -892,14 +892,14 @@ int main(int argc, char* argv[])
 							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
 								const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
-								reco::GenParticle gen_bjet0 = new reco::GenParticle(gen_hBB.daughter(0));
-								reco::GenParticle gen_bjet1 = new reco::GenParticle(gen_hBB.daughter(1));
-								reco::GenParticle gen_tau0 = new reco::GenParticle(gen_hTauTau.daughter(0));
-								reco::GenParticle gen_tau1 = new reco::GenParticle(gen_hTauTau.daughter(1));
+								const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
+								const reco::Candidate* gen_bjet1 = gen_hBB.daughter(1);
+								const reco::Candidate* gen_tau0 = gen_hTauTau.daughter(0);
+								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
 								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
-									&gen_hBB, &gen_hTauTau, &gen_bjet0, &gen_bjet1, &gen_tau0, &gen_tau1,
+									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
 								//__________________________
 								//Get 4-momenta_____________
