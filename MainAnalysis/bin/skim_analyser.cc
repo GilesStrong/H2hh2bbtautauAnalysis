@@ -48,6 +48,12 @@ const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
+void mySawp(double* a, double* b) {
+	double* temp = a;
+	a = b;
+	b = temp;
+}
+
 bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, std::string mode,
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
 	const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1, const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1,
@@ -901,11 +907,18 @@ int main(int argc, char* argv[])
 								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
-								std::cout << "0,1 before: " << gen_bjet0->p4().Pt() << ", " << gen_bjet1->p4().Pt() << "\n";
-								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
-									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
-									&bjet1, &bjet2, &tau, &muon);
-								std::cout << "0,1 before:" << gen_bjet0->p4().Pt() << ", " <<gen_bjet1->p4().Pt() << "\n";
+								double a = 0;
+								double b = 1;
+								double* aref = &a;
+								double* bref = &b;
+								std::cout << "a,b before: " << *aref << ", " << *bref << "\n";
+								mySwap(aref, bref);
+								std::cout << "a,b before: " << *aref << ", " << *bref << "\n";
+								// std::cout << "0,1 before: " << gen_bjet0->p4().Pt() << ", " << gen_bjet1->p4().Pt() << "\n";
+								// gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
+								// 	&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
+								// 	&bjet1, &bjet2, &tau, &muon);
+								// std::cout << "0,1 before:" << gen_bjet0->p4().Pt() << ", " <<gen_bjet1->p4().Pt() << "\n";
 								//__________________________
 								//Get 4-momenta_____________
 								gen_hbb_p4 = gen_hBB.p4();
