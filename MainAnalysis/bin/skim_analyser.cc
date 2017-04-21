@@ -46,7 +46,7 @@
 
 const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
-bool debug = false;
+bool debug = true;
 
 double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Performs matching checks between perticles. Returns dR for positive ID*/
@@ -88,15 +88,16 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	const reco::Candidate*& gen_bjet0, const reco::Candidate*& gen_bjet1, double R) {
 	/*Checks whether the particles are within their nearest jet*/
 	//Associate particles to closest found jet___
-	if (gen_bjet0->p4().DeltaR(bjet0->p4()) > gen_bjet0->p4().DeltaR(bjet1->p4())) { //Wrong assignemnt; swap
+	if (ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4()) > 
+		ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet1->p4())) { //Wrong assignemnt; swap
 		const reco::Candidate* temp = gen_bjet0;
 		gen_bjet0 = gen_bjet1;
 		gen_bjet1 = temp;
 	}
 	//___________________________________________
 	//Check jets_________________________________
-	double dR_0 = gen_bjet0->p4().DeltaR(bjet0->p4());
-	double dR_1 = gen_bjet1->p4().DeltaR(bjet1->p4());
+	double dR_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
+	double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
 	if (dR_0 > R || dR_1 > R) { //particle(s) outside jet
 		return false;
 	} else {
@@ -150,8 +151,8 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 		if (debug) std::cout << "MC match failed due to neither tau decaying to matched muon\n";
 		return false;
 	}
-	double dRJet0 = gen_tau0->p4().DeltaR(tau->p4());
-	double dRJet1 = gen_tau1->p4().DeltaR(tau->p4());
+	double dRJet0 = ROOT::Math::VectorUtil::DeltaR(gen_tau0->p4(), tau->p4());
+	double dRJet1 = ROOT::Math::VectorUtil::DeltaR(gen_tau1->p4(), tau->p4());
 	if ((dRJet0 > jetRadius) && (dRJet1 > jetRadius)) { //Neither taus within tau jet
 		if (debug) std::cout << "MC match failed due to neither tau being within tau jet\n";
 		return false; 
