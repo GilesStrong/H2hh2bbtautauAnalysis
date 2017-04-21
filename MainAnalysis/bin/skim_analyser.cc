@@ -442,7 +442,7 @@ int main(int argc, char* argv[])
 	std::string monitorFile_ = parser.stringValue("monitorFile");
 	std::vector<std::string> inputFiles_ = parser.stringVector("inputFiles");
 	bool runOnData = parser.boolValue("runOnData");
-	debug = parser.boolValue("setdebug");
+	//debug = parser.boolValue("setdebug");
 
 	// book a set of histograms:
 	fwlite::TFileService fs = fwlite::TFileService(outputFile_.c_str());
