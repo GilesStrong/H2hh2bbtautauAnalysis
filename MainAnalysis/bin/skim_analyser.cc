@@ -52,6 +52,9 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, std::string
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
 	const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1, const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1,
 	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
+	const reco::Candidate* temp = gen_bjet0;
+	gen_bjet0 = gen_bjet1;
+	gen_bjet1 = temp;
 	/*Checks whether selected final states are correct*/
 // 	double jetRadius = 0.5;
 // 	int swap;
@@ -898,9 +901,11 @@ int main(int argc, char* argv[])
 								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
+								std::cout << "0,1 before:" << gen_bjet0->p4().pT(), gen_bjet1->p4().pT() << "\n";
 								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
 									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
+								std::cout << "0,1 before:" << gen_bjet0->p4().pT(), gen_bjet1->p4().pT() << "\n";
 								//__________________________
 								//Get 4-momenta_____________
 								gen_hbb_p4 = gen_hBB.p4();
