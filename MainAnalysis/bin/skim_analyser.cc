@@ -46,19 +46,20 @@
 
 const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
-bool debug = true;
+bool debug = false;
+bool mcDebug = true;
 
 double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Performs matching checks between perticles. Returns dR for positive ID*/
 	if (particle->pdgId() != target->pdgId()) return -1;
 	double dR = ROOT::Math::VectorUtil::DeltaR(particle->p4(), target->p4());
 	if (dR > 0.5) {
-		if (debug) std::cout << "Muon match failed on DR: " << dR << "\n";
+		if (mcDebug) std::cout << "Muon match failed on DR: " << dR << "\n";
 		return -1;
 	}
 	double momDiff = std::abs(particle->p4().Pt()-target->p4().Pt());
 	if (momDiff > 20) {
-		if (debug) std::cout << "Muon match failed on pT: " << momDiff << "\n";
+		if (mcDebug) std::cout << "Muon match failed on pT: " << momDiff << "\n";
 		return -1;
 	}
 	return dR;
@@ -115,7 +116,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	//(*plots)["cuts"]->Fill("b-jets check", 1);
 	if (debug) std::cout << "Checking b-jets\n";
 	if (!checkBJets(bjet0, bjet1, gen_bjet0, gen_bjet1, jetRadius)) {
-		if (debug) std::cout << "MC check fails due to di-Jet on b-jets check\n";
+		if (mcDebug) std::cout << "MC check fails due to di-Jet on b-jets check\n";
 		return false; //b-jet selection incorrect
 	}
 	if (debug) std::cout << "Both b jets confirmed\n";
@@ -148,18 +149,18 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	double dRMuon0 = muonSearch(gen_tau0, muon);
 	double dRMuon1 = muonSearch(gen_tau1, muon);
 	if ((dRMuon0 == -1) && (dRMuon1 == -1)) { //Neither taus decay to matched muons
-		if (debug) std::cout << "MC match failed due to neither tau decaying to matched muon\n";
+		if (mcDebug) std::cout << "MC match failed due to neither tau decaying to matched muon\n";
 		return false;
 	}
 	double dRJet0 = ROOT::Math::VectorUtil::DeltaR(gen_tau0->p4(), tau->p4());
 	double dRJet1 = ROOT::Math::VectorUtil::DeltaR(gen_tau1->p4(), tau->p4());
 	if ((dRJet0 > jetRadius) && (dRJet1 > jetRadius)) { //Neither taus within tau jet
-		if (debug) std::cout << "MC match failed due to neither tau being within tau jet\n";
+		if (mcDebug) std::cout << "MC match failed due to neither tau being within tau jet\n";
 		return false; 
 	}
 	if ((dRMuon0 == -1) && (dRMuon1 != -1)) { //tau1 decays to muon and tau0 does not
 		if (dRJet0 > jetRadius) { //tau0 not within reco jet
-			if (debug) std::cout << "MC match failed due to non tau_l being within tau jet\n";
+			if (mcDebug) std::cout << "MC match failed due to non tau_l being within tau jet\n";
 			return false;
 		}
 	}
@@ -169,7 +170,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 			gen_tau0 = gen_tau1;
 			gen_tau1 = temp;
 		} else {
-			if (debug) std::cout << "MC match failed due to non tau_l being within tau jet\n";
+			if (mcDebug) std::cout << "MC match failed due to non tau_l being within tau jet\n";
 			return false;
 		}
 	}
