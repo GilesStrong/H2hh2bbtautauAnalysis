@@ -67,9 +67,9 @@ double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 double muonSearch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Recursive search through particle's decays for a particle matching reco particle. Returns dR separation or -1*/
 	double match = -1;
-	if (particle.numberOfDaughters() >= 2) {
-		const reco::Candidate* d0 = particle.daughter(0);
-		const reco::Candidate* d1 = particle.daughter(1);
+	if (particle->numberOfDaughters() >= 2) {
+		const reco::Candidate* d0 = particle->daughter(0);
+		const reco::Candidate* d1 = particle->daughter(1);
 		if (muonMatch(d0, target)) {
 			return true;
 		} else {
@@ -89,14 +89,14 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	/*Checks whether the particles are within their nearest jet*/
 	//Associate particles to closest found jet___
 	if (gen_bjet0->p4().DeltaR(bjet0->p4()) > gen_bjet0->p4().DeltaR(bjet1->p4())) { //Wrong assignemnt; swap
-		const const reco::Candidate* temp = gen_bjet0;
+		const reco::Candidate* temp = gen_bjet0;
 		gen_bjet0 = gen_bjet1;
 		gen_bjet1 = temp;
 	}
 	//___________________________________________
 	//Check jets_________________________________
-	double dR_0 = gen_bjet0->p4().DeltaR(bjet_0->p4());
-	double dR_1 = gen_bjet1->p4().DeltaR(bjet_1->p4());
+	double dR_0 = gen_bjet0->p4().DeltaR(bjet0->p4());
+	double dR_1 = gen_bjet1->p4().DeltaR(bjet1->p4());
 	if (dR_0 > R || dR_1 > R) { //particle(s) outside jet
 		return false;
 	} else {
