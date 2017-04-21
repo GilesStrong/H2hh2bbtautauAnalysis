@@ -56,7 +56,7 @@ void mySwap(double*& a, double*& b) {
 
 bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, std::string mode,
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
-	const reco::Candidate* gen_bjet0, const reco::Candidate* gen_bjet1, const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1,
+	const reco::Candidate*& gen_bjet0, const reco::Candidate*& gen_bjet1, const reco::Candidate* gen_tau0, const reco::Candidate* gen_tau1,
 	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
 	const reco::Candidate* temp = gen_bjet0;
 	gen_bjet0 = gen_bjet1;
@@ -914,11 +914,11 @@ int main(int argc, char* argv[])
 								std::cout << "a,b before: " << *aref << ", " << *bref << "\n";
 								mySwap(aref, bref);
 								std::cout << "a,b after: " << *aref << ", " << *bref << "\n";
-								// std::cout << "0,1 before: " << gen_bjet0->p4().Pt() << ", " << gen_bjet1->p4().Pt() << "\n";
-								// gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
-								// 	&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
-								// 	&bjet1, &bjet2, &tau, &muon);
-								// std::cout << "0,1 after:" << gen_bjet0->p4().Pt() << ", " <<gen_bjet1->p4().Pt() << "\n";
+								std::cout << "0,1 before: " << gen_bjet0->p4().Pt() << ", " << gen_bjet1->p4().Pt() << "\n";
+								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
+									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
+									&bjet1, &bjet2, &tau, &muon);
+								std::cout << "0,1 after:" << gen_bjet0->p4().Pt() << ", " <<gen_bjet1->p4().Pt() << "\n";
 								//__________________________
 								//Get 4-momenta_____________
 								gen_hbb_p4 = gen_hBB.p4();
