@@ -51,7 +51,7 @@ bool debug = false;
 double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Performs matching checks between perticles. Returns dR for positive ID*/
 	if (particle->pdgId() != target->pdgId()) return -1;
-	double dR = particle->p4().DeltaR(target->p4());
+	double dR = ROOT::Math::VectorUtil::DeltaR(particle->p4(), target->p4());
 	if (dR > 0.5) {
 		if (debug) std::cout << "Muon match failed on DR: " << dR << "\n";
 		return -1;
