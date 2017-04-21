@@ -48,7 +48,7 @@ const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
-void mySawp(double* a, double* b) {
+void mySwap(double* a, double* b) {
 	double* temp = a;
 	a = b;
 	b = temp;
