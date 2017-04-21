@@ -48,7 +48,7 @@ const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
-void mySwap(double* a, double* b) {
+void mySwap(double*& a, double*& b) {
 	double* temp = a;
 	a = b;
 	b = temp;
@@ -913,12 +913,12 @@ int main(int argc, char* argv[])
 								double* bref = &b;
 								std::cout << "a,b before: " << *aref << ", " << *bref << "\n";
 								mySwap(aref, bref);
-								std::cout << "a,b before: " << *aref << ", " << *bref << "\n";
+								std::cout << "a,b after: " << *aref << ", " << *bref << "\n";
 								// std::cout << "0,1 before: " << gen_bjet0->p4().Pt() << ", " << gen_bjet1->p4().Pt() << "\n";
 								// gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
 								// 	&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 								// 	&bjet1, &bjet2, &tau, &muon);
-								// std::cout << "0,1 before:" << gen_bjet0->p4().Pt() << ", " <<gen_bjet1->p4().Pt() << "\n";
+								// std::cout << "0,1 after:" << gen_bjet0->p4().Pt() << ", " <<gen_bjet1->p4().Pt() << "\n";
 								//__________________________
 								//Get 4-momenta_____________
 								gen_hbb_p4 = gen_hBB.p4();
