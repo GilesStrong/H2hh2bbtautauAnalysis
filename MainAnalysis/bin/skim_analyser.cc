@@ -901,11 +901,11 @@ int main(int argc, char* argv[])
 								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
-								std::cout << "0,1 before:" << gen_bjet0->p4().pT(), gen_bjet1->p4().pT() << "\n";
+								std::cout << "0,1 before:" << gen_bjet0->p4().Pt(), gen_bjet1->p4().Pt() << "\n";
 								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
 									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
-								std::cout << "0,1 before:" << gen_bjet0->p4().pT(), gen_bjet1->p4().pT() << "\n";
+								std::cout << "0,1 before:" << gen_bjet0->p4().Pt(), gen_bjet1->p4().Pt() << "\n";
 								//__________________________
 								//Get 4-momenta_____________
 								gen_hbb_p4 = gen_hBB.p4();
