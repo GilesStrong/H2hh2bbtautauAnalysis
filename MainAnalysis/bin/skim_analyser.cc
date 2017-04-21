@@ -48,15 +48,15 @@ const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
 
-double muonMatch(const reco::Candidate*& particle, pat::Muon target) {
+double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Performs matching checks between perticles. Returns dR for positive ID*/
-	if (d0->pdgId() != target->pdgId()) return -1;
-	double dR = d0->P4().DeltaR(target.P4());
+	if (particle->pdgId() != target.pdgId()) return -1;
+	double dR = particle->p4().DeltaR(target.p4());
 	if (dR > 0.5) {
 		if (debug) std::cout << "Muon match failed on DR: " << dR << "\n";
 		return -1;
 	}
-	double momDiff = std::abs(d0->P4().Pt()-target.P4().Pt());
+	double momDiff = std::abs(particle->p4().Pt()-target.p4().Pt());
 	if (momDiff > 20) {
 		if (debug) std::cout << "Muon match failed on pT: " << momDiff << "\n";
 		return -1;
@@ -64,12 +64,12 @@ double muonMatch(const reco::Candidate*& particle, pat::Muon target) {
 	return dR;
 }
 
-double muonSearch(const reco::Candidate*& particle, pat::Muon target) {
+double muonSearch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Recursive search through particle's decays for a particle matching reco particle. Returns dR separation or -1*/
-	match = -1;
+	double match = -1;
 	if (particle.numberOfDaughters() >= 2) {
-		const reco::Candidate* d0 = p.daughter(0);
-		const reco::Candidate* d1 = p.daughter(1);
+		const reco::Candidate* d0 = particle.daughter(0);
+		const reco::Candidate* d1 = particle.daughter(1);
 		if (muonMatch(d0, target)) {
 			return true;
 		} else {
@@ -88,15 +88,15 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	const reco::Candidate*& gen_bjet0, const reco::Candidate*& gen_bjet1, double R) {
 	/*Checks whether the particles are within their nearest jet*/
 	//Associate particles to closest found jet___
-	if (gen_bjet0->P4().DeltaR(bjet0->P4()) > gen_bjet0->P4().DeltaR(bjet1->P4())) { //Wrong assignemnt; swap
-		const reco::Candidate* temp = gen_bjet0;
+	if (gen_bjet0->p4().DeltaR(bjet0->p4()) > gen_bjet0->p4().DeltaR(bjet1->p4())) { //Wrong assignemnt; swap
+		const const reco::Candidate* temp = gen_bjet0;
 		gen_bjet0 = gen_bjet1;
 		gen_bjet1 = temp;
 	}
 	//___________________________________________
 	//Check jets_________________________________
-	double dR_0 = gen_bjet0->P4().DeltaR(jet_0->P4());
-	double dR_1 = gen_bjet1->P4().DeltaR(jet_1->P4());
+	double dR_0 = gen_bjet0->p4().DeltaR(bjet_0->p4());
+	double dR_1 = gen_bjet1->p4().DeltaR(bjet_1->p4());
 	if (dR_0 > R || dR_1 > R) { //particle(s) outside jet
 		return false;
 	} else {
@@ -113,7 +113,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	//Check b jets_______________________________
 	//(*plots)["cuts"]->Fill("b-jets check", 1);
 	if (debug) std::cout << "Checking b-jets\n";
-	if (!checkDiJet(bket0, bjet1, gen_bjet0, gen_bjet1, jetRadius)) {
+	if (!checkBJets(bjet0, bjet1, gen_bjet0, gen_bjet1, jetRadius)) {
 		if (debug) std::cout << "MC check fails due to di-Jet on b-jets check\n";
 		return false; //b-jet selection incorrect
 	}
@@ -145,16 +145,16 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	//} else if ((options[0] == "tau" && options[1] == "muon") || (options[0] == "muon" && options[1] == "tau")) {
 	//h->tau_h light-lepton__________________
 	double dRMuon0 = muonSearch(gen_tau0, muon);
-	double dRMuon0 = muonSearch(gen_tau1, muon);
+	double dRMuon1 = muonSearch(gen_tau1, muon);
 	if ((dRMuon0 == -1) && (dRMuon1 == -1)) { //Neither taus decay to matched muons
 		if (debug) std::cout << "MC match failed due to neither tau decaying to matched muon\n";
-		return false 
+		return false;
 	}
-	double dRJet0 = gen_tau0->P4().DeltaR(tau->P4());
-	double dRJet1 = gen_tau1->P4().DeltaR(tau->P4());
+	double dRJet0 = gen_tau0->p4().DeltaR(tau->p4());
+	double dRJet1 = gen_tau1->p4().DeltaR(tau->p4());
 	if ((dRJet0 > jetRadius) && (dRJet1 > jetRadius)) { //Neither taus within tau jet
 		if (debug) std::cout << "MC match failed due to neither tau being within tau jet\n";
-		return false 
+		return false; 
 	}
 	if ((dRMuon0 == -1) && (dRMuon1 != -1)) { //tau1 decays to muon and tau0 does not
 		if (dRJet0 > jetRadius) { //tau0 not within reco jet
@@ -164,7 +164,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	}
 	if ((dRMuon0 != -1) && (dRMuon1 == -1)) { //tau0 decays to muon and tau1 does not
 		if (dRJet1 <= jetRadius) { //tau1 within reco jet
-			reco::Candidate* temp = gen_tau0; //Reassociate tau0 to tau_h
+			const reco::Candidate* temp = gen_tau0; //Reassociate tau0 to tau_h
 			gen_tau0 = gen_tau1;
 			gen_tau1 = temp;
 		} else {
@@ -175,12 +175,12 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	if ((dRMuon0 != -1) && (dRMuon1 != -1)) { //Both taus decay matched muon
 		if ((dRJet0 <= jetRadius) && (dRJet1 <= jetRadius)) { //Both taus within tau jet
 			if (dRMuon0 < dRMuon1) { //Choose by smallest angle to muon
-				reco::Candidate* temp = gen_tau0; //Reassociate tau0 to tau_h
+				const reco::Candidate* temp = gen_tau0; //Reassociate tau0 to tau_h
 				gen_tau0 = gen_tau1;
 				gen_tau1 = temp;
 			}
 		}  else if ((dRJet0 > jetRadius) && (dRJet1 <= jetRadius)) { //Only tau1 within tau jet
-			reco::Candidate* temp = gen_tau0; //Reassociate tau0 to tau_h
+			const reco::Candidate* temp = gen_tau0; //Reassociate tau0 to tau_h
 			gen_tau0 = gen_tau1;
 			gen_tau1 = temp;
 		}
@@ -931,7 +931,7 @@ int main(int argc, char* argv[])
 								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
-								gen_mctMatch = truthFlag(genParticles, "tau:muon", //Checks final-state selection was correct
+								gen_mctMatch = truthFlag(genParticles, //Checks final-state selection was correct
 									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
 								//__________________________
