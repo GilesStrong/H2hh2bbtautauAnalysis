@@ -188,7 +188,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 			gen_tau1 = temp;
 		}
 	}
-	mcPlots->Fill(("h->#tau#tau->#mu#tau_h pass").c_str(), 1);
+	mcPlots->Fill("h->#tau#tau->#mu#tau_h pass", 1);
 	//_______________________________________
 	// } else {
 		//h->light-lepton light-lepton___________
