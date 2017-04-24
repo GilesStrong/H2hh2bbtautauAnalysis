@@ -114,20 +114,20 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 	double jetRadius = 0.5;
 	mcPlots->Fill("MC-truth check", 1);
 	//Check b jets_______________________________
-	mcPlots->Fill("b-jets check", 1);
+	mcPlots->Fill("h->bb check", 1);
 	if (debug) std::cout << "Checking b-jets\n";
 	if (!checkBJets(bjet0, bjet1, gen_bjet0, gen_bjet1, jetRadius)) {
 		if (mcDebug) std::cout << "MC check fails due to di-Jet on b-jets check\n";
 		return false; //b-jet selection incorrect
 	}
 	if (debug) std::cout << "Both b jets confirmed\n";
-	mcPlots->Fill("b-jets pass", 1);
+	mcPlots->Fill("h->bb pass", 1);
 	//___________________________________________
 	//Check taus_________________________________
 	if (debug) std::cout << "Checking taus\n";
 	// std::vector<std::string> options;
 	// boost::split(options, mode, boost::is_any_of(":"));
-	mcPlots->Fill("#taus check", 1);
+	mcPlots->Fill("h->#tau#tau check", 1);
 	//if (options[0] == "tau" && options[1] == "tau") {
 		//h->tau_h tau_h_________________________
 		// if (!checkDiJet(branchJet, branchParticle, l_0, l_1, hTauTau, 15, &swap, (*plots)["tauMatch"], jetRadius)) {
@@ -193,7 +193,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 		}
 	}
 	mcPlots->Fill("#tau#tau assignement pass", 1);
-	mcPlots->Fill("h->#tau#tau->#mu#tau_{h} pass", 1);
+	mcPlots->Fill("h->#tau#tau pass", 1);
 	//_______________________________________
 	// } else {
 		//h->light-lepton light-lepton___________
@@ -495,10 +495,10 @@ int main(int argc, char* argv[])
 	mcCuts->GetXaxis()->SetBinLabel(2, "hh->bb#tau#tau pass");
 	mcCuts->GetXaxis()->SetBinLabel(3, "MC-truth check");
 	mcCuts->GetXaxis()->SetBinLabel(4, "MC-truth pass");
-	mcCuts->GetXaxis()->SetBinLabel(5, "b-jets check");
-	mcCuts->GetXaxis()->SetBinLabel(6, "b-jets pass");
-	mcCuts->GetXaxis()->SetBinLabel(7, "#taus check");
-	mcCuts->GetXaxis()->SetBinLabel(8, "#taus pass");
+	mcCuts->GetXaxis()->SetBinLabel(5, "h->bb check");
+	mcCuts->GetXaxis()->SetBinLabel(6, "h->bb pass");
+	mcCuts->GetXaxis()->SetBinLabel(7, "h->#tau#tau check");
+	mcCuts->GetXaxis()->SetBinLabel(8, "h->#tau#tau pass");
 	mcCuts->GetXaxis()->SetBinLabel(9, "#tau->#mu check");
 	mcCuts->GetXaxis()->SetBinLabel(10, "#tau->#mu pass");
 	mcCuts->GetXaxis()->SetBinLabel(11, "#tau->#tau_{h} check");
