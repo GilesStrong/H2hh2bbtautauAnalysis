@@ -104,7 +104,7 @@ process.selectedJets = cms.EDFilter("PATJetCloneSelectorFilter",
                                     btagptmin = cms.double(20),
                                     btagetamax = cms.double(2.4),
                                     btagdesc = cms.double(0.8),
-                                    btagalgo =    cms.string("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
+                                    btagalgo = cms.string("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
                                     invertbtag = cms.bool(False),
 
                                     debug = cms.bool(False),
@@ -197,12 +197,12 @@ process.mon_all = cms.EDAnalyzer("SelectionAnalyzer",
                               muons = cms.untracked.InputTag( 'slimmedMuons' ),
                               taus  = cms.untracked.InputTag( 'slimmedTaus' ),
                               jets  = cms.untracked.InputTag( 'slimmedJets' ),
-                              )
+                              ) #2
 
-process.mon_muons = process.mon_all.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
-process.mon_taus = process.mon_muons.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
-process.mon_jets = process.mon_taus.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
-process.mon_category = process.mon_jets.clone( )
+process.mon_muons = process.mon_all.clone( muons = cms.untracked.InputTag( 'selectedMuons' )) #3
+process.mon_taus = process.mon_muons.clone( taus = cms.untracked.InputTag( 'selectedTaus' )) #4
+process.mon_jets = process.mon_taus.clone( jets = cms.untracked.InputTag( 'selectedJets' )) #5
+process.mon_category = process.mon_jets.clone( ) #6
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.nEventsSelected = cms.EDProducer("EventCountProducer")
