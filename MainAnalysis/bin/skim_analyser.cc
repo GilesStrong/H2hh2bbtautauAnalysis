@@ -257,8 +257,8 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 				const reco::Candidate* d1 = p.daughter(1);
 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
 					nHiggs++;
-					higgDecay->Fill(std::abs(d0->pdgId());
-					higgDecay->Fill(std::abs(d1->pdgId());
+					higgDecay->Fill(std::abs(d0->pdgId()));
+					higgDecay->Fill(std::abs(d1->pdgId()));
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
 						*gen_hBB_key = i; //Point to Higgs
