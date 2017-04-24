@@ -47,7 +47,7 @@
 const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
-bool mcDebug = true;
+bool mcDebug = false;
 
 double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Performs matching checks between perticles. Returns dR for positive ID*/
@@ -127,8 +127,8 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 	if (debug) std::cout << "Checking taus\n";
 	// std::vector<std::string> options;
 	// boost::split(options, mode, boost::is_any_of(":"));
-	// //mcPlots->Fill("#taus check", 1);
-	//mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " check").c_str(), 1);
+	mcPlots->Fill("#taus check", 1);
+	mcPlots->Fill(("h->#tau#tau->#mu#tau_{h} check").c_str(), 1);
 	//if (options[0] == "tau" && options[1] == "tau") {
 		//h->tau_h tau_h_________________________
 		// if (!checkDiJet(branchJet, branchParticle, l_0, l_1, hTauTau, 15, &swap, (*plots)["tauMatch"], jetRadius)) {
@@ -188,7 +188,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 			gen_tau1 = temp;
 		}
 	}
-	mcPlots->Fill("h->#tau#tau->#mu#tau_h pass", 1);
+	mcPlots->Fill("h->#tau#tau->#mu#tau_{h} pass", 1);
 	//_______________________________________
 	// } else {
 		//h->light-lepton light-lepton___________
@@ -485,7 +485,7 @@ int main(int argc, char* argv[])
 
 	TH1D* higgsDecay = dir_weighted.make<TH1D>("mcTruth_higgsDecay", "Higgs product |PID|", 50, 0, 50);
 
-	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 20, -2.0, 2.0);
+	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 10, -2.0, 2.0);
 	mcCuts->GetXaxis()->SetBinLabel(1, "hh->bb#tau#tau check");
 	mcCuts->GetXaxis()->SetBinLabel(2, "hh->bb#tau#tau pass");
 	mcCuts->GetXaxis()->SetBinLabel(3, "MC-truth check");
@@ -494,18 +494,8 @@ int main(int argc, char* argv[])
 	mcCuts->GetXaxis()->SetBinLabel(6, "b-jets pass");
 	mcCuts->GetXaxis()->SetBinLabel(7, "#taus check");
 	mcCuts->GetXaxis()->SetBinLabel(8, "#taus pass");
-	mcCuts->GetXaxis()->SetBinLabel(9, "h->#tau#tau->ee check");
-	mcCuts->GetXaxis()->SetBinLabel(10, "h->#tau#tau->ee pass");
-	mcCuts->GetXaxis()->SetBinLabel(11, "h->#tau#tau->e#mu check");
-	mcCuts->GetXaxis()->SetBinLabel(12, "h->#tau#tau->e#mu pass");
-	mcCuts->GetXaxis()->SetBinLabel(13, "h->#tau#tau->#mu#mu check");
-	mcCuts->GetXaxis()->SetBinLabel(14, "h->#tau#tau->#mu#mu pass");
-	mcCuts->GetXaxis()->SetBinLabel(15, "h->#tau#tau->e#tau_{h} check");
-	mcCuts->GetXaxis()->SetBinLabel(16, "h->#tau#tau->e#tau_{h} pass");
-	mcCuts->GetXaxis()->SetBinLabel(17, "h->#tau#tau->#mu#tau_{h} check");
-	mcCuts->GetXaxis()->SetBinLabel(18, "h->#tau#tau->#mu#tau_{h} pass");
-	mcCuts->GetXaxis()->SetBinLabel(19, "h->#tau#tau->#tau_{h}#tau_{h} check");
-	mcCuts->GetXaxis()->SetBinLabel(20, "h->#tau#tau->#tau_{h}#tau_{h} pass");
+	mcCuts->GetXaxis()->SetBinLabel(9, "h->#tau#tau->#mu#tau_{h} check");
+	mcCuts->GetXaxis()->SetBinLabel(10, "h->#tau#tau->#mu#tau_{h} pass");
 	mcCuts->GetXaxis()->SetTitle("Cuts");
 	mcCuts->GetYaxis()->SetTitle("Events");
 
