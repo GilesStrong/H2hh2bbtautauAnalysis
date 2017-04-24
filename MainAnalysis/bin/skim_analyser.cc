@@ -188,7 +188,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 			gen_tau1 = temp;
 		}
 	}
-	mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
+	mcPlots->Fill(("h->#tau#tau->#mu#tau_h pass").c_str(), 1);
 	//_______________________________________
 	// } else {
 		//h->light-lepton light-lepton___________
@@ -243,7 +243,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 }
 
 bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
-	int* gen_hBB_key, int* gen_hTauTau_key, TH1D* mcCuts) {
+	int* gen_hBB_key, int* gen_hTauTau_key, TH1D* mcCuts, TH1D* higgDecay) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
@@ -257,8 +257,8 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 				const reco::Candidate* d1 = p.daughter(1);
 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
 					nHiggs++;
-					mcCuts->Fill(std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D1))->PID));
-					mcCuts->Fill(std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D2))->PID));
+					higgDecay->Fill(std::abs(d0->pdgId());
+					higgDecay->Fill(std::abs(d1->pdgId());
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
 						*gen_hBB_key = i; //Point to Higgs
@@ -482,6 +482,8 @@ int main(int argc, char* argv[])
 	TH1F* hMuonIdScaleFactor = dir_weights.make<TH1F>("hMuonIdScaleFactor" , "hMuonIdScaleFactor" ,  400,    -2,   2);
 	TH1F* hMuonTriggerScaleFactor = dir_weights.make<TH1F>("hMuonTriggerScaleFactor" , "hMuonTriggerScaleFactor" ,  400,    -2,   2);
 	TH1F* hLumiWeight = dir_weights.make<TH1F>("hLumiWeight" ,   "hLumiWeight" ,  10000,    0,   0.1);   
+
+	TH1D* higgsDecay = dir_weighted.make<TH1D>("mcTruth_higgsDecay", "Higgs product |PID|", 50, 0, 50);
 
 	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 20, -2.0, 2.0);
 	mcCuts->GetXaxis()->SetBinLabel(1, "hh->bb#tau#tau check");
@@ -954,7 +956,7 @@ int main(int argc, char* argv[])
 							edm::Handle<reco::GenParticleCollection> genParticles;
 							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
 							int gen_hBB_key, gen_hTauTau_key;
-							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts)) { //If both Higgs found
+							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts, higgsDecay)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
 								const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
 								const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
