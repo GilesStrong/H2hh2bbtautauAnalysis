@@ -128,7 +128,6 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 	// std::vector<std::string> options;
 	// boost::split(options, mode, boost::is_any_of(":"));
 	mcPlots->Fill("#taus check", 1);
-	mcPlots->Fill("h->#tau#tau->#mu#tau_{h} check", 1);
 	//if (options[0] == "tau" && options[1] == "tau") {
 		//h->tau_h tau_h_________________________
 		// if (!checkDiJet(branchJet, branchParticle, l_0, l_1, hTauTau, 15, &swap, (*plots)["tauMatch"], jetRadius)) {
@@ -149,16 +148,21 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 	//h->tau_h light-lepton__________________
 	double dRMuon0 = muonSearch(gen_tau0, muon);
 	double dRMuon1 = muonSearch(gen_tau1, muon);
+	mcPlots->Fill("#tau->#mu check", 1);
 	if ((dRMuon0 == -1) && (dRMuon1 == -1)) { //Neither taus decay to matched muons
 		if (mcDebug) std::cout << "MC match failed due to neither tau decaying to matched muon\n";
 		return false;
 	}
+	mcPlots->Fill("#tau->#mu pass", 1);
+	mcPlots->Fill("#tau->#tau_{h} check", 1);
 	double dRJet0 = ROOT::Math::VectorUtil::DeltaR(gen_tau0->p4(), tau->p4());
 	double dRJet1 = ROOT::Math::VectorUtil::DeltaR(gen_tau1->p4(), tau->p4());
 	if ((dRJet0 > jetRadius) && (dRJet1 > jetRadius)) { //Neither taus within tau jet
 		if (mcDebug) std::cout << "MC match failed due to neither tau being within tau jet\n";
 		return false; 
 	}
+	mcPlots->Fill("#tau->#tau_{h} pass", 1);
+	mcPlots->Fill("#tau#tau assignement check", 1);
 	if ((dRMuon0 == -1) && (dRMuon1 != -1)) { //tau1 decays to muon and tau0 does not
 		if (dRJet0 > jetRadius) { //tau0 not within reco jet
 			if (mcDebug) std::cout << "MC match failed due to non tau_l being within tau jet\n";
@@ -188,6 +192,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 			gen_tau1 = temp;
 		}
 	}
+	mcPlots->Fill("#tau#tau assignement pass", 1);
 	mcPlots->Fill("h->#tau#tau->#mu#tau_{h} pass", 1);
 	//_______________________________________
 	// } else {
@@ -485,7 +490,7 @@ int main(int argc, char* argv[])
 
 	TH1D* higgsDecay = dir_weighted.make<TH1D>("mcTruth_higgsDecay", "Higgs product |PID|", 50, 0, 50);
 
-	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 10, -2.0, 2.0);
+	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 14, -2.0, 2.0);
 	mcCuts->GetXaxis()->SetBinLabel(1, "hh->bb#tau#tau check");
 	mcCuts->GetXaxis()->SetBinLabel(2, "hh->bb#tau#tau pass");
 	mcCuts->GetXaxis()->SetBinLabel(3, "MC-truth check");
@@ -494,8 +499,12 @@ int main(int argc, char* argv[])
 	mcCuts->GetXaxis()->SetBinLabel(6, "b-jets pass");
 	mcCuts->GetXaxis()->SetBinLabel(7, "#taus check");
 	mcCuts->GetXaxis()->SetBinLabel(8, "#taus pass");
-	mcCuts->GetXaxis()->SetBinLabel(9, "h->#tau#tau->#mu#tau_{h} check");
-	mcCuts->GetXaxis()->SetBinLabel(10, "h->#tau#tau->#mu#tau_{h} pass");
+	mcCuts->GetXaxis()->SetBinLabel(9, "#tau->#mu check");
+	mcCuts->GetXaxis()->SetBinLabel(10, "#tau->#mu pass");
+	mcCuts->GetXaxis()->SetBinLabel(11, "#tau->#tau_{h} check");
+	mcCuts->GetXaxis()->SetBinLabel(12, "#tau->#tau_{h} pass");
+	mcCuts->GetXaxis()->SetBinLabel(13, "#tau#tau assignement check");
+	mcCuts->GetXaxis()->SetBinLabel(14, "#tau#tau assignement pass");
 	mcCuts->GetXaxis()->SetTitle("Cuts");
 	mcCuts->GetYaxis()->SetTitle("Events");
 
