@@ -128,7 +128,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 	// std::vector<std::string> options;
 	// boost::split(options, mode, boost::is_any_of(":"));
 	mcPlots->Fill("#taus check", 1);
-	mcPlots->Fill(("h->#tau#tau->#mu#tau_{h} check").c_str(), 1);
+	mcPlots->Fill("h->#tau#tau->#mu#tau_{h} check", 1);
 	//if (options[0] == "tau" && options[1] == "tau") {
 		//h->tau_h tau_h_________________________
 		// if (!checkDiJet(branchJet, branchParticle, l_0, l_1, hTauTau, 15, &swap, (*plots)["tauMatch"], jetRadius)) {
