@@ -242,7 +242,6 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlo
 	if (debug) std::cout << "Both taus confirmed\n";
 	//___________________________________________
 	if (debug) std::cout << "Event accepted\n";
-	mcPlots->Fill("#taus pass", 1);
 	mcPlots->Fill("MC-truth pass", 1);
 	return true;
 }
@@ -486,11 +485,11 @@ int main(int argc, char* argv[])
 	TH1F* hBTaggingSF   = dir_weights.make<TH1F>("hBTaggingSF" ,   "hBTaggingSF" ,  400,    -2,   2);   
 	TH1F* hMuonIdScaleFactor = dir_weights.make<TH1F>("hMuonIdScaleFactor" , "hMuonIdScaleFactor" ,  400,    -2,   2);
 	TH1F* hMuonTriggerScaleFactor = dir_weights.make<TH1F>("hMuonTriggerScaleFactor" , "hMuonTriggerScaleFactor" ,  400,    -2,   2);
-	TH1F* hLumiWeight = dir_weights.make<TH1F>("hLumiWeight" ,   "hLumiWeight" ,  10000,    0,   0.1);   
+	TH1F* hLumiWeight = dir_weights.make<TH1F>("hLumiWeight" ,   "hLumiWeight" ,  10000,    0,   0.1);
 
-	TH1D* higgsDecay = dir_weighted.make<TH1D>("mcTruth_higgsDecay", "Higgs product |PID|", 50, 0, 50);
-
-	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 14, -2.0, 2.0);
+	TFileDirectory dir_mcTruth = fs.mkdir("weighted");   
+	TH1D* higgsDecay = dir_mcTruth.make<TH1D>("mcTruth_higgsDecay", "Higgs product |PID|", 50, 0, 50);
+	TH1D* mcCuts = dir_mcTruth.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 14, -2.0, 2.0);
 	mcCuts->GetXaxis()->SetBinLabel(1, "hh->bb#tau#tau check");
 	mcCuts->GetXaxis()->SetBinLabel(2, "hh->bb#tau#tau pass");
 	mcCuts->GetXaxis()->SetBinLabel(3, "MC-truth check");
