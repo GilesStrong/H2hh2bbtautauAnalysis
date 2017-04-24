@@ -106,28 +106,29 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	}
 }
 
-bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
+bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlots,
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
 	const reco::Candidate*& gen_bjet0, const reco::Candidate*& gen_bjet1, const reco::Candidate*& gen_tau0, const reco::Candidate*& gen_tau1,
 	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
 	/*Checks whether selected final states are correct*/
 	double jetRadius = 0.5;
+	mcPlots->Fill("MC-truth check", 1);
 	//Check b jets_______________________________
-	//(*plots)["cuts"]->Fill("b-jets check", 1);
+	mcPlots->Fill("b-jets check", 1);
 	if (debug) std::cout << "Checking b-jets\n";
 	if (!checkBJets(bjet0, bjet1, gen_bjet0, gen_bjet1, jetRadius)) {
 		if (mcDebug) std::cout << "MC check fails due to di-Jet on b-jets check\n";
 		return false; //b-jet selection incorrect
 	}
 	if (debug) std::cout << "Both b jets confirmed\n";
-	//(*plots)["cuts"]->Fill("b-jets pass", 1);
+	mcPlots->Fill("b-jets pass", 1);
 	//___________________________________________
 	//Check taus_________________________________
 	if (debug) std::cout << "Checking taus\n";
 	// std::vector<std::string> options;
 	// boost::split(options, mode, boost::is_any_of(":"));
-	// //(*plots)["cuts"]->Fill("#taus check", 1);
-	//(*plots)["cuts"]->Fill(("h->#tau#tau->" + typeLookup(mode) + " check").c_str(), 1);
+	// //mcPlots->Fill("#taus check", 1);
+	//mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " check").c_str(), 1);
 	//if (options[0] == "tau" && options[1] == "tau") {
 		//h->tau_h tau_h_________________________
 		// if (!checkDiJet(branchJet, branchParticle, l_0, l_1, hTauTau, 15, &swap, (*plots)["tauMatch"], jetRadius)) {
@@ -142,7 +143,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 		// 	tau_0 = (GenParticle*)branchParticle->At(moveToEnd(higgs->D1, branchParticle));
 		// 	tau_1 = (GenParticle*)branchParticle->At(moveToEnd(higgs->D2, branchParticle));
 		// }
-		// (*plots)["cuts"]->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
+		// mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
 		//_______________________________________
 	//} else if ((options[0] == "tau" && options[1] == "muon") || (options[0] == "muon" && options[1] == "tau")) {
 	//h->tau_h light-lepton__________________
@@ -187,7 +188,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 			gen_tau1 = temp;
 		}
 	}
-	//(*plots)["cuts"]->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
+	mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
 	//_______________________________________
 	// } else {
 		//h->light-lepton light-lepton___________
@@ -225,7 +226,7 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 		// 	chain->Delete();
 		// 	return false; //Leptons both came from same mother (somehow)
 		// }
-		// (*plots)["cuts"]->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
+		// mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
 		// if ((lightLepton_0->PT > lightLepton_1->PT & leptonMother_0 == 1) |
 		// 	(lightLepton_0->PT < lightLepton_1->PT & leptonMother_0 == 0)) {
 		// 	tau_0 = tau_1;
@@ -236,16 +237,17 @@ bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles,
 	if (debug) std::cout << "Both taus confirmed\n";
 	//___________________________________________
 	if (debug) std::cout << "Event accepted\n";
-	//(*plots)["cuts"]->Fill("#taus pass", 1);
-	//(*plots)["cuts"]->Fill("MC-truth pass", 1);
+	mcPlots->Fill("#taus pass", 1);
+	mcPlots->Fill("MC-truth pass", 1);
 	return true;
 }
 
 bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
-	int* gen_hBB_key, int* gen_hTauTau_key) {
+	int* gen_hBB_key, int* gen_hTauTau_key, TH1D* mcCuts) {
 	/*Point hbb and htautau to the Higgs*/
 	bool hBBFound = false, hTauTauFound = false;
 	int nHiggs = 0;
+	mcCuts->Fill("hh->bb#tau#tau check", 1);
 	for(size_t i = 0; i < genParticles->size(); ++ i) {
 		const reco::GenParticle& p = (*genParticles)[i];
 		if (std::abs(p.pdgId()) == 25) { //Particle is Higgs
@@ -255,10 +257,13 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 				const reco::Candidate* d1 = p.daughter(1);
 				if (d0->pdgId() != 25 && d1->pdgId() != 25) {
 					nHiggs++;
+					mcCuts->Fill(std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D1))->PID));
+					mcCuts->Fill(std::abs(((GenParticle*)branchParticle->At(((GenParticle*)branchParticle->At(p))->D2))->PID));
 					if (std::abs(d0->pdgId()) == 5 && std::abs(d1->pdgId()) == 5) { //Daughters are b quarks
 						hBBFound = true;
 						*gen_hBB_key = i; //Point to Higgs
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
+							mcCuts->Fill("hh->bb#tau#tau pass", 1);
 							return true;
 						}
 					}
@@ -266,6 +271,7 @@ bool getGenParticles(edm::Handle<reco::GenParticleCollection> genParticles,
 						hTauTauFound = true;
 						*gen_hTauTau_key = i; //Point to Higgs
 						if (hBBFound && hTauTauFound) { //h->bb and h->tautau found, so accept event
+							mcCuts->Fill("hh->bb#tau#tau pass", 1);
 							return true;
 						}
 					}
@@ -476,6 +482,30 @@ int main(int argc, char* argv[])
 	TH1F* hMuonIdScaleFactor = dir_weights.make<TH1F>("hMuonIdScaleFactor" , "hMuonIdScaleFactor" ,  400,    -2,   2);
 	TH1F* hMuonTriggerScaleFactor = dir_weights.make<TH1F>("hMuonTriggerScaleFactor" , "hMuonTriggerScaleFactor" ,  400,    -2,   2);
 	TH1F* hLumiWeight = dir_weights.make<TH1F>("hLumiWeight" ,   "hLumiWeight" ,  10000,    0,   0.1);   
+
+	TH1D* mcCuts = dir_weighted.make<TH1D>("mcTruth_cutFlow", "MC Truth Cuts", 20, -2.0, 2.0);
+	mcCuts->GetXaxis()->SetBinLabel(1, "hh->bb#tau#tau check");
+	mcCuts->GetXaxis()->SetBinLabel(2, "hh->bb#tau#tau pass");
+	mcCuts->GetXaxis()->SetBinLabel(3, "MC-truth check");
+	mcCuts->GetXaxis()->SetBinLabel(4, "MC-truth pass");
+	mcCuts->GetXaxis()->SetBinLabel(5, "b-jets check");
+	mcCuts->GetXaxis()->SetBinLabel(6, "b-jets pass");
+	mcCuts->GetXaxis()->SetBinLabel(7, "#taus check");
+	mcCuts->GetXaxis()->SetBinLabel(8, "#taus pass");
+	mcCuts->GetXaxis()->SetBinLabel(9, "h->#tau#tau->ee check");
+	mcCuts->GetXaxis()->SetBinLabel(10, "h->#tau#tau->ee pass");
+	mcCuts->GetXaxis()->SetBinLabel(11, "h->#tau#tau->e#mu check");
+	mcCuts->GetXaxis()->SetBinLabel(12, "h->#tau#tau->e#mu pass");
+	mcCuts->GetXaxis()->SetBinLabel(13, "h->#tau#tau->#mu#mu check");
+	mcCuts->GetXaxis()->SetBinLabel(14, "h->#tau#tau->#mu#mu pass");
+	mcCuts->GetXaxis()->SetBinLabel(15, "h->#tau#tau->e#tau_{h} check");
+	mcCuts->GetXaxis()->SetBinLabel(16, "h->#tau#tau->e#tau_{h} pass");
+	mcCuts->GetXaxis()->SetBinLabel(17, "h->#tau#tau->#mu#tau_{h} check");
+	mcCuts->GetXaxis()->SetBinLabel(18, "h->#tau#tau->#mu#tau_{h} pass");
+	mcCuts->GetXaxis()->SetBinLabel(19, "h->#tau#tau->#tau_{h}#tau_{h} check");
+	mcCuts->GetXaxis()->SetBinLabel(20, "h->#tau#tau->#tau_{h}#tau_{h} pass");
+	mcCuts->GetXaxis()->SetTitle("Cuts");
+	mcCuts->GetYaxis()->SetTitle("Events");
 
 	double xsec = -1;
 	int nev_total = 0;
@@ -924,7 +954,7 @@ int main(int argc, char* argv[])
 							edm::Handle<reco::GenParticleCollection> genParticles;
 							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
 							int gen_hBB_key, gen_hTauTau_key;
-							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key)) { //If both Higgs found
+							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
 								const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
 								const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
@@ -933,7 +963,7 @@ int main(int argc, char* argv[])
 								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
-								gen_mctMatch = truthFlag(genParticles, //Checks final-state selection was correct
+								gen_mctMatch = truthFlag(genParticles, mcCuts,//Checks final-state selection was correct
 									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
 								//__________________________
