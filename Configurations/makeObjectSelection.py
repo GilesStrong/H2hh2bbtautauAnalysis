@@ -208,7 +208,7 @@ jetCollection = "updatedPatJetsUpdatedJEC"
 process.goodJets = cms.EDFilter("PATJetCloneSelectorFilter",
                                 src = cms.InputTag('updatedPatJetsUpdatedJEC'),  
                                 ptmin = cms.double(20),
-                                etamax = cms.double(4.7),   
+                                etamax = cms.double(2.7),   
                                 
                                 neutralhadronfractionmax = cms.double(0.99),
                                 neutralEMfractionmax = cms.double(0.99),
@@ -230,7 +230,7 @@ process.goodJets = cms.EDFilter("PATJetCloneSelectorFilter",
                                 
                                 usebtag = cms.bool(False),
                                 btagptmin = cms.double(20),
-                                btagetamax = cms.double(2.4),
+                                btagetamax = cms.double(2.7),
                                 btagdesc = cms.double(0.8),
                                 btagalgo =    cms.string("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
                                 invertbtag = cms.bool(False),
