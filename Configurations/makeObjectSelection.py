@@ -267,7 +267,7 @@ process.selectedElectrons = cms.EDFilter("PATElectronCloneSelectorFilter",
 process.jetfilter = cms.EDFilter("PATCandViewCountFilter",
                                  src = cms.InputTag('selectedJets'),
                                  minNumber = cms.uint32(2),
-                                 maxNumber = cms.uint32(2),
+                                 maxNumber = cms.uint32(9999),
                                  )
 
 process.jetfilterInvTauIso = process.jetfilter.clone(src = cms.InputTag('selectedJetsInvTauIso'))
