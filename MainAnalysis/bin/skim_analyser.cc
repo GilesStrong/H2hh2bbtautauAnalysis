@@ -56,12 +56,10 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 	int iMin, jMin;
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
-		for (int i : *selectedjets) {
-			for (int j : *selectedjets) {
+		for(size_t i = 0; i < selectedjets->size(); ++i) {
+			for(size_t j = 0; j < selectedjets->size(); ++j) {
 				if (i == j) continue;
-				jet_j = getBJet(reader, j);
-				jet_combined = jet_i + jet_j;
-				delta = std::abs(125-(selectedjets->At(i).p4() + selectedjets->At(i).p4()).M());
+				delta = std::abs(125-(selectedjets->at(i).p4() + selectedjets->at(i).p4()).M());
 				if (deltaMin > delta || deltaMin < 0) {
 					deltaMin = delta;
 					iMin = i;
@@ -71,7 +69,7 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 		}
 		pair.first = iMin;
 		pair.second = jMin;
-		if (selectedjets->At(pair.first).p4().Pt() < selectedjets->At(pair.second).p4().Pt()) {
+		if (selectedjets->at(pair.first).p4().Pt() < selectedjets->at(pair.second).p4().Pt()) {
 			pair.second = iMin;
 			pair.first = jMin;
 		}
