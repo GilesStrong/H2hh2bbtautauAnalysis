@@ -53,7 +53,8 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 	/*Selects pair of jets ordered by pT*/
 	double deltaMin = -1;
 	double delta;
-	int iMin, jMin;
+	int iMin = -1;
+	int jMin = -1;
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
