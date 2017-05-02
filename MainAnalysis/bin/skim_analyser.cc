@@ -890,7 +890,7 @@ int main(int argc, char* argv[])
 					//Getting objects
 						pat::Muon muon = selectedmuons->at(0);
 						pat::Tau  tau = selectedtaus->at(0);
-						std::pair<int> jets = getJets(selectedjets);
+						std::pair<int, int> jets = getJets(selectedjets);
 						pat::Jet  bjet1 = selectedjets->at(jets.first);
 						pat::Jet  bjet2 = selectedjets->at(jets.second);
 						pat::MET  met = slimmedMET->at(0);
