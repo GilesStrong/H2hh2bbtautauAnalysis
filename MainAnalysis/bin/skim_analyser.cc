@@ -49,6 +49,38 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 bool mcDebug = false;
 
+std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="mass") {
+	/*Selects pair of jets ordered by pT*/
+	double deltaMin = -1;
+	double delta;
+	int iMin, jMin;
+	std::pair<int, int> pair;
+	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
+		for (int i : *selectedjets) {
+			for (int j : *selectedjets) {
+				if (i == j) continue;
+				jet_j = getBJet(reader, j);
+				jet_combined = jet_i + jet_j;
+				delta = std::abs(125-(selectedjets->At(i).p4() + selectedjets->At(i).p4()).M());
+				if (deltaMin > delta || deltaMin < 0) {
+					deltaMin = delta;
+					iMin = i;
+					jMin = j;
+				}
+			}
+		}
+		pair.first = iMin;
+		pair.second = jMin;
+		if (selectedjets->At(pair.first).p4().Pt() < selectedjets->At(pair.second).p4().Pt()) {
+			pair.second = iMin;
+			pair.first = jMin;
+		}
+	} else if (mode == "pT") { //Highest pT
+
+	}
+	return pair;
+}
+
 double muonMatch(const reco::Candidate*& particle, pat::Muon* target) {
 	/*Performs matching checks between perticles. Returns dR for positive ID*/
 	if (particle->pdgId() != target->pdgId()) return -1;
@@ -92,13 +124,13 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	if (ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4()) > 
 		ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet1->p4())) { //Wrong assignemnt; swap
 		const reco::Candidate* temp = gen_bjet0;
-		gen_bjet0 = gen_bjet1;
-		gen_bjet1 = temp;
-	}
+	gen_bjet0 = gen_bjet1;
+	gen_bjet1 = temp;
+}
 	//___________________________________________
 	//Check jets_________________________________
-	double dR_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
-	double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
+double dR_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
+double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
 	if (dR_0 > R || dR_1 > R) { //particle(s) outside jet
 		return false;
 	} else {
@@ -106,7 +138,7 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	}
 }
 
-bool truthFlag(edm::Handle<reco::GenParticleCollection>genParticles, TH1D* mcPlots,
+bool truthFlag(edm::Handle<reco::GenParticleCollection> genParticles, TH1D* mcPlots,
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
 	const reco::Candidate*& gen_bjet0, const reco::Candidate*& gen_bjet1, const reco::Candidate*& gen_tau0, const reco::Candidate*& gen_tau1,
 	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
@@ -860,8 +892,9 @@ int main(int argc, char* argv[])
 					//Getting objects
 						pat::Muon muon = selectedmuons->at(0);
 						pat::Tau  tau = selectedtaus->at(0);
-						pat::Jet  bjet1 = selectedjets->at(0); //Todo update selection
-						pat::Jet  bjet2 = selectedjets->at(1);
+						std::pair<int> jets = getJets(selectedjets);
+						pat::Jet  bjet1 = selectedjets->at(jets.first);
+						pat::Jet  bjet2 = selectedjets->at(jets.second);
 						pat::MET  met = slimmedMET->at(0);
 
 						muon_p4 = muon.p4();
