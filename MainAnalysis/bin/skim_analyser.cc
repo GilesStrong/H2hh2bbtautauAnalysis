@@ -94,40 +94,40 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 	}  else if (mode == "CSV") { //Two highest CSV, ordered by pT
 		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
 		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
-		std::cout << "1\n"
+		std::cout << "1\n";
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
-			std::cout << "2\n"
+			std::cout << "2\n";
 			std::cout << selectedjets->at(i).bDiscriminator(bTagAlgo) << "\n"
-			std::cout << "3\n"
+			std::cout << "3\n";
 			if (selectedjets->at(i).bDiscriminator(bTagAlgo) > leading.second) {
-				std::cout << "4\n"
+				std::cout << "4\n";
 				subLeading.first = leading.first;
-				std::cout << "5\n"
+				std::cout << "5\n";
 				subLeading.second = leading.second;
-				std::cout << "6\n"
+				std::cout << "6\n";
 				leading.first = i;
-				std::cout << "7\n"
+				std::cout << "7\n";
 				leading.second = selectedjets->at(i).bDiscriminator(bTagAlgo);
-				std::cout << "8\n"
+				std::cout << "8\n";
 			} else if (selectedjets->at(i).bDiscriminator(bTagAlgo) > subLeading.second) {
-				std::cout << "9\n"
+				std::cout << "9\n";
 				subLeading.first = i;
-				std::cout << "10\n"
+				std::cout << "10\n";
 				subLeading.second = selectedjets->at(i).bDiscriminator(bTagAlgo);
-				std::cout << "11\n"
+				std::cout << "11\n";
 			}
 		}
-		std::cout << "12\n"
+		std::cout << "12\n";
 		pair.first = leading.first;
-		std::cout << "13\n"
+		std::cout << "13\n";
 		pair.second = subLeading.first;
-		std::cout << "14\n"
+		std::cout << "14\n";
 		if (selectedjets->at(pair.first).p4().Pt() < selectedjets->at(pair.second).p4().Pt()) {
-			std::cout << "15\n"
+			std::cout << "15\n";
 			pair.second = leading.first;
-			std::cout << "16\n"
+			std::cout << "16\n";
 			pair.first = subLeading.first;
-			std::cout << "17\n"
+			std::cout << "17\n";
 		}
 	}
 	return pair;
