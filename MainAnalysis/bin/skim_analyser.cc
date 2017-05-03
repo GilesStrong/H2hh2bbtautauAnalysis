@@ -49,7 +49,8 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 bool mcDebug = false;
 
-std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="CSV") {
+std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
+	std::string mode="CSV", std::string bTagAlgo="pfCombinedInclusiveSecondaryVertexV2BJetTags") {
 	/*Selects pair of jets ordered by pT*/
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
@@ -94,14 +95,14 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
 		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
-			if (selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > leading.second) {
+			if (selectedjets->at(i).bDiscriminator() > leading.second) {
 				subLeading.first = leading.first;
 				subLeading.second = leading.second;
 				leading.first = i;
-				leading.second = selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
-			} else if (selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > subLeading.second) {
+				leading.second = selectedjets->at(i).bDiscriminator(bTagAlgo);
+			} else if (selectedjets->at(i).bDiscriminator(bTagAlgo) > subLeading.second) {
 				subLeading.first = i;
-				subLeading.second = selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+				subLeading.second = selectedjets->at(i).bDiscriminator(bTagAlgo);
 			}
 		}
 		pair.first = leading.first;
@@ -598,8 +599,8 @@ int main(int argc, char* argv[])
 	//Low-level variables________________________
 	double t_0_pT, t_0_eta, t_0_phi, t_0_mass; //Tau 0 variables
 	double t_1_pT, t_1_eta, t_1_phi, t_1_mass; //Tau 1 variables
-	double b_0_pT, b_0_eta, b_0_phi, b_0_mass; //b-jet 0 variables
-	double b_1_pT, b_1_eta, b_1_phi, b_1_mass; //b-jet 1 variables
+	double b_0_pT, b_0_eta, b_0_phi, b_0_mass, b_0_csv; //b-jet 0 variables
+	double b_1_pT, b_1_eta, b_1_phi, b_1_mass, b_1_csv; //b-jet 1 variables
 	double mPT_pT, mPT_phi; //Missing ET variables
 	//___________________________________________
 	//Reconstructed variables____________________
@@ -640,10 +641,12 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("b_0_eta", &b_0_eta);
 	mu_tau_b_b->Branch("b_0_phi", &b_0_phi);
 	mu_tau_b_b->Branch("b_0_mass", &b_0_mass);
+	mu_tau_b_b->Branch("b_0_csv", &b_0_csv);
 	mu_tau_b_b->Branch("b_1_pT", &b_1_pT);
 	mu_tau_b_b->Branch("b_1_eta", &b_1_eta);
 	mu_tau_b_b->Branch("b_1_phi", &b_1_phi);
 	mu_tau_b_b->Branch("b_1_mass", &b_1_mass);
+	mu_tau_b_b->Branch("b_1_csv", &b_1_csv);
 	mu_tau_b_b->Branch("mPT_pT", &mPT_pT);
 	mu_tau_b_b->Branch("mPT_phi", &mPT_phi);
 	mu_tau_b_b->Branch("h_tt_pT", &h_tt_pT);
@@ -941,8 +944,8 @@ int main(int argc, char* argv[])
 
 					//Observables
 						m_t_mu = sqrt(2 * muon_p4.Pt() * met_p4.Pt() * (1-cos(muon_p4.Phi()-met_p4.Phi())) );
-
-
+						b_0_csv = selectedjets->at(jets.first).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+						b_1_csv = selectedjets->at(jets.second).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 					// fill histograms:
 						for(std::vector<Muon>::const_iterator mu1=selectedmuons->begin(); mu1!=selectedmuons->end(); ++mu1){
 							hmuonPt->Fill( mu1->pt (), weight );
