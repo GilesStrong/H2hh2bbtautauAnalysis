@@ -49,7 +49,7 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 bool mcDebug = false;
 
-std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="mass") {
+std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="CSV") {
 	/*Selects pair of jets ordered by pT*/
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
@@ -90,22 +90,26 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 		}
 		pair.first = leading.first;
 		pair.second = subLeading.first;
-	}  else if (mode == "CSV") { //Highest CSV
-		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
+	}  else if (mode == "CSV") { //Two highest CSV, ordered by pT
+		std::pair<int, double,> leading = std::pair<int, double>(-1,-1.0);
 		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
-			if (selectedjets->at(i).p4().Pt() > leading.second) {
+			if (selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > leading.second) {
 				subLeading.first = leading.first;
 				subLeading.second = leading.second;
 				leading.first = i;
-				leading.second = selectedjets->at(i).p4().Pt();
-			} else if (selectedjets->at(i).p4().Pt() > subLeading.second) {
+				leading.second = selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+			} else if (selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags") > subLeading.second) {
 				subLeading.first = i;
-				subLeading.second = selectedjets->at(i).p4().Pt();
+				subLeading.second = selectedjets->at(i).bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 			}
 		}
 		pair.first = leading.first;
 		pair.second = subLeading.first;
+		if (selectedjets->at(pair.first).p4().Pt() < selectedjets->at(pair.second).p4().Pt()) {
+			pair.second = leading.first;
+			pair.first = subLeading.first;
+		}
 	}
 	return pair;
 }
