@@ -231,7 +231,7 @@ process.goodJets = cms.EDFilter("PATJetCloneSelectorFilter",
                                 usebtag = cms.bool(False),
                                 btagptmin = cms.double(20),
                                 btagetamax = cms.double(2.7),
-                                btagdesc = cms.double(0.8),
+                                btagdesc = cms.double(0.0),
                                 btagalgo =    cms.string("pfCombinedInclusiveSecondaryVertexV2BJetTags"),
                                 invertbtag = cms.bool(False),
                                 
@@ -240,12 +240,12 @@ process.goodJets = cms.EDFilter("PATJetCloneSelectorFilter",
                                )
 
 process.selectedJets = process.goodJets.clone(src = cms.InputTag('goodJets'), 
-                                              usebtag = cms.bool(False))
+                                              usebtag = cms.bool(True))
 
 process.goodJetsInvTauIso = process.goodJets.clone(taus = cms.InputTag('selectedTausinvertedIso'))
 
 process.selectedJetsInvTauIso = process.goodJetsInvTauIso.clone(src = cms.InputTag('goodJetsInvTauIso'), 
-                                              usebtag = cms.bool(False))
+                                              usebtag = cms.bool(True))
                      
 process.selectedElectrons = cms.EDFilter("PATElectronCloneSelectorFilter",
                                          src = cms.InputTag('slimmedElectrons'),
