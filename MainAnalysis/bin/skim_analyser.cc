@@ -92,8 +92,8 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 		pair.first = leading.first;
 		pair.second = subLeading.first;
 	}  else if (mode == "CSV") { //Two highest CSV, ordered by pT
-		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
-		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
+		std::pair<int, double> leading = std::pair<int, double>(-1,-9999);
+		std::pair<int, double> subLeading = std::pair<int, double>(-1,-9999);
 		std::cout << "1\n";
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
 			std::cout << "2\n";
