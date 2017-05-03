@@ -54,7 +54,7 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 	/*Selects pair of jets ordered by pT*/
 	bTagAlgo="";
 	const std::vector<std::pair<std::string, float> > stuff = selectedjets->at(0).getPairDiscri();
-	for (int i = 0; i < stuff.size() ; ++i) {
+	for (size_t i = 0; i < stuff.size() ; ++i) {
 		std::cout << i << " " << stuff[i].first << " " << stuff[i].second << "\n";
 	}
 	std::pair<int, int> pair;
