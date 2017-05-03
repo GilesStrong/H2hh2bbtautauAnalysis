@@ -52,7 +52,7 @@ bool mcDebug = false;
 std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 	std::string mode="CSV", std::string bTagAlgo="pfCombinedInclusiveSecondaryVertexV2BJetTags") {
 	/*Selects pair of jets ordered by pT*/
-	bTagAlgo=""
+	bTagAlgo="";
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
 		double deltaMin = -1;
