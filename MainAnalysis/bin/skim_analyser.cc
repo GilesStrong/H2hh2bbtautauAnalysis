@@ -95,7 +95,7 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
 		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
-			if (selectedjets->at(i).bDiscriminator() > leading.second) {
+			if (selectedjets->at(i).bDiscriminator(bTagAlgo) > leading.second) {
 				subLeading.first = leading.first;
 				subLeading.second = leading.second;
 				leading.first = i;
