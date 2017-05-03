@@ -97,7 +97,7 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 		std::cout << "1\n";
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
 			std::cout << "2\n";
-			std::cout << selectedjets->at(i).bDiscriminator(bTagAlgo) << "\n"
+			std::cout << selectedjets->at(i).bDiscriminator(bTagAlgo) << "\n";
 			std::cout << "3\n";
 			if (selectedjets->at(i).bDiscriminator(bTagAlgo) > leading.second) {
 				std::cout << "4\n";
