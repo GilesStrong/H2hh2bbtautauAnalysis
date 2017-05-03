@@ -49,7 +49,7 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 bool mcDebug = false;
 
-std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="pT") {
+std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="mass") {
 	/*Selects pair of jets ordered by pT*/
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
@@ -60,7 +60,7 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
 			for(size_t j = 0; j < selectedjets->size(); ++j) {
 				if (i == j) continue;
-				delta = std::abs(125-(selectedjets->at(i).p4() + selectedjets->at(i).p4()).M());
+				delta = std::abs(125-(selectedjets->at(i).p4() + selectedjets->at(j).p4()).M());
 				if (deltaMin > delta || deltaMin < 0) {
 					deltaMin = delta;
 					iMin = i;
@@ -75,6 +75,22 @@ std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std
 			pair.first = jMin;
 		}
 	} else if (mode == "pT") { //Highest pT
+		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
+		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
+		for(size_t i = 0; i < selectedjets->size(); ++i) {
+			if (selectedjets->at(i).p4().Pt() > leading.second) {
+				subLeading.first = leading.first;
+				subLeading.second = leading.second;
+				leading.first = i;
+				leading.second = selectedjets->at(i).p4().Pt();
+			} else if (selectedjets->at(i).p4().Pt() > subLeading.second) {
+				subLeading.first = i;
+				subLeading.second = selectedjets->at(i).p4().Pt();
+			}
+		}
+		pair.first = leading.first;
+		pair.second = subLeading.first;
+	}  else if (mode == "CSV") { //Highest CSV
 		std::pair<int, double> leading = std::pair<int, double>(-1,-1.0);
 		std::pair<int, double> subLeading = std::pair<int, double>(-1,-1.0);
 		for(size_t i = 0; i < selectedjets->size(); ++i) {
