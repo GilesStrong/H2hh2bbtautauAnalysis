@@ -49,7 +49,7 @@ const double muMass = 0.1056583715; //GeV
 bool debug = false;
 bool mcDebug = false;
 
-std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="pT") {
+std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets, std::string mode="mass") {
 	/*Selects pair of jets ordered by pT*/
 	std::pair<int, int> pair;
 	if (mode == "mass") { //Invariant mass closest to 125 GeV, 
