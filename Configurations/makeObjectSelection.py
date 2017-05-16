@@ -240,12 +240,12 @@ process.goodJets = cms.EDFilter("PATJetCloneSelectorFilter",
                                )
 
 process.selectedJets = process.goodJets.clone(src = cms.InputTag('goodJets'), 
-                                              usebtag = cms.bool(True))
+                                              usebtag = cms.bool(False))
 
 process.goodJetsInvTauIso = process.goodJets.clone(taus = cms.InputTag('selectedTausinvertedIso'))
 
 process.selectedJetsInvTauIso = process.goodJetsInvTauIso.clone(src = cms.InputTag('goodJetsInvTauIso'), 
-                                              usebtag = cms.bool(True))
+                                              usebtag = cms.bool(False))
                      
 process.selectedElectrons = cms.EDFilter("PATElectronCloneSelectorFilter",
                                          src = cms.InputTag('slimmedElectrons'),
