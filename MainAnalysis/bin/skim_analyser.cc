@@ -158,13 +158,13 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	if (ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4()) > 
 		ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet1->p4())) { //Wrong assignemnt; swap
 		const reco::Candidate* temp = gen_bjet0;
-	gen_bjet0 = gen_bjet1;
-	gen_bjet1 = temp;
-}
+		gen_bjet0 = gen_bjet1;
+		gen_bjet1 = temp;
+	}
 	//___________________________________________
 	//Check jets_________________________________
-double dR_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
-double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
+	double dR_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
+	double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
 	if (dR_0 > R || dR_1 > R) { //particle(s) outside jet
 		return false;
 	} else {
@@ -172,7 +172,7 @@ double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
 	}
 }
 
-bool truthFlag(edm::Handle<reco::GenParticleCollection> genParticles, TH1D* mcPlots,
+bool truthFlag(TH1D* mcPlots,
 	const reco::GenParticle* gen_hBB, const reco::GenParticle* gen_hTauTau,
 	const reco::Candidate*& gen_bjet0, const reco::Candidate*& gen_bjet1, const reco::Candidate*& gen_tau0, const reco::Candidate*& gen_tau1,
 	pat::Jet* bjet0, pat::Jet* bjet1, pat::Tau* tau, pat::Muon* muon) {
@@ -538,6 +538,7 @@ int main(int argc, char* argv[])
 	TH1F* h_m_tauvis   = dir_weighted.make<TH1F>("m_tauvis" ,"invariant visible di-tau mass" ,  40,    0,   400);
 	TH1F* h_m_t_mu     = dir_weighted.make<TH1F>("m_t_mu" ,  "transverse mass" ,  30,    0,   300);
 	TH1F* h_met        = dir_weighted.make<TH1F>("m_met" ,  "missing transverse energy" ,  30,    0,   300);
+	TH1F* h_tau_id     = dir_weighted.make<TH1F>("tau_ID" ,  "PDG ID of tau_h constituents" ,  9331122,    0,   9331122);
 
 	TH1F* h_cov_xx     = dir_weighted.make<TH1F>("h_cov_xx" ,  "h_cov_xx" ,  20,    0,   100);
 	TH1F* h_cov_xy     = dir_weighted.make<TH1F>("h_cov_xy" ,  "h_cov_xy" ,  40,    -200,   200);
@@ -1018,10 +1019,21 @@ int main(int argc, char* argv[])
 						gen_h_tt_phi = 0;
 						gen_h_tt_E = 0;
 						//_____________________________
+						//Check PDG IDs of particles clustered in Tau jets
+						edm::Handle<reco::GenParticleCollection> genParticles;
+						event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
+						double tauR = 0.4;
+						for(size_t i = 0; i < genParticles->size(); ++ i) {
+							const reco::GenParticle& p = (*genParticles)[i];
+							if (p.state() == 1 || p.state() == 2) {
+								if (ROOT::Math::VectorUtil::DeltaR(p.p4(), tau_p4) <= tauR) {
+									h_tau_id->Fill(std::abs(p.pdgId()))
+								}
+							}
+						} 
+						//_____________________________
 						if (runOnSignal) {
 							//Get gen info______________
-							edm::Handle<reco::GenParticleCollection> genParticles;
-							event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
 							int gen_hBB_key, gen_hTauTau_key;
 							if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts, higgsDecay)) { //If both Higgs found
 								const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
@@ -1032,7 +1044,7 @@ int main(int argc, char* argv[])
 								const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
 								//__________________________
 								//Check FSs_________________
-								gen_mctMatch = truthFlag(genParticles, mcCuts,//Checks final-state selection was correct
+								gen_mctMatch = truthFlag(mcCuts,//Checks final-state selection was correct
 									&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
 									&bjet1, &bjet2, &tau, &muon);
 								//__________________________
