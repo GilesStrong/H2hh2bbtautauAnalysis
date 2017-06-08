@@ -538,7 +538,7 @@ int main(int argc, char* argv[])
 	TH1F* h_m_tauvis   = dir_weighted.make<TH1F>("m_tauvis" ,"invariant visible di-tau mass" ,  40,    0,   400);
 	TH1F* h_m_t_mu     = dir_weighted.make<TH1F>("m_t_mu" ,  "transverse mass" ,  30,    0,   300);
 	TH1F* h_met        = dir_weighted.make<TH1F>("m_met" ,  "missing transverse energy" ,  30,    0,   300);
-	TH1F* h_tau_id     = dir_weighted.make<TH1F>("tau_ID" ,  "PDG ID of tau_h constituents" ,  9331122,    0,   9331122);
+	TH1F* h_tau_id     = dir_weighted.make<TH1F>("tau_ID" ,  "PDG ID of tau_h constituents" ,  5000,    0,   5000);
 
 	TH1F* h_cov_xx     = dir_weighted.make<TH1F>("h_cov_xx" ,  "h_cov_xx" ,  20,    0,   100);
 	TH1F* h_cov_xy     = dir_weighted.make<TH1F>("h_cov_xy" ,  "h_cov_xy" ,  40,    -200,   200);
@@ -1025,6 +1025,7 @@ int main(int argc, char* argv[])
 						double tauR = 0.4;
 						for(size_t i = 0; i < genParticles->size(); ++ i) {
 							const reco::GenParticle& p = (*genParticles)[i];
+							if (std::abs(p.pdgId()) > 5000) continue;
 							if (p.status() == 1 || p.status() == 2) {
 								if (ROOT::Math::VectorUtil::DeltaR(p.p4(), tau_p4) <= tauR) {
 									h_tau_id->Fill(std::abs(p.pdgId()));
