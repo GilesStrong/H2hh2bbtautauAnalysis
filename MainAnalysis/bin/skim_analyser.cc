@@ -1025,7 +1025,7 @@ int main(int argc, char* argv[])
 						double tauR = 0.4;
 						for(size_t i = 0; i < genParticles->size(); ++ i) {
 							const reco::GenParticle& p = (*genParticles)[i];
-							if (p.state() == 1 || p.state() == 2) {
+							if (p.status() == 1 || p.status() == 2) {
 								if (ROOT::Math::VectorUtil::DeltaR(p.p4(), tau_p4) <= tauR) {
 									h_tau_id->Fill(std::abs(p.pdgId()))
 								}
