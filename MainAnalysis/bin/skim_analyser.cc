@@ -1027,7 +1027,7 @@ int main(int argc, char* argv[])
 							const reco::GenParticle& p = (*genParticles)[i];
 							if (p.status() == 1 || p.status() == 2) {
 								if (ROOT::Math::VectorUtil::DeltaR(p.p4(), tau_p4) <= tauR) {
-									h_tau_id->Fill(std::abs(p.pdgId()))
+									h_tau_id->Fill(std::abs(p.pdgId()));
 								}
 							}
 						} 
