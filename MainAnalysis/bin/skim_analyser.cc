@@ -1022,7 +1022,7 @@ int main(int argc, char* argv[])
 						//Check PDG IDs of particles clustered in Tau jets
 						edm::Handle<reco::GenParticleCollection> genParticles;
 						event.getByLabel(edm::InputTag("prunedGenParticles"), genParticles);
-						double tauR = 0.4;
+						double tauR = 0.5;
 						for(size_t i = 0; i < genParticles->size(); ++ i) {
 							const reco::GenParticle& p = (*genParticles)[i];
 							if (std::abs(p.pdgId()) > 5000) continue;
