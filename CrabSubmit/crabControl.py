@@ -45,7 +45,7 @@ def readConfig(configFileName):
     CMSConfigParameterAdd = None
     addFiles = None
     mergeOutputFiles = None
-    inputDBS = "global"
+    inputDBS = "phys03"#global"
     
     for line in cfg_data.split("\n"):
        
