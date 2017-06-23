@@ -39,7 +39,7 @@
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
-#include "CondFormats/BTauObjects/interface/BTagCalibrationReader.h"
+#include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
 typedef std::vector<pat::Jet> PatJetCollection;
 
@@ -112,7 +112,8 @@ void BTaggingSFProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
    BTagCalibrationReader readerHeavy(&calib_csv,                    //calibration instance
                          BTagEntry::OP_MEDIUM,                      //operating point
                          "comb",                                    //measurement type
-                         "central");                                //systematics type
+			 "central");                                //systematics type
+   readerHeavy.load(&calib_csv
    BTagCalibrationReader readerLight(&calib_csv,                    //calibration instance
                          BTagEntry::OP_MEDIUM,                      //operating point
                          "incl",                                    //measurement type
