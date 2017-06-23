@@ -113,12 +113,12 @@ void BTaggingSFProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
 																								"central");                                //systematics type
 			readerHeavy.load(&calib_csv, //calibration instance
 																									BTagEntry::FLAV_B, //Jet Flavour (Check this GS: 23-06-17)
-																									"comb")              //measurement type                   
+																									"comb");              //measurement type                   
 			BTagCalibrationReader readerLight(BTagEntry::OP_MEDIUM,                      //operating point
 																									"central");                                //systematics type
 			readerLight.load(&calib_csv, //calibration instance
 																									BTagEntry::FLAV_UDSG,
-																									"incl")              //measurement type 
+																									"incl");              //measurement type 
 			if(debug_) std::cout << "reader set up " << std::endl;
 			if(debug_) std::cout << "Eff map file " << EffMapFile_.c_str() << std::endl;
 
