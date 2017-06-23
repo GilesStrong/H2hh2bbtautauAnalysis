@@ -10,4 +10,5 @@
 <use name="SimDataFormats/PileupSummaryInfo"/>
 <use name="SimDataFormats/GeneratorProducts"/>
 <use name="CondFormats/BTauObjects"/>
+<use name="CondTools/BTau"/>
 <flags EDM_PLUGIN="1"/>
