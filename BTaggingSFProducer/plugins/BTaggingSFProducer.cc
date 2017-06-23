@@ -111,12 +111,12 @@ void BTaggingSFProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
 			// we need two CSV reader instances, one for light and one for heavy jets
 			BTagCalibrationReader readerHeavy(BTagEntry::OP_MEDIUM,          //operating point
 																								"central");                                //systematics type
-			readerHeavy.load(&calib_csv, //calibration instance
+			readerHeavy.load(calib_csv, //calibration instance
 																									BTagEntry::FLAV_B, //Jet Flavour (Check this GS: 23-06-17)
 																									"comb");              //measurement type                   
 			BTagCalibrationReader readerLight(BTagEntry::OP_MEDIUM,                      //operating point
 																									"central");                                //systematics type
-			readerLight.load(&calib_csv, //calibration instance
+			readerLight.load(calib_csv, //calibration instance
 																									BTagEntry::FLAV_UDSG,
 																									"incl");              //measurement type 
 			if(debug_) std::cout << "reader set up " << std::endl;
