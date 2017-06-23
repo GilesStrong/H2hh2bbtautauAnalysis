@@ -134,8 +134,8 @@ def buildCrabSubmitScripts(samples):
             f.write("config.JobType.inputFiles = [%s]\n\n" % item["addFiles"])
 
         f.write("config.Data.inputDataset = '%s'\n" % item["datasetpath"])
-        f.write("config.Data.inputDBS = 'global'\n")
-        #~ f.write("config.Data.inputDBS = 'phys03'\n")
+        #f.write("config.Data.inputDBS = 'global'\n")
+        f.write("config.Data.inputDBS = 'phys03'\n")
         if isData:
             f.write("config.Data.splitting = 'LumiBased'\n")
             f.write("config.Data.unitsPerJob = 15\n")
