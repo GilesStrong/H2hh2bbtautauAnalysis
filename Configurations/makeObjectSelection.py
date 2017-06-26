@@ -91,7 +91,7 @@ if options.runOnData:
     triggerResultsTag = "TriggerResults::HLT"
 else:
     process.GlobalTag.globaltag = autoCond['run2_mc']
-    triggerResultsTag = "TriggerResults::HLT2"
+    triggerResultsTag = "TriggerResults::HLT"
 
 process.options  = cms.untracked.PSet( wantSummary = cms.untracked.bool(True),
                                        allowUnscheduled = cms.untracked.bool(True),
