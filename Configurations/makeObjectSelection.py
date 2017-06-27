@@ -571,11 +571,15 @@ process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
                               jets  = cms.untracked.InputTag( 'slimmedJets' ),
                               )
 
-process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
-process.mon3 = process.mon2.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
-process.mon4 = process.mon3.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
-process.mon5 = process.mon4.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
-process.mon6 = process.mon5.clone( )
+process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'muonsWithIso' ))
+process.mon3 = process.mon2.clone( muons = cms.untracked.InputTag( 'unpackedSelectedPatTrigger' ))
+process.mon4 = process.mon3.clone( muons = cms.untracked.InputTag( 'matchedPatMuonTriggerMatchHLTIsoMu22' ))
+process.mon5 = process.mon4.clone( muons = cms.untracked.InputTag( 'allMuons' ))
+process.mon6 = process.mon5.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
+process.mon7 = process.mon6.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
+process.mon8 = process.mon7.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
+process.mon9 = process.mon8.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
+process.mon10 = process.mon9.clone( )
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.nEventsSelected = cms.EDProducer("EventCountProducer")
@@ -584,26 +588,30 @@ process.objectselection = cms.Path(
     process.nEventsTotal
     *process.mon1
     *process.muonsWithIso
-    *process.unpackedSelectedPatTrigger
-    *process.matchedPatMuonTriggerMatchHLTIsoMu22
-    *process.allMuons
-    *process.triggeredMuons
     *process.mon2
-    *process.selectedMuons
+    *process.unpackedSelectedPatTrigger
     *process.mon3
-    *process.selectedTaus
+    *process.matchedPatMuonTriggerMatchHLTIsoMu22
     *process.mon4
+    *process.allMuons
+    *process.mon5
+    *process.triggeredMuons
+    *process.mon6
+    *process.selectedMuons
+    *process.mon7
+    *process.selectedTaus
+    *process.mon8
     *process.goodJets
     *process.bTaggingEffAnalyzerAK8PF
     *process.selectedJets
-    *process.mon5
+    *process.mon9
     *process.muonfilter
     *process.taufilter
     *process.jetfilter
     *process.oppositechargefilter
     *process.selectedElectrons
     *process.electronveto
-    *process.mon6
+    *process.mon10
     *process.nEventsSelected
     *process.PUWeightProducer
     *process.SVFit
