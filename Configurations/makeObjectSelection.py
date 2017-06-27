@@ -573,7 +573,7 @@ process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
 
 process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'muonsWithIso' ))
 process.mon3 = process.mon2.clone( )
-process.mon4 = process.mon3.clone( muons = cms.untracked.InputTag( 'matchedPatMuonTriggerMatchHLTIsoMu22' ))
+process.mon4 = process.mon3.clone( )
 process.mon5 = process.mon4.clone( muons = cms.untracked.InputTag( 'allMuons' ))
 process.mon6 = process.mon5.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
 process.mon7 = process.mon6.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
