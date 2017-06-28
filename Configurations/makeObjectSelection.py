@@ -626,8 +626,8 @@ process.out_OS_InvIso_selection = cms.OutputModule("PoolOutputModule",
         ),
                                                dataset = cms.untracked.PSet(
                                                                            filterName = cms.untracked.string(''),
-        ),'''
-                               )
+        ),
+                               )'''
 
 process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
                               muons = cms.untracked.InputTag( 'slimmedMuons' ),
