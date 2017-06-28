@@ -767,6 +767,6 @@ process.OS_InvIso_selection = cms.Path(
     )
 
 
-process.e = cms.EndPath(process.out_objectselection*process.out_LS_Iso_selection*process.out_LS_InvIso_selection*process.out_OS_InvIso_selection)
+process.e = cms.EndPath(process.out_objectselection)#*process.out_LS_Iso_selection*process.out_LS_InvIso_selection*process.out_OS_InvIso_selection)
 
 
