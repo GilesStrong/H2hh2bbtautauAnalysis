@@ -669,7 +669,8 @@ process.objectselection = cms.Path(
     *process.mon7
     *process.selectedMuons
     *process.mon8
-    *process.selectedTaus
+    )
+    '''*process.selectedTaus
     *process.mon9
     *process.goodJets
     *process.bTaggingEffAnalyzerAK8PF
@@ -688,8 +689,8 @@ process.objectselection = cms.Path(
     *process.kinfit
     *process.muonIDScaleFactor
     *process.muonTriggerScaleFactor
-    *process.bTaggingSF
-    )
+    *process.bTaggingSF'''
+    #)
 
 '''process.LS_Iso_selection = cms.Path(
     process.muonsWithIso
