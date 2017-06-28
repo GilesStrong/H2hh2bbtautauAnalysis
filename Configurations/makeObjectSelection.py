@@ -506,27 +506,27 @@ process.out_objectselection = cms.OutputModule("PoolOutputModule",
         #~ 'keep *_slimmedJets_*_*',
         #~ 'keep *_slimmedTaus_*_*',
         'keep *_selectedMuons_*_*',
-        'keep *_selectedTaus_*_*',
-        'keep *_selectedJets_*_*',
-        'keep *_updatedPatJetsUpdatedJEC_*_*',
-        'keep *_prunedGenParticles_*_*',
-        'keep *_slimmedGenJets_*_*',
-        'keep *_nEvents*_*_*',
-        'keep *_TriggerResults_*_SKIM',
-        'keep *_PUWeightProducer_*_*',
+        #'keep *_selectedTaus_*_*',
+        #'keep *_selectedJets_*_*',
+        #'keep *_updatedPatJetsUpdatedJEC_*_*',
+        #'keep *_prunedGenParticles_*_*',
+        #'keep *_slimmedGenJets_*_*',
+        #'keep *_nEvents*_*_*',
+        #'keep *_TriggerResults_*_SKIM',
+        #'keep *_PUWeightProducer_*_*',
         # ReRunMET:
-        'keep *_slimmedMETs_*_*',
-        'keep *_METSignificance_*_*',
-        'keep *_slimmedMETsNoHF_*_*',
+        #'keep *_slimmedMETs_*_*',
+        #'keep *_METSignificance_*_*',
+        #'keep *_slimmedMETsNoHF_*_*',
         #~ "keep *_slimmedMETsPuppi_*_*",
-        'keep *_PUWeightProducer_*_*',
-        'keep *_SVFit_*_*',
-        'keep *_muonIDScaleFactor_*_*',
-        'keep *_muonTriggerScaleFactor_*_*',
-        'keep *_kinfit_*_*',
-        'keep *_TriggerResults_*_SKIM',
-        'keep *_bTaggingSF_*_*',
-        'keep *_offlineSlimmedPrimaryVertices_*_*',
+        #'keep *_PUWeightProducer_*_*',
+        #'keep *_SVFit_*_*',
+        #'keep *_muonIDScaleFactor_*_*',
+        #'keep *_muonTriggerScaleFactor_*_*',
+        #'keep *_kinfit_*_*',
+        #'keep *_TriggerResults_*_SKIM',
+        #'keep *_bTaggingSF_*_*',
+        #'keep *_offlineSlimmedPrimaryVertices_*_*',
         ),
                                                SelectEvents = cms.untracked.PSet( 
         SelectEvents = cms.vstring("objectselection")
@@ -642,10 +642,10 @@ process.mon5 = process.mon4.clone( muons = cms.untracked.InputTag( 'selectedIsoM
 process.mon6 = process.mon5.clone( muons = cms.untracked.InputTag( 'selectedVtxMuons' ))
 process.mon7 = process.mon6.clone( muons = cms.untracked.InputTag( 'selectedEtaMuons' ))
 process.mon8 = process.mon7.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
-process.mon9 = process.mon8.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
+'''process.mon9 = process.mon8.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
 process.mon10 = process.mon9.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
 process.mon11 = process.mon10.clone( )
-
+'''
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.nEventsSelected = cms.EDProducer("EventCountProducer")
 
