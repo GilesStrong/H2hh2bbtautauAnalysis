@@ -536,7 +536,7 @@ process.out_objectselection = cms.OutputModule("PoolOutputModule",
         ),
                                                )
   
-process.out_LS_Iso_selection = cms.OutputModule("PoolOutputModule",
+'''process.out_LS_Iso_selection = cms.OutputModule("PoolOutputModule",
                                fileName = cms.untracked.string(options.outputFile.split(".root")[0] + "_LS_Iso_selection.root"),
                                outputCommands = cms.untracked.vstring(
         'drop *',
@@ -626,7 +626,7 @@ process.out_OS_InvIso_selection = cms.OutputModule("PoolOutputModule",
         ),
                                                dataset = cms.untracked.PSet(
                                                                            filterName = cms.untracked.string(''),
-        ),
+        ),'''
                                )
 
 process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
@@ -691,7 +691,7 @@ process.objectselection = cms.Path(
     *process.bTaggingSF
     )
 
-process.LS_Iso_selection = cms.Path(
+'''process.LS_Iso_selection = cms.Path(
     process.muonsWithIso
     *process.unpackedSelectedPatTrigger
     *process.matchedPatMuonTriggerMatchHLTIsoMu22
@@ -764,7 +764,7 @@ process.OS_InvIso_selection = cms.Path(
     *process.muonIDScaleFactor
     *process.muonTriggerScaleFactor
     *process.bTaggingSFOSInvIso
-    )
+    )'''
 
 
 process.e = cms.EndPath(process.out_objectselection)#*process.out_LS_Iso_selection*process.out_LS_InvIso_selection*process.out_OS_InvIso_selection)
