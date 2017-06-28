@@ -671,7 +671,7 @@ process.objectselection = cms.Path(
     *process.selectedMuons
     *process.mon8
     )
-    '''*process.selectedTaus
+'''*process.selectedTaus
     *process.mon9
     *process.goodJets
     *process.bTaggingEffAnalyzerAK8PF
