@@ -101,18 +101,18 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   if( jets->size()>1 ) fill("jet1Pt", (*jets)[1].pt());
   if( jets->size()>2 ) fill("jet2Pt", (*jets)[2].pt());
   if( jets->size()>3 ) fill("jet3Pt", (*jets)[3].pt());
-  for(std::vector<pat::Muon>::iterator mu=muons->begin(); mu!=muons->end(); ++mu){
-  // for(size_t i = 0; i < muons->size(); ++i){
-  //   fill("mu_pt", (*muons)[i].pt());
-  //   fill("mu_eta", (*muons)[i].eta());
-  //   fill("mu_iso", (*muons)[i].iso());
-  //   fill("mu_vtxdxy", (*muons)[i].vtxdxy());
-  //   fill("mu_vtxdz", (*muons)[i].vtxdz());
-  fill("mu_pt", mu->pt());
-  fill("mu_eta", mu->eta());
-  fill("mu_iso", mu->iso());
-  fill("mu_vtxdxy", mu->vtxdxy());
-  fill("mu_vtxdz", mu->vtxdz());
+  //for(std::vector<pat::Muon>::iterator mu=muons->begin(); mu!=muons->end(); ++mu){
+  for(size_t i = 0; i < muons->size(); ++i){
+    fill("mu_pt", (*muons)[i].pt());
+    fill("mu_eta", (*muons)[i].eta());
+    fill("mu_iso", (*muons)[i].getIsolation());
+    fill("mu_vtxdxy", (*muons)[i].vtxdxy());
+    fill("mu_vtxdz", (*muons)[i].vtxdz());
+  // fill("mu_pt", mu->pt());
+  // fill("mu_eta", mu->eta());
+  // fill("mu_iso", mu->iso());
+  // fill("mu_vtxdxy", mu->vtxdxy());
+  // fill("mu_vtxdz", mu->vtxdz());
   }
 }
 
