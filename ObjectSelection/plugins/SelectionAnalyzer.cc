@@ -66,6 +66,7 @@ class SelectionAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>
   edm::EDGetTokenT<edm::View<pat::Muon> > muonsToken_;
   edm::EDGetTokenT<edm::View<pat::Tau> > tausToken_;
   edm::EDGetTokenT<edm::View<pat::Jet> > jetsToken_;
+  edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
 };
 
 
