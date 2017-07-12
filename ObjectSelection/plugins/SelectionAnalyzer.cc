@@ -73,7 +73,8 @@ SelectionAnalyzer::SelectionAnalyzer(const edm::ParameterSet& iConfig)
   : hists_(),
     muonsToken_(consumes<edm::View<pat::Muon> >(iConfig.getUntrackedParameter<edm::InputTag>("muons"))),
     tausToken_(consumes<edm::View<pat::Tau> >(iConfig.getUntrackedParameter<edm::InputTag>("taus"))),
-    jetsToken_ (consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jets" )))
+    jetsToken_ (consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jets" ))),
+    vtxToken_(consumes<edm::View<reco::VertexCollection> >(iConfig.getUntrackedParameter<edm::InputTag>("vertices")))
 {
   usesResource("TFileService");
 }
@@ -88,9 +89,13 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   edm::Handle<edm::View<pat::Muon> > muons;
   edm::Handle<edm::View<pat::Tau> > taus;
   edm::Handle<edm::View<pat::Jet> > jets;
+  edm::Handle<reco::VertexCollection> vertices;
   iEvent.getByToken(muonsToken_,muons);
   iEvent.getByToken(tausToken_,taus);
   iEvent.getByToken(jetsToken_,jets);
+  iEvent.getByToken(vtxToken_, vertices);
+
+  const reco::Vertex &PV = vertices->front();
 
 
   fill("yield", 0.5);
@@ -105,9 +110,9 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   for(size_t i = 0; i < muons->size(); ++i){
     fill("mu_pt", (*muons)[i].pt());
     fill("mu_eta", (*muons)[i].eta());
-    fill("mu_iso", (*muons)[i].getIsolation());
-    fill("mu_vtxdxy", (*muons)[i].vtxdxy());
-    fill("mu_vtxdz", (*muons)[i].vtxdz());
+    fill("mu_iso", (*muons)[i].userIsolation(pat::IsolationKeys(7))); //Hard codded to 7
+    fill("mu_vtxdxy", fabs((*muons)[i].muonBestTrack()->dxy(PV.position())));
+    fill("mu_vtxdz", fabs((*muons)[i].muonBestTrack()->dz(PV.position())));
   // fill("mu_pt", mu->pt());
   // fill("mu_eta", mu->eta());
   // fill("mu_iso", mu->iso());
