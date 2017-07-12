@@ -103,11 +103,11 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   if( jets->size()>3 ) fill("jet3Pt", (*jets)[3].pt());
   //for(std::vector<pat::Muon>::const_iterator mu=muons->begin(); mu!=muons->end(); ++mu){
   for(size_t i = 0; i < muons->size(); ++i){
-    fill("mu_pt", (*muons)[i]->pt());
-    fill("mu_eta", (*muons)[i]->eta());
-    fill("mu_iso", (*muons)[i]->iso());
-    fill("mu_vtxdxy", (*muons)[i]->vtxdxy());
-    fill("mu_vtxdz", (*muons)[i]->vtxdz());
+    fill("mu_pt", (*muons)[i].pt());
+    fill("mu_eta", (*muons)[i].eta());
+    fill("mu_iso", (*muons)[i].iso());
+    fill("mu_vtxdxy", (*muons)[i].vtxdxy());
+    fill("mu_vtxdz", (*muons)[i].vtxdz());
   }
 }
 
