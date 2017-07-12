@@ -77,7 +77,7 @@ SelectionAnalyzer::SelectionAnalyzer(const edm::ParameterSet& iConfig)
     muonsToken_(consumes<edm::View<pat::Muon> >(iConfig.getUntrackedParameter<edm::InputTag>("muons"))),
     tausToken_(consumes<edm::View<pat::Tau> >(iConfig.getUntrackedParameter<edm::InputTag>("taus"))),
     jetsToken_ (consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jets" ))),
-    vtxToken_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertices"))
+    vtxToken_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertices")))
 {
   usesResource("TFileService");
 }
