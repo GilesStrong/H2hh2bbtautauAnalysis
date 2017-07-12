@@ -101,13 +101,18 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   if( jets->size()>1 ) fill("jet1Pt", (*jets)[1].pt());
   if( jets->size()>2 ) fill("jet2Pt", (*jets)[2].pt());
   if( jets->size()>3 ) fill("jet3Pt", (*jets)[3].pt());
-  //for(std::vector<pat::Muon>::const_iterator mu=muons->begin(); mu!=muons->end(); ++mu){
-  for(size_t i = 0; i < muons->size(); ++i){
-    fill("mu_pt", (*muons)[i].pt());
-    fill("mu_eta", (*muons)[i].eta());
-    fill("mu_iso", (*muons)[i].iso());
-    fill("mu_vtxdxy", (*muons)[i].vtxdxy());
-    fill("mu_vtxdz", (*muons)[i].vtxdz());
+  for(std::vector<pat::Muon>::iterator mu=muons->begin(); mu!=muons->end(); ++mu){
+  // for(size_t i = 0; i < muons->size(); ++i){
+  //   fill("mu_pt", (*muons)[i].pt());
+  //   fill("mu_eta", (*muons)[i].eta());
+  //   fill("mu_iso", (*muons)[i].iso());
+  //   fill("mu_vtxdxy", (*muons)[i].vtxdxy());
+  //   fill("mu_vtxdz", (*muons)[i].vtxdz());
+  fill("mu_pt", mu->pt());
+  fill("mu_eta", mu->eta());
+  fill("mu_iso", mu->iso());
+  fill("mu_vtxdxy", mu->vtxdxy());
+  fill("mu_vtxdz", mu->vtxdz());
   }
 }
 
@@ -129,7 +134,7 @@ SelectionAnalyzer::beginJob()
   hists_["jet2Pt"  ]=fs->make<TH1F>("jet2Pt"  , "1. leading jet pt"    ,  50, 0., 200.);
   hists_["jet3Pt"  ]=fs->make<TH1F>("jet3Pt"  , "1. leading jet pt"    ,  50, 0., 200.);
   hists_["mu_pt"   ]=fs->make<TH1F>("mu_pt"   , "muon pt;pt[GeV];muons",  50 , 0., 100.);
-  hists_["mu_eta"  ]=s->make<TH1F>("mu_eta"   , "muon eta;eta;muons"   ,  50  , -5., 5.);
+  hists_["mu_eta"  ]=fs->make<TH1F>("mu_eta"   , "muon eta;eta;muons"   ,  50  , -5., 5.);
   hists_["mu_iso"  ]=fs->make<TH1F>("mu_iso"  , "muon iso;iso;muons"   ,  10  , 0., 1.);
   hists_["u_vtxdxy"]=fs->make<TH1F>("mu_vtxdxy","muon vtxdxy;vtxdxy;muons",20  , 0., 0.1);
   hists_["mu_vtxdz"]=fs->make<TH1F>("mu_vtxdz", "muon vtxdz;vtxdz;muons"  , 20  , 0., 0.5);
