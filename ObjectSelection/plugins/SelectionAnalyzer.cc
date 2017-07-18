@@ -116,9 +116,9 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     fill("mu_vtxdxy", fabs((*muons)[i].muonBestTrack()->dxy(PV.position())));
     fill("mu_vtxdz", fabs((*muons)[i].muonBestTrack()->dz(PV.position())));
     fill("mu_sumChargedHadronPt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
-    fill("mu_sumNeutralHadronEt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
-    fill("mu_sumPhotonEt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
-    fill("mu_sumPUPt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
+    fill("mu_sumNeutralHadronEt", (*muons)[i].pfIsolationR04().sumNeutralHadronEt);
+    fill("mu_sumPhotonEt", (*muons)[i].pfIsolationR04().sumPhotonEt);
+    fill("mu_sumPUPt", (*muons)[i].pfIsolationR04().sumPUPt);
   }
 }
 
