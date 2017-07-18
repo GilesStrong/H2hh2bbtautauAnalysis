@@ -142,7 +142,7 @@ SelectionAnalyzer::beginJob()
   hists_["mu_pt"   ]=fs->make<TH1F>("mu_pt"   , "muon pt;pt[GeV];muons",  50 , 0., 100.);
   hists_["mu_eta"  ]=fs->make<TH1F>("mu_eta"   , "muon eta;eta;muons"   ,  50  , -5., 5.);
   hists_["mu_iso"  ]=fs->make<TH1F>("mu_iso"  , "muon iso;iso;muons"   ,  50  , 0., 1.);
-  hists_["u_vtxdxy"]=fs->make<TH1F>("mu_vtxdxy","muon vtxdxy;vtxdxy;muons",50  , 0., 0.5);
+  hists_["mu_vtxdxy"]=fs->make<TH1F>("mu_vtxdxy","muon vtxdxy;vtxdxy;muons",50  , 0., 0.5);
   hists_["mu_vtxdz"]=fs->make<TH1F>("mu_vtxdz", "muon vtxdz;vtxdz;muons"  , 50  , 0., 0.5);
   hists_["mu_sumChargedHadronPt"]=fs->make<TH1F>("mu_sumChargedHadronPt", "muon sumChargedHadronPt;sumChargedHadronPt;muons"  , 50  , 0., 100);
   hists_["mu_sumNeutralHadronEt"]=fs->make<TH1F>("mu_sumNeutralHadronEt", "muon sumNeutralHadronEt;sumNeutralHadronEt;muons"  , 50  , 0., 100);
