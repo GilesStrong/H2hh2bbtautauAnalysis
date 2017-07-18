@@ -115,6 +115,10 @@ SelectionAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     fill("mu_iso", (*muons)[i].userIsolation(pat::IsolationKeys(7))); //Hard codded to 7
     fill("mu_vtxdxy", fabs((*muons)[i].muonBestTrack()->dxy(PV.position())));
     fill("mu_vtxdz", fabs((*muons)[i].muonBestTrack()->dz(PV.position())));
+    fill("mu_sumChargedHadronPt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
+    fill("mu_sumNeutralHadronEt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
+    fill("mu_sumPhotonEt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
+    fill("mu_sumPUPt", (*muons)[i].pfIsolationR04().sumChargedHadronPt);
   }
 }
 
@@ -140,6 +144,10 @@ SelectionAnalyzer::beginJob()
   hists_["mu_iso"  ]=fs->make<TH1F>("mu_iso"  , "muon iso;iso;muons"   ,  50  , 0., 1.);
   hists_["u_vtxdxy"]=fs->make<TH1F>("mu_vtxdxy","muon vtxdxy;vtxdxy;muons",50  , 0., 0.5);
   hists_["mu_vtxdz"]=fs->make<TH1F>("mu_vtxdz", "muon vtxdz;vtxdz;muons"  , 50  , 0., 0.5);
+  hists_["mu_sumChargedHadronPt"]=fs->make<TH1F>("mu_sumChargedHadronPt", "muon sumChargedHadronPt;sumChargedHadronPt;muons"  , 50  , 0., 100);
+  hists_["mu_sumNeutralHadronEt"]=fs->make<TH1F>("mu_sumNeutralHadronEt", "muon sumNeutralHadronEt;sumNeutralHadronEt;muons"  , 50  , 0., 100);
+  hists_["mu_sumPhotonEt"]=fs->make<TH1F>("mu_sumPhotonEt", "muon sumPhotonEt;sumPhotonEt;muons"  , 50  , 0., 100);
+  hists_["mu_sumPUPt"]=fs->make<TH1F>("mu_sumPUPt", "muon sumPUPt;sumPUPt;muons"  , 50  , 0., 100);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
