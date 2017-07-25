@@ -569,6 +569,7 @@ process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
                               muons = cms.untracked.InputTag( 'slimmedMuons' ),
                               taus  = cms.untracked.InputTag( 'slimmedTaus' ),
                               jets  = cms.untracked.InputTag( 'slimmedJets' ),
+                              vertices = cms.untracked.InputTag( 'offlineSlimmedPrimaryVertices' ),
                               )
 
 process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'allMuons' ))
