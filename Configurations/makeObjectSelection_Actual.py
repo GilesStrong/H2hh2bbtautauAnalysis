@@ -569,14 +569,14 @@ process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
                               muons = cms.untracked.InputTag( 'slimmedMuons' ),
                               taus  = cms.untracked.InputTag( 'slimmedTaus' ),
                               jets  = cms.untracked.InputTag( 'slimmedJets' ),
+                              vertices = cms.untracked.InputTag( 'offlineSlimmedPrimaryVertices' ),
                               )
 
-process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'allMuons' ))
-process.mon3 = process.mon2.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
-process.mon4 = process.mon3.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
-process.mon5 = process.mon4.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
-process.mon6 = process.mon5.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
-process.mon7 = process.mon6.clone( )
+process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
+process.mon3 = process.mon2.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
+process.mon4 = process.mon3.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
+process.mon5 = process.mon4.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
+process.mon6 = process.mon5.clone( )
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.nEventsSelected = cms.EDProducer("EventCountProducer")
@@ -588,24 +588,23 @@ process.objectselection = cms.Path(
     *process.unpackedSelectedPatTrigger
     *process.matchedPatMuonTriggerMatchHLTIsoMu22
     *process.allMuons
-    *process.mon2
     *process.triggeredMuons
-    *process.mon3
+    *process.mon2
     *process.selectedMuons
-    *process.mon4
+    *process.mon3
     *process.selectedTaus
-    *process.mon5
+    *process.mon4
     *process.goodJets
     *process.bTaggingEffAnalyzerAK8PF
     *process.selectedJets
-    *process.mon6
+    *process.mon5
     *process.muonfilter
     *process.taufilter
     *process.jetfilter
     *process.oppositechargefilter
     *process.selectedElectrons
     *process.electronveto
-    *process.mon7
+    *process.mon6
     *process.nEventsSelected
     *process.PUWeightProducer
     *process.SVFit
