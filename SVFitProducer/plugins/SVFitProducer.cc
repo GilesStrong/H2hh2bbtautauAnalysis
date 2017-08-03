@@ -179,7 +179,7 @@ SVFitProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   edm::FileInPath inputFileName_visPtResolution(dataInputFile_);
   TH1::AddDirectory(kFALSE);  
-  TFile* inputFile_visPtResolution = new TFile(inputFileName_visPtResolution.fullPath().data(), "read");
+  TFile* inputFile_visPtResolution = new TFile(inputFileName_visPtResolution.fullPath().data());
   algo.shiftVisPt(true, inputFile_visPtResolution);
   
   //Choose IntegrateAlgorithm
@@ -212,7 +212,6 @@ SVFitProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   tau_p4.clear();
   met_p4.clear();
   DecayMode.clear();
-  delete algo;
 }
 
 void SVFitProducer::beginStream(edm::StreamID){}
