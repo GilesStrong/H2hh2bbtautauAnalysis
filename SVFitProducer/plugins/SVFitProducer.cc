@@ -179,7 +179,7 @@ SVFitProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   edm::FileInPath inputFileName_visPtResolution(dataInputFile_);
   TH1::AddDirectory(kFALSE);
-  algo.shiftVisPt(true)
+  algo.shiftVisPt(true);
   
   //Choose IntegrateAlgorithm
   if(integrateAlgo==1)
