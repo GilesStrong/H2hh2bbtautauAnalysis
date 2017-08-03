@@ -178,9 +178,8 @@ SVFitProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   algo.addLogM(false);
 
   edm::FileInPath inputFileName_visPtResolution(dataInputFile_);
-  TH1::AddDirectory(kFALSE);  
-  TFile* inputFile_visPtResolution = new TFile(inputFileName_visPtResolution.fullPath().data());
-  algo.shiftVisPt(true, inputFile_visPtResolution);
+  TH1::AddDirectory(kFALSE);
+  algo.shiftVisPt(true)
   
   //Choose IntegrateAlgorithm
   if(integrateAlgo==1)
@@ -203,8 +202,6 @@ SVFitProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   //########################################End:SVFIT#####################################################
   //////////////////////////////////////////////////////////////////////////////////////////////////////// 
-  //inputFile_visPtResolution->Close();
-  delete inputFile_visPtResolution;
 
   iEvent.put(output_mass);
   
