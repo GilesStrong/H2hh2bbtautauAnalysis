@@ -149,8 +149,72 @@ process.triggeredMuons = cms.EDFilter("PATMuonTriggerMatchCloneSelectorFilter",
                                       filter = cms.bool(options.runOnData)                  ########  just a HOT FIX #########
                                       )
 
-process.selectedMuons = cms.EDFilter("PATMuonCloneSelectorFilter",
+process.selectedIDMuons = cms.EDFilter("PATMuonCloneSelectorFilter",
                                      src = cms.InputTag('triggeredMuons'),
+                                     vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                     ptmin = cms.double(0),
+                                     etamax = cms.double(100),   
+                                     vtxdxymax = cms.double(100),                 
+                                     vtxdzmax = cms.double(100),
+                                     takeMuonID = cms.string("medium"),
+                                     iso = cms.double(0.15),
+                                     isoAlgorithm = cms.int32(7),
+                                     useIso = cms.bool(False),
+                                     invertIso = cms.bool(False),
+                                     debug = cms.bool(False),
+                                     filter = cms.bool(True)
+                                     )
+
+process.selectedIsoMuons = cms.EDFilter("PATMuonCloneSelectorFilter",
+                                     src = cms.InputTag('selectedIDMuons'),
+                                     vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                     ptmin = cms.double(0),
+                                     etamax = cms.double(100),   
+                                     vtxdxymax = cms.double(100),                 
+                                     vtxdzmax = cms.double(100),
+                                     takeMuonID = cms.string("medium"),
+                                     iso = cms.double(0.15),
+                                     isoAlgorithm = cms.int32(7),
+                                     useIso = cms.bool(True),
+                                     invertIso = cms.bool(False),
+                                     debug = cms.bool(False),
+                                     filter = cms.bool(True)
+                                     )
+
+process.selectedVtxMuons = cms.EDFilter("PATMuonCloneSelectorFilter",
+                                     src = cms.InputTag('selectedIsoMuons'),
+                                     vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                     ptmin = cms.double(0),
+                                     etamax = cms.double(100),   
+                                     vtxdxymax = cms.double(0.045),                 
+                                     vtxdzmax = cms.double(0.2),
+                                     takeMuonID = cms.string("medium"),
+                                     iso = cms.double(0.15),
+                                     isoAlgorithm = cms.int32(7),
+                                     useIso = cms.bool(True),
+                                     invertIso = cms.bool(False),
+                                     debug = cms.bool(False),
+                                     filter = cms.bool(True)
+                                     )
+
+process.selectedEtaMuons = cms.EDFilter("PATMuonCloneSelectorFilter",
+                                     src = cms.InputTag('selectedVtxMuons'),
+                                     vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                     ptmin = cms.double(0),
+                                     etamax = cms.double(2.4),   
+                                     vtxdxymax = cms.double(0.045),                 
+                                     vtxdzmax = cms.double(0.2),
+                                     takeMuonID = cms.string("medium"),
+                                     iso = cms.double(0.15),
+                                     isoAlgorithm = cms.int32(7),
+                                     useIso = cms.bool(True),
+                                     invertIso = cms.bool(False),
+                                     debug = cms.bool(False),
+                                     filter = cms.bool(True)
+                                     )
+
+process.selectedMuons = cms.EDFilter("PATMuonCloneSelectorFilter",
+                                     src = cms.InputTag('selectedEtaMuons'),
                                      #~ src = cms.InputTag('muonsWithIso'),
                                      vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                      ptmin = cms.double(22),
@@ -442,27 +506,27 @@ process.out_objectselection = cms.OutputModule("PoolOutputModule",
         #~ 'keep *_slimmedJets_*_*',
         #~ 'keep *_slimmedTaus_*_*',
         'keep *_selectedMuons_*_*',
-        'keep *_selectedTaus_*_*',
-        'keep *_selectedJets_*_*',
-        'keep *_updatedPatJetsUpdatedJEC_*_*',
-        'keep *_prunedGenParticles_*_*',
-        'keep *_slimmedGenJets_*_*',
-        'keep *_nEvents*_*_*',
-        'keep *_TriggerResults_*_SKIM',
-        'keep *_PUWeightProducer_*_*',
+        #'keep *_selectedTaus_*_*',
+        #'keep *_selectedJets_*_*',
+        #'keep *_updatedPatJetsUpdatedJEC_*_*',
+        #'keep *_prunedGenParticles_*_*',
+        #'keep *_slimmedGenJets_*_*',
+        #'keep *_nEvents*_*_*',
+        #'keep *_TriggerResults_*_SKIM',
+        #'keep *_PUWeightProducer_*_*',
         # ReRunMET:
-        'keep *_slimmedMETs_*_*',
-        'keep *_METSignificance_*_*',
-        'keep *_slimmedMETsNoHF_*_*',
+        #'keep *_slimmedMETs_*_*',
+        #'keep *_METSignificance_*_*',
+        #'keep *_slimmedMETsNoHF_*_*',
         #~ "keep *_slimmedMETsPuppi_*_*",
-        'keep *_PUWeightProducer_*_*',
-        'keep *_SVFit_*_*',
-        'keep *_muonIDScaleFactor_*_*',
-        'keep *_muonTriggerScaleFactor_*_*',
-        'keep *_kinfit_*_*',
-        'keep *_TriggerResults_*_SKIM',
-        'keep *_bTaggingSF_*_*',
-        'keep *_offlineSlimmedPrimaryVertices_*_*',
+        #'keep *_PUWeightProducer_*_*',
+        #'keep *_SVFit_*_*',
+        #'keep *_muonIDScaleFactor_*_*',
+        #'keep *_muonTriggerScaleFactor_*_*',
+        #'keep *_kinfit_*_*',
+        #'keep *_TriggerResults_*_SKIM',
+        #'keep *_bTaggingSF_*_*',
+        #'keep *_offlineSlimmedPrimaryVertices_*_*',
         ),
                                                SelectEvents = cms.untracked.PSet( 
         SelectEvents = cms.vstring("objectselection")
@@ -472,7 +536,7 @@ process.out_objectselection = cms.OutputModule("PoolOutputModule",
         ),
                                                )
   
-process.out_LS_Iso_selection = cms.OutputModule("PoolOutputModule",
+'''process.out_LS_Iso_selection = cms.OutputModule("PoolOutputModule",
                                fileName = cms.untracked.string(options.outputFile.split(".root")[0] + "_LS_Iso_selection.root"),
                                outputCommands = cms.untracked.vstring(
         'drop *',
@@ -563,7 +627,7 @@ process.out_OS_InvIso_selection = cms.OutputModule("PoolOutputModule",
                                                dataset = cms.untracked.PSet(
                                                                            filterName = cms.untracked.string(''),
         ),
-                               )
+                               )'''
 
 process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
                               muons = cms.untracked.InputTag( 'slimmedMuons' ),
@@ -572,11 +636,17 @@ process.mon1 = cms.EDAnalyzer("SelectionAnalyzer",
                               vertices = cms.untracked.InputTag( 'offlineSlimmedPrimaryVertices' ),
                               )
 
-process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
-process.mon3 = process.mon2.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
-process.mon4 = process.mon3.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
-process.mon5 = process.mon4.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
-process.mon6 = process.mon5.clone( )
+process.mon2 = process.mon1.clone( muons = cms.untracked.InputTag( 'allMuons' ))
+process.mon3 = process.mon2.clone( muons = cms.untracked.InputTag( 'triggeredMuons' ))
+process.mon4 = process.mon3.clone( muons = cms.untracked.InputTag( 'selectedIDMuons' ))
+process.mon5 = process.mon4.clone( muons = cms.untracked.InputTag( 'selectedIsoMuons' ))
+process.mon6 = process.mon5.clone( muons = cms.untracked.InputTag( 'selectedVtxMuons' ))
+process.mon7 = process.mon6.clone( muons = cms.untracked.InputTag( 'selectedEtaMuons' ))
+process.mon8 = process.mon7.clone( muons = cms.untracked.InputTag( 'selectedMuons' ))
+'''process.mon9 = process.mon8.clone( taus = cms.untracked.InputTag( 'selectedTaus' ))
+process.mon10 = process.mon9.clone( jets = cms.untracked.InputTag( 'selectedJets' ))
+process.mon11 = process.mon10.clone( )
+'''
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.nEventsSelected = cms.EDProducer("EventCountProducer")
@@ -588,33 +658,43 @@ process.objectselection = cms.Path(
     *process.unpackedSelectedPatTrigger
     *process.matchedPatMuonTriggerMatchHLTIsoMu22
     *process.allMuons
-    *process.triggeredMuons
     *process.mon2
-    *process.selectedMuons
+    *process.triggeredMuons
     *process.mon3
-    *process.selectedTaus
+    *process.selectedIDMuons
     *process.mon4
+    *process.selectedIsoMuons
+    *process.mon5
+    *process.selectedVtxMuons
+    *process.mon6
+    *process.selectedEtaMuons
+    *process.mon7
+    *process.selectedMuons
+    *process.mon8
+    )
+'''*process.selectedTaus
+    *process.mon9
     *process.goodJets
     *process.bTaggingEffAnalyzerAK8PF
     *process.selectedJets
-    *process.mon5
+    *process.mon10
     *process.muonfilter
     *process.taufilter
     *process.jetfilter
     *process.oppositechargefilter
     *process.selectedElectrons
     *process.electronveto
-    *process.mon6
+    *process.mon11
     *process.nEventsSelected
     *process.PUWeightProducer
     *process.SVFit
     *process.kinfit
     *process.muonIDScaleFactor
     *process.muonTriggerScaleFactor
-    *process.bTaggingSF
-    )
+    *process.bTaggingSF'''
+    #)
 
-process.LS_Iso_selection = cms.Path(
+'''process.LS_Iso_selection = cms.Path(
     process.muonsWithIso
     *process.unpackedSelectedPatTrigger
     *process.matchedPatMuonTriggerMatchHLTIsoMu22
@@ -687,9 +767,9 @@ process.OS_InvIso_selection = cms.Path(
     *process.muonIDScaleFactor
     *process.muonTriggerScaleFactor
     *process.bTaggingSFOSInvIso
-    )
+    )'''
 
 
-process.e = cms.EndPath(process.out_objectselection*process.out_LS_Iso_selection*process.out_LS_InvIso_selection*process.out_OS_InvIso_selection)
+process.e = cms.EndPath(process.out_objectselection)#*process.out_LS_Iso_selection*process.out_LS_InvIso_selection*process.out_OS_InvIso_selection)
 
 
