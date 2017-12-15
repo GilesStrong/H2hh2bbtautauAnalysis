@@ -526,7 +526,7 @@ int main(int argc, char* argv[])
 
 	math::XYZTLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
-	ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > met_cov(2, 2);
+	//TMatrixD met_cov(2, 2);
 
 	//Low-level variables________________________
 	double t_0_pT, t_0_eta, t_0_phi, t_0_mass, t_0_mT; //Tau 0 variables
@@ -737,13 +737,13 @@ int main(int argc, char* argv[])
 				hT_jets = *r_jet_HT;
 				//MET________________________________
 				met_p4 = *r_met_p4;
-				met_cov = *r_met_cov;
+				//met_cov = *r_met_cov;
 				mPT_pT = met_p4.Pt();
 				mPT_phi = met_p4.Phi();
-				mPT_cov_00 = met_cov(0, 0);
-				mPT_cov_01 = met_cov(0, 1);
-				mPT_cov_10 = met_cov(1, 0);
-				mPT_cov_11 = met_cov(1, 1);
+				mPT_cov_00 = (*r_met_cov)(0, 0);
+				mPT_cov_01 = (*r_met_cov)(0, 1);
+				mPT_cov_10 = (*r_met_cov)(1, 0);
+				mPT_cov_11 = (*r_met_cov)(1, 1);
 				//Tau_0______________________________
 				t_0_p4 = *r_t_0_p4;
 				t_0_pT = t_0_p4.Pt();
