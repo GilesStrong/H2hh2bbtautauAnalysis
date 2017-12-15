@@ -707,7 +707,7 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<unsigned int> r_njets(reader, "n_jets");
 			TTreeReaderValue<float> r_jet_HT(reader, "ht_other_jets");
 			//Tau_0______________________________
-			TTreeReaderValue<math::TLorentzVector> test(reader, "p4_2");
+			TTreeReaderValue<TLorentzVector> test(reader, "p4_2");
 			TTreeReaderValue<math::XYZTLorentzVector> r_t_0_p4(reader, "p4_2");
 			TTreeReaderValue<float> r_gen_t_0_match(reader, "gen_match_2");
 			//Tau_1______________________________
