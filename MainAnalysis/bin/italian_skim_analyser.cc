@@ -514,10 +514,7 @@ int main(int argc, char* argv[])
 	parser.addOption ("monitorFile",   optutl::CommandLineParser::kString, "", "");
 
 	parser.parseArguments (argc, argv);
-	int maxEvents_ = parser.integerValue("maxEvents");
-	unsigned int outputEvery_ = parser.integerValue("outputEvery");
 	std::string outputFile_ = parser.stringValue("outputFile");
-	std::string monitorFile_ = parser.stringValue("monitorFile");
 	std::vector<std::string> inputFiles_ = parser.stringVector("inputFiles");
 	bool runOnData = parser.boolValue("runOnData");
 	bool runOnSignal = false;
@@ -536,7 +533,7 @@ int main(int argc, char* argv[])
 	double t_1_pT, t_1_eta, t_1_phi, t_1_mass, t_1_mT; //Tau 1 variables
 	double b_0_pT, b_0_eta, b_0_phi, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_pT, b_1_eta, b_1_phi, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
-	double mPT_pT, mPT_phi, mpT_cov_00, mpT_cov_01, mpT_cov_10, mpT_cov_11; //Missing ET variables
+	double mPT_pT, mPT_phi, mPT_cov_00, mPT_cov_01, mPT_cov_10, mPievtT_cov_11; //Missing ET variables
 	//___________________________________________
 	//Reconstructed variables____________________
 	double h_tt_pT, h_tt_eta, h_tt_phi, h_tt_mass; //Higgs->tau tau variables
@@ -547,7 +544,7 @@ int main(int argc, char* argv[])
 	//___________________________________________
 	//Global event variables_____________________
 	double nJets;
-	double hT, jets_hT, sT, centrality, eVis; //Global kinematics
+	double hT, hT_jets, sT, centrality, eVis; //Global kinematics
 	double sphericity, spherocity, aplanarity, aplanority, upsilon, dShape; //Event shapes for primary objects
 	double sphericityEigen0, sphericityEigen1, sphericityEigen2; //Eigenvalues for sphericity of primary objects
 	double spherocityEigen0, spherocityEigen1, spherocityEigen2; //Eigenvalues for spherocity of primary objects
@@ -693,7 +690,6 @@ int main(int argc, char* argv[])
 	//___________________________________________
 
 	// loop over all input files:
-	int ievt=0;
 	for(unsigned int iFile=0; iFile<inputFiles_.size(); ++iFile){
 		std::string filename = inputFiles_[iFile];
 		TFile* inFile = TFile::Open(filename.c_str());
