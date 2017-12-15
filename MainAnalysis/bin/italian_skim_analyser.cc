@@ -722,7 +722,7 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<std::vector<float> > r_jets_mva(reader, "jets_mva");
 			//SVFit______________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(reader, "SVfit_p4");
-			TTreeReaderValue<float> r_svfit_mT(reader, ":SVfit_mt");
+			TTreeReaderValue<float> r_svfit_mT(reader, "SVfit_mt");
 			//KinFit______________________________
 			TTreeReaderValue<float> r_kinFit_mH(reader, "kinFit_m");
 			TTreeReaderValue<float> r_kinFit_chi2(reader, "kinFit_chi2");
