@@ -533,14 +533,14 @@ int main(int argc, char* argv[])
 
 	//Low-level variables________________________
 	double t_0_pT, t_0_eta, t_0_phi, t_0_mass, t_0_mT; //Tau 0 variables
-	double t_1_pT, t_1_eta, t_1_phi, t_1_mass, t_0_mT; //Tau 1 variables
+	double t_1_pT, t_1_eta, t_1_phi, t_1_mass, t_1_mT; //Tau 1 variables
 	double b_0_pT, b_0_eta, b_0_phi, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_pT, b_1_eta, b_1_phi, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
 	double mPT_pT, mPT_phi, mpT_cov_00, mpT_cov_01, mpT_cov_10, mpT_cov_11; //Missing ET variables
 	//___________________________________________
 	//Reconstructed variables____________________
-	double h_tt_pT, h_tt_eta, h_tt_phi, h_tt_mass, h_tt_svFit_mass; //Higgs->tau tau variables
-	double h_tt_svFit_pT, h_tt_svFit_eta, h_tt_svFit_phi, h_tt_svFit_mass, h_tt_svFit_mT //SVFit vector
+	double h_tt_pT, h_tt_eta, h_tt_phi, h_tt_mass; //Higgs->tau tau variables
+	double h_tt_svFit_pT, h_tt_svFit_eta, h_tt_svFit_phi, h_tt_svFit_mass, h_tt_svFit_mT; //SVFit vector
 	double h_bb_pT, h_bb_eta, h_bb_phi, h_bb_mass; //Higgs->bb variables
 	double diH_pT, diH_eta, diH_phi, diH_mass; //di-Higgs variables
 	double diH_kinFit_mass, diH_kinFit_chi2, diH_kinFit_conv; //Kinfit variables
@@ -699,9 +699,7 @@ int main(int argc, char* argv[])
 		TFile* inFile = TFile::Open(filename.c_str());
 
 		if(filename.find("Data") != std::string::npos || filename.find("Run201") != std::string::npos ) runOnData = true;
-		if(filename.find("InvIso") != std::string::npos) invIso = true;
 		if(filename.find("ToHHTo2B2Tau") != std::string::npos) runOnSignal = true;
-		if(filename.find("LS_") != std::string::npos) LS = true;
 
 		if( inFile ){
 
