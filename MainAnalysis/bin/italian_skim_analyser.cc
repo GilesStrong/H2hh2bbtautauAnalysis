@@ -661,13 +661,13 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("gen_b_0_eta", &gen_b_0_eta);
 	mu_tau_b_b->Branch("gen_b_0_phi", &gen_b_0_phi);
 	mu_tau_b_b->Branch("gen_b_0_E", &gen_b_0_E);
-	mu_tau_b_b->Branch("gen_b_0_match", &gen_b_0_match);
+	//mu_tau_b_b->Branch("gen_b_0_match", &gen_b_0_match);
 
 	mu_tau_b_b->Branch("gen_b_1_pT", &gen_b_1_pT);
 	mu_tau_b_b->Branch("gen_b_1_eta", &gen_b_1_eta);
 	mu_tau_b_b->Branch("gen_b_1_phi", &gen_b_1_phi);
 	mu_tau_b_b->Branch("gen_b_1_E", &gen_b_1_E);
-	mu_tau_b_b->Branch("gen_b_1_match", &gen_b_1_match);
+	//mu_tau_b_b->Branch("gen_b_1_match", &gen_b_1_match);
 
 	mu_tau_b_b->Branch("gen_diH_pT", &gen_diH_pT);
 	mu_tau_b_b->Branch("gen_diH_eta", &gen_diH_eta);
@@ -849,10 +849,12 @@ int main(int argc, char* argv[])
 				gen_b_0_eta = 0;
 				gen_b_0_phi = 0;
 				gen_b_0_E = 0;
+				//gen_b_0_match = 0;
 				gen_b_1_pT = 0;
 				gen_b_1_eta = 0;
 				gen_b_1_phi = 0;
 				gen_b_1_E = 0;
+				//gen_b_1_match = 0;
 				gen_diH_pT = 0;
 				gen_diH_eta = 0;
 				gen_diH_phi = 0;
