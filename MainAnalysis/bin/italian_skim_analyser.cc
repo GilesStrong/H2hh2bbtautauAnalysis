@@ -708,10 +708,10 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<float> r_jet_HT(reader, "ht_other_jets");
 			//Tau_0______________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_0_p4(reader, "p4_2");
-			TTreeReaderValue<float> r_gen_t_0_match(reader, "gen_match_2");
+			TTreeReaderValue<int> r_gen_t_0_match(reader, "gen_match_2");
 			//Tau_1______________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_1_p4(reader, "p4_1");
-			TTreeReaderValue<float> r_gen_t_1_match(reader, "gen_match_1");
+			TTreeReaderValue<int> r_gen_t_1_match(reader, "gen_match_1");
 			//MET________________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(reader, "pfMET_p4");
 			TTreeReaderValue<TMatrixD> r_met_cov(reader, "pfMET_cov");
