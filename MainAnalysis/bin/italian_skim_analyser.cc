@@ -800,9 +800,9 @@ int main(int argc, char* argv[])
 				h_tt_svFit_mass = svFit_p4.M();
 				h_tt_svFit_mT = *r_svfit_mT;
 				//KinFit______________________________
-				diH_kinFit_mass = *r_kinFit_mH.at(0);
-				diH_kinFit_chi2 = *r_kinFit_chi2.at(0);
-				diH_kinFit_conv = *r_kinFit_conv.at(0);
+				diH_kinFit_mass = *r_kinFit_mH[0];
+				diH_kinFit_chi2 = *r_kinFit_chi2[0];
+				diH_kinFit_conv = *r_kinFit_conv[0];
 				//h->bb_______________________________
 				hbb_p4 = bjet0_p4+bjet1_p4;
 				h_bb_pT = hbb_p4.Pt();
