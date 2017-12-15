@@ -694,7 +694,7 @@ int main(int argc, char* argv[])
 		std::string filename = inputFiles_[iFile];
 		TFile* inFile = TFile::Open(filename.c_str());
 
-		if(filename.find("Data") != std::string::npos || filename.find("Run201") != std::string::npos ) runOnData = true;
+		//if(filename.find("Data") != std::string::npos || filename.find("Run201") != std::string::npos ) runOnData = true;
 		if(filename.find("ToHHTo2B2Tau") != std::string::npos) runOnSignal = true;
 
 		if( inFile ){
@@ -868,8 +868,9 @@ int main(int argc, char* argv[])
 				gen_h_tt_E = 0;
 				//_____________________________
 				//_____________________________
-				/*if (runOnSignal) { //TODO:Add this
-					//Get gen info______________
+				if (runOnSignal) { //TODO:Add this
+					continue;
+					/*//Get gen info______________
 					int gen_hBB_key, gen_hTauTau_key;
 					if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts, higgsDecay)) { //If both Higgs found
 						const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
@@ -924,10 +925,10 @@ int main(int argc, char* argv[])
 						gen_h_tt_phi = gen_htt_p4.Phi();
 						gen_h_tt_E = gen_htt_p4.E();
 						//__________________________
-					}
+					}*/
 				}
 				//_____________________________
-				//_____________________________*/
+				//_____________________________
 				mu_tau_b_b->Fill();
 				//________________________________
 
