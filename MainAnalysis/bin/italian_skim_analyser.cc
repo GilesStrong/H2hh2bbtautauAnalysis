@@ -704,7 +704,7 @@ int main(int argc, char* argv[])
 			//Define event features______________
 			//General info_______________________
 			TTreeReaderValue<double> r_weight(reader, "weight_total");
-			TTreeReaderValue<int> r_njets(reader, "n_jets");
+			TTreeReaderValue<unsigned int> r_njets(reader, "n_jets");
 			TTreeReaderValue<float> r_jet_HT(reader, "ht_other_jets");
 			//Tau_0______________________________
 			TTreeReaderValue<math::XYZTLorentzVector> r_t_0_p4(reader, "p4_2");
