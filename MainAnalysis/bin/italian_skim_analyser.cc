@@ -707,22 +707,21 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<unsigned int> r_njets(reader, "n_jets");
 			TTreeReaderValue<float> r_jet_HT(reader, "ht_other_jets");
 			//Tau_0______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > test(reader, "p4_2");
-			TTreeReaderValue<math::XYZTLorentzVector> r_t_0_p4(reader, "p4_2");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_0_p4(reader, "p4_2");
 			TTreeReaderValue<float> r_gen_t_0_match(reader, "gen_match_2");
 			//Tau_1______________________________
-			TTreeReaderValue<math::XYZTLorentzVector> r_t_1_p4(reader, "p4_1");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_1_p4(reader, "p4_1");
 			TTreeReaderValue<float> r_gen_t_1_match(reader, "gen_match_1");
 			//MET________________________________
-			TTreeReaderValue<math::XYZTLorentzVector> r_met_p4(reader, "pfMET_p4");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(reader, "pfMET_p4");
 			TTreeReaderValue<TMatrixD> r_met_cov(reader, "pfMET_cov");
 			//Jets_______________________________
-			TTreeReaderValue<std::vector<math::XYZTLorentzVector> > r_jets_p4(reader, "jets_p4");
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > > r_jets_p4(reader, "jets_p4");
 			TTreeReaderValue<std::vector<float> > r_jets_csv(reader, "jets_csv");
 			TTreeReaderValue<std::vector<float> > r_jets_rawf(reader, "jets_rawf");
 			TTreeReaderValue<std::vector<float> > r_jets_mva(reader, "jets_mva");
 			//SVFit______________________________
-			TTreeReaderValue<math::XYZTLorentzVector> r_svfit_p4(reader, "SVfit_p4");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(reader, "SVfit_p4");
 			TTreeReaderValue<float> r_svfit_mT(reader, "SVfit_mT");
 			//KinFit______________________________
 			TTreeReaderValue<float> r_kinFit_mH(reader, "kinFit_m");
