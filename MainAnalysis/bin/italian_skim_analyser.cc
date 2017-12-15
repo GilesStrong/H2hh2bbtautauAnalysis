@@ -724,9 +724,9 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(reader, "SVfit_p4");
 			TTreeReaderValue<float> r_svfit_mT(reader, "SVfit_mt");
 			//KinFit______________________________
-			TTreeReaderValue<vector<float> > r_kinFit_mH(reader, "kinFit_m");
-			TTreeReaderValue<vector<float> > r_kinFit_chi2(reader, "kinFit_chi2");
-			TTreeReaderValue<vector<int> > r_kinFit_conv(reader, "kinFit_convergence");
+			TTreeReaderValue<std::vector<float> > r_kinFit_mH(reader, "kinFit_m");
+			TTreeReaderValue<std::vector<float> > r_kinFit_chi2(reader, "kinFit_chi2");
+			TTreeReaderValue<std::vector<int> > r_kinFit_conv(reader, "kinFit_convergence");
 			//___________________________________
 
 			while (reader.Next()) {
