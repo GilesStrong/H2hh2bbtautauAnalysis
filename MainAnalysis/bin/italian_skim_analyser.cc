@@ -533,7 +533,7 @@ int main(int argc, char* argv[])
 	double t_1_pT, t_1_eta, t_1_phi, t_1_mass, t_1_mT; //Tau 1 variables
 	double b_0_pT, b_0_eta, b_0_phi, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_pT, b_1_eta, b_1_phi, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
-	double mPT_pT, mPT_phi, mPT_cov_00, mPT_cov_01, mPT_cov_10, mPievtT_cov_11; //Missing ET variables
+	double mPT_pT, mPT_phi, mPT_cov_00, mPT_cov_01, mPT_cov_10, mPT_cov_11; //Missing ET variables
 	//___________________________________________
 	//Reconstructed variables____________________
 	double h_tt_pT, h_tt_eta, h_tt_phi, h_tt_mass; //Higgs->tau tau variables
@@ -552,8 +552,8 @@ int main(int argc, char* argv[])
 	//Generator-level variables for regression and cuts
 	double gen_t_0_pT, gen_t_0_eta, gen_t_0_phi, gen_t_0_E; bool gen_t_0_match;//Tau 0 variables
 	double gen_t_1_pT, gen_t_1_eta, gen_t_1_phi, gen_t_1_E; bool gen_t_1_match; //Tau 1 variables
-	double gen_b_0_pT, gen_b_0_eta, gen_b_0_phi, gen_b_0_E; bool gen_b_0_match; //b-jet 0 variables
-	double gen_b_1_pT, gen_b_1_eta, gen_b_1_phi, gen_b_1_E; bool gen_b_1_match; //b-jet 1 variables
+	double gen_b_0_pT, gen_b_0_eta, gen_b_0_phi, gen_b_0_E; //bool gen_b_0_match; //b-jet 0 variables
+	double gen_b_1_pT, gen_b_1_eta, gen_b_1_phi, gen_b_1_E; //bool gen_b_1_match; //b-jet 1 variables
 	double gen_diH_pT, gen_diH_eta, gen_diH_phi, gen_diH_E, gen_diH_mass; //diHiggs variables
 	double gen_h_bb_pT, gen_h_bb_eta, gen_h_bb_phi, gen_h_bb_E; //Higgs->bb variables
 	double gen_h_tt_pT, gen_h_tt_eta, gen_h_tt_phi, gen_h_tt_E; //Higgs->tau tau variables
