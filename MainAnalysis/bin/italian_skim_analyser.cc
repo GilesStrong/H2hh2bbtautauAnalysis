@@ -724,9 +724,9 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(reader, "SVfit_p4");
 			TTreeReaderValue<float> r_svfit_mT(reader, "SVfit_mt");
 			//KinFit______________________________
-			TTreeReaderValue<float> r_kinFit_mH(reader, "kinFit_m");
-			TTreeReaderValue<float> r_kinFit_chi2(reader, "kinFit_chi2");
-			TTreeReaderValue<float> r_kinFit_conv(reader, "kinFit_convergence");
+			TTreeReaderValue<vector<float> > r_kinFit_mH(reader, "kinFit_m");
+			TTreeReaderValue<vector<float> > r_kinFit_chi2(reader, "kinFit_chi2");
+			TTreeReaderValue<vector<int> > r_kinFit_conv(reader, "kinFit_convergence");
 			//___________________________________
 
 			while (reader.Next()) {
@@ -800,9 +800,9 @@ int main(int argc, char* argv[])
 				h_tt_svFit_mass = svFit_p4.M();
 				h_tt_svFit_mT = *r_svfit_mT;
 				//KinFit______________________________
-				diH_kinFit_mass = *r_kinFit_mH;
-				diH_kinFit_chi2 = *r_kinFit_chi2;
-				diH_kinFit_conv = *r_kinFit_conv;
+				diH_kinFit_mass = *r_kinFit_mH.product();
+				diH_kinFit_chi2 = *r_kinFit_chi2.product();
+				diH_kinFit_conv = *r_kinFit_conv.product();
 				//h->bb_______________________________
 				hbb_p4 = bjet0_p4+bjet1_p4;
 				h_bb_pT = hbb_p4.Pt();
