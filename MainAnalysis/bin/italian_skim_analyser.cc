@@ -716,7 +716,7 @@ int main(int argc, char* argv[])
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(reader, "pfMET_p4");
 			TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_met_cov(reader, "pfMET_cov");
 			//Jets_______________________________
-			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > > r_jets_p4(reader, "jets_p4");
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_jets_p4(reader, "jets_p4");
 			TTreeReaderValue<std::vector<float> > r_jets_csv(reader, "jets_csv");
 			TTreeReaderValue<std::vector<float> > r_jets_rawf(reader, "jets_rawf");
 			TTreeReaderValue<std::vector<float> > r_jets_mva(reader, "jets_mva");
