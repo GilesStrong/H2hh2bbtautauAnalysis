@@ -547,6 +547,12 @@ int main(int argc, char* argv[])
 	double twist_t_0_t_1;
 	double twist_h_bb_h_tt;
 	//___________________________________________
+	//DeltaR_____________________________________
+	double dR_b_0_b_1, dR_b_0_t_0, dR_b_0_t_1;
+	double dR_b_1_t_0, dR_b_1_t_1;
+	double dR_t_0_t_1;
+	double dR_h_bb_h_tt;
+	//___________________________________________
 	//Global event variables_____________________
 	double nJets;
 	double hT, hT_jets, sT, centrality, eVis; //Global kinematics
@@ -651,6 +657,14 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("twist_b_1_t_1", &twist_b_1_t_1);
 	mu_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
 	mu_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
+
+	mu_tau_b_b->Branch("twist_b_0_b_1", &dR_b_0_b_1);
+	mu_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
+	mu_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
+	mu_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
+	mu_tau_b_b->Branch("dR_b_1_t_1", &dR_b_1_t_1);
+	mu_tau_b_b->Branch("dR_t_0_t_1", &dR_t_0_t_1);
+	mu_tau_b_b->Branch("dR_h_bb_h_tt", &dR_h_bb_h_tt);
 
 	mu_tau_b_b->Branch("nJets", &nJets);
 	mu_tau_b_b->Branch("hT", &hT);
@@ -883,9 +897,16 @@ int main(int argc, char* argv[])
 				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/ROOT::Math::VectorUtil::DeltaEta(t_0_p4, t_1_p4)));
 				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/ROOT::Math::VectorUtil::DeltaEta(hbb_p4, htt_p4)));
 				//____________________________________
-
+				//dR__________________________________
+				dR_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
+				dR_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
+				dR_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
+				dR_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
+				dR_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
+				dR_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
+				dR_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
+				//____________________________________
 				
-
 				//MC truth_____________________
 				//Reset variables______________
 				/*gen_t_0_px = 0;
