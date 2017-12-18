@@ -536,7 +536,7 @@ int main(int argc, char* argv[])
 	//___________________________________________
 	//Reconstructed variables____________________
 	double h_tt_px, h_tt_py, h_tt_pz, h_tt_mass; //Higgs->tau tau variables
-	double h_tt_svFit_pz, h_tt_svFit_py, h_tt_svFit_pz, h_tt_svFit_mass, h_tt_svFit_mT; //SVFit vector
+	double h_tt_svFit_px, h_tt_svFit_py, h_tt_svFit_pz, h_tt_svFit_mass, h_tt_svFit_mT; //SVFit vector
 	double h_bb_px, h_bb_py, h_bb_pz, h_bb_mass; //Higgs->bb variables
 	double diH_px, diH_py, diH_pz, diH_mass; //di-Higgs variables
 	double diH_kinFit_mass, diH_kinFit_chi2, diH_kinFit_conv; //Kinfit variables
@@ -549,13 +549,13 @@ int main(int argc, char* argv[])
 	double spherocityEigen0, spherocityEigen1, spherocityEigen2; //Eigenvalues for spherocity of primary objects
 	//___________________________________________
 	//Generator-level variables for regression and cuts
-	double gen_t_0_px, gen_t_0_py, gen_t_0_pz, gen_t_0_E; bool gen_t_0_match;//Tau 0 variables
-	double gen_t_1_px, gen_t_1_py, gen_t_1_pz, gen_t_1_E; bool gen_t_1_match; //Tau 1 variables
-	double gen_b_0_px, gen_b_0_py, gen_b_0_pz, gen_b_0_E; //bool gen_b_0_match; //b-jet 0 variables
+	/*double gen_t_0_px, gen_t_0_py, gen_t_0_pz, gen_t_0_E;*/ bool gen_t_0_match;//Tau 0 variables
+	/*double gen_t_1_px, gen_t_1_py, gen_t_1_pz, gen_t_1_E;*/ bool gen_t_1_match; //Tau 1 variables
+	/*double gen_b_0_px, gen_b_0_py, gen_b_0_pz, gen_b_0_E; //bool gen_b_0_match; //b-jet 0 variables
 	double gen_b_1_px, gen_b_1_py, gen_b_1_p, gen_b_1_E; //bool gen_b_1_match; //b-jet 1 variables
 	double gen_diH_px, gen_diH_py, gen_diH_pz, gen_diH_E, gen_diH_mass; //diHiggs variables
 	double gen_h_bb_px, gen_h_bb_py, gen_h_bb_pz, gen_h_bb_E; //Higgs->bb variables
-	double gen_h_tt_px, gen_h_tt_py, gen_h_tt_pz, gen_h_tt_E; //Higgs->tau tau variables
+	double gen_h_tt_px, gen_h_tt_py, gen_h_tt_pz, gen_h_tt_E; //Higgs->tau tau variables*/
 	bool gen_mctMatch; //MC truth match
 	//___________________________________________
 
@@ -613,9 +613,9 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("h_bb_pz", &h_bb_pz);
 	mu_tau_b_b->Branch("h_bb_mass", &h_bb_mass);
 
-	mu_tau_b_b->Branch("diH_pT", &diH_pT);
-	mu_tau_b_b->Branch("diH_eta", &diH_eta);
-	mu_tau_b_b->Branch("diH_phi", &diH_phi);
+	mu_tau_b_b->Branch("diH_px", &diH_px);
+	mu_tau_b_b->Branch("diH_py", &diH_py);
+	mu_tau_b_b->Branch("diH_pz", &diH_pz);
 	mu_tau_b_b->Branch("diH_mass", &diH_mass);
 
 	mu_tau_b_b->Branch("diH_kinFit_mass", &diH_kinFit_mass);
@@ -643,33 +643,33 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("spherocityEigen1", &spherocityEigen1);
 	mu_tau_b_b->Branch("spherocityEigen2", &spherocityEigen2);
 
-	mu_tau_b_b->Branch("gen_t_0_px", &gen_t_0_px);
+/*	mu_tau_b_b->Branch("gen_t_0_px", &gen_t_0_px);
 	mu_tau_b_b->Branch("gen_t_0_py", &gen_t_0_py);
 	mu_tau_b_b->Branch("gen_t_0_pz", &gen_t_0_pz);
-	mu_tau_b_b->Branch("gen_t_0_E", &gen_t_0_E); 
+	mu_tau_b_b->Branch("gen_t_0_E", &gen_t_0_E); */
 	mu_tau_b_b->Branch("gen_t_0_match", &gen_t_0_match);
 
-	mu_tau_b_b->Branch("gen_t_1_px", &gen_t_1_px);
+/*	mu_tau_b_b->Branch("gen_t_1_px", &gen_t_1_px);
 	mu_tau_b_b->Branch("gen_t_1_py", &gen_t_1_py);
 	mu_tau_b_b->Branch("gen_t_1_pz", &gen_t_1_pz);
-	mu_tau_b_b->Branch("gen_t_1_E", &gen_t_1_E);
+	mu_tau_b_b->Branch("gen_t_1_E", &gen_t_1_E);*/
 	mu_tau_b_b->Branch("gen_t_1_match", &gen_t_1_match);
 
-	mu_tau_b_b->Branch("gen_b_0_px", &gen_b_0_px);
+/*	mu_tau_b_b->Branch("gen_b_0_px", &gen_b_0_px);
 	mu_tau_b_b->Branch("gen_b_0_py", &gen_b_0_py);
 	mu_tau_b_b->Branch("gen_b_0_pz", &gen_b_0_pz);
-	mu_tau_b_b->Branch("gen_b_0_E", &gen_b_0_E);
+	mu_tau_b_b->Branch("gen_b_0_E", &gen_b_0_E);*/
 	//mu_tau_b_b->Branch("gen_b_0_match", &gen_b_0_match);
 
-	mu_tau_b_b->Branch("gen_b_1_px", &gen_b_1_px);
+/*	mu_tau_b_b->Branch("gen_b_1_px", &gen_b_1_px);
 	mu_tau_b_b->Branch("gen_b_1_py", &gen_b_1_py);
 	mu_tau_b_b->Branch("gen_b_1_pz", &gen_b_1_pz);
-	mu_tau_b_b->Branch("gen_b_1_E", &gen_b_1_E);
+	mu_tau_b_b->Branch("gen_b_1_E", &gen_b_1_E);*/
 	//mu_tau_b_b->Branch("gen_b_1_match", &gen_b_1_match);
 
-	mu_tau_b_b->Branch("gen_diH_pT", &gen_diH_pT);
-	mu_tau_b_b->Branch("gen_diH_eta", &gen_diH_eta);
-	mu_tau_b_b->Branch("gen_diH_phi", &gen_diH_phi);
+/*	mu_tau_b_b->Branch("gen_diH_px", &gen_diH_px);
+	mu_tau_b_b->Branch("gen_diH_py", &gen_diH_py);
+	mu_tau_b_b->Branch("gen_diH_pz", &gen_diH_pz);
 	mu_tau_b_b->Branch("gen_diH_E", &gen_diH_E);
 	mu_tau_b_b->Branch("gen_diH_mass", &gen_diH_mass);
 
@@ -681,7 +681,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("gen_h_tt_px", &gen_h_tt_px);
 	mu_tau_b_b->Branch("gen_h_tt_py", &gen_h_tt_py);
 	mu_tau_b_b->Branch("gen_h_tt_pz", &gen_h_tt_pz);
-	mu_tau_b_b->Branch("gen_h_tt_E", &gen_h_tt_E);
+	mu_tau_b_b->Branch("gen_h_tt_E", &gen_h_tt_E);*/
 
 	mu_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
 	mu_tau_b_b->Branch("gen_weight", &weight);
@@ -814,9 +814,9 @@ int main(int argc, char* argv[])
 				h_tt_mass = htt_p4.M();
 				//Di-higgs____________________________
 				hh_p4 = hbb_p4+htt_p4;
-				diH_pT = hh_p4.Px();
-				diH_eta = hh_p4.Py();
-				diH_phi = hh_p4.Pz();
+				diH_px = hh_p4.Px();
+				diH_py = hh_p4.Py();
+				diH_pz = hh_p4.Pz();
 				diH_mass = hh_p4.M();
 				//Shapes__________________________
 				getGlobalEventInfo(&t_0_p4, &t_1_p4, &bjet0_p4, &bjet0_p4, &met_p4,
@@ -834,7 +834,7 @@ int main(int argc, char* argv[])
 
 				//MC truth_____________________
 				//Reset variables______________
-				gen_t_0_px = 0;
+				/*gen_t_0_px = 0;
 				gen_t_0_py = 0;
 				gen_t_0_pz = 0;
 				gen_t_0_E = 0;
@@ -852,9 +852,9 @@ int main(int argc, char* argv[])
 				gen_b_1_pz = 0;
 				gen_b_1_E = 0;
 				//gen_b_1_match = 0;
-				gen_diH_pT = 0;
-				gen_diH_eta = 0;
-				gen_diH_phi = 0;
+				gen_diH_px = 0;
+				gen_diH_py = 0;
+				gen_diH_pz = 0;
 				gen_diH_E = 0;
 				gen_diH_mass = 0;
 				gen_h_bb_px = 0;
@@ -864,7 +864,7 @@ int main(int argc, char* argv[])
 				gen_h_tt_px = 0;
 				gen_h_tt_py = 0;
 				gen_h_tt_pz = 0;
-				gen_h_tt_E = 0;
+				gen_h_tt_E = 0;*/
 				//_____________________________
 				//_____________________________
 				if (runOnSignal) { //TODO:Add this
@@ -910,9 +910,9 @@ int main(int argc, char* argv[])
 						gen_b_1_py = gen_bjet1_p4.Py();
 						gen_b_1_pz = gen_bjet1_p4.Pz();
 						gen_b_1_E = gen_bjet1_p4.E();
-						gen_diH_pT = gen_hh_p4.Px();
-						gen_diH_eta = gen_hh_p4.Py();
-						gen_diH_phi = gen_hh_p4.Pz();
+						gen_diH_px = gen_hh_p4.Px();
+						gen_diH_py = gen_hh_p4.Py();
+						gen_diH_pz = gen_hh_p4.Pz();
 						gen_diH_E = gen_hh_p4.E();
 						gen_diH_mass = gen_hh_p4.M();
 						gen_h_bb_px = gen_hbb_p4.Px();
