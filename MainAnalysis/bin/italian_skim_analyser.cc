@@ -532,7 +532,7 @@ int main(int argc, char* argv[])
 	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mass, t_1_mT; //Tau 1 variables
 	double b_0_px, b_0_py, b_0_pz, b_0_P, b_0_E, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_px, b_1_py, b_1_pz, b_1_P, b_1_E, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
-	double mPT_px, mPT_py; //mPT_cov_00, mPT_cov_01, mPT_cov_10, mPT_cov_11; //Missing ET variables
+	double met_px, met_py, met_pT; //met_cov_00, met_cov_01, met_cov_10, met_cov_11; //Missing ET variables
 	//___________________________________________
 	//Reconstructed variables____________________
 	double h_tt_px, h_tt_py, h_tt_pz, h_tt_P, h_tt_E, h_tt_mass; //Higgs->tau tau variables
@@ -587,7 +587,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_1_pz", &t_1_pz);
 	mu_tau_b_b->Branch("t_1_P", &t_1_P);
 	mu_tau_b_b->Branch("t_1_E", &t_1_E);
-	mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
+	//mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
 	mu_tau_b_b->Branch("t_1_mT", &t_1_mT);
 
 	mu_tau_b_b->Branch("b_0_px", &b_0_px);
@@ -610,12 +610,13 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("b_1_rawf", &b_1_rawf);
 	mu_tau_b_b->Branch("b_1_mva", &b_1_mva);
 
-	mu_tau_b_b->Branch("mPT_px", &mPT_px);
-	mu_tau_b_b->Branch("mPT_py", &mPT_py);
-	/*mu_tau_b_b->Branch("mPT_cov_00", &mPT_cov_00);
-	mu_tau_b_b->Branch("mPT_cov_01", &mPT_cov_01);
-	mu_tau_b_b->Branch("mPT_cov_10", &mPT_cov_10);
-	mu_tau_b_b->Branch("mPT_cov_11", &mPT_cov_11);*/
+	mu_tau_b_b->Branch("met_px", &met_px);
+	mu_tau_b_b->Branch("met_py", &met_py);
+	mu_tau_b_b->Branch("met_pT", &met_pT);
+	/*mu_tau_b_b->Branch("met_cov_00", &met_cov_00);
+	mu_tau_b_b->Branch("met_cov_01", &met_cov_01);
+	mu_tau_b_b->Branch("met_cov_10", &met_cov_10);
+	mu_tau_b_b->Branch("met_cov_11", &met_cov_11);*/
 
 	mu_tau_b_b->Branch("h_tt_px", &h_tt_px);
 	mu_tau_b_b->Branch("h_tt_py", &h_tt_py);
@@ -779,12 +780,13 @@ int main(int argc, char* argv[])
 				hT_jets = *r_jet_HT;
 				//MET________________________________
 				met_p4 = *r_met_p4;
-				mPT_px = met_p4.Px();
-				mPT_py = met_p4.Py();
-				/*mPT_cov_00 = (*r_met_cov)(0, 0);
-				mPT_cov_01 = (*r_met_cov)(0, 1);
-				mPT_cov_10 = (*r_met_cov)(1, 0);
-				mPT_cov_11 = (*r_met_cov)(1, 1);*/
+				met_px = met_p4.Px();
+				met_py = met_p4.Py();
+				met_pT = met_p4.Pt();
+				/*met_cov_00 = (*r_met_cov)(0, 0);
+				met_cov_01 = (*r_met_cov)(0, 1);
+				met_cov_10 = (*r_met_cov)(1, 0);
+				met_cov_11 = (*r_met_cov)(1, 1);*/
 				//Tau_0______________________________
 				t_0_p4 = *r_t_0_p4;
 				t_0_px = t_0_p4.Px();
