@@ -804,7 +804,7 @@ int main(int argc, char* argv[])
 				t_1_pz = t_1_p4.Pz();
 				t_1_P = t_1_p4.P();
 				t_1_E = t_1_p4.E();
-				t_1_mass = t_1_p4.M();
+				//t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
 				gen_t_1_match = *r_gen_t_1_match;
 				//Jets_______________________________
