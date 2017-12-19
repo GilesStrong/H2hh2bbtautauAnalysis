@@ -528,17 +528,17 @@ int main(int argc, char* argv[])
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
 
 	//Low-level variables________________________
-	double t_0_px, t_0_py, t_0_pz, t_0_|p|, t_0_E, t_0_mass, t_0_mT; //Tau 0 variables
-	double t_1_px, t_1_py, t_1_pz, t_1_|p|, t_1_E, t_1_mass, t_1_mT; //Tau 1 variables
-	double b_0_px, b_0_py, b_0_pz, b_0_|p|, b_0_E, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
-	double b_1_px, b_1_py, b_1_pz, b_1_|p|, b_1_E, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
+	double t_0_px, t_0_py, t_0_pz, t_0_P, t_0_E, t_0_mass, t_0_mT; //Tau 0 variables
+	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mass, t_1_mT; //Tau 1 variables
+	double b_0_px, b_0_py, b_0_pz, b_0_P, b_0_E, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
+	double b_1_px, b_1_py, b_1_pz, b_1_P, b_1_E, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
 	double mPT_px, mPT_py; //mPT_cov_00, mPT_cov_01, mPT_cov_10, mPT_cov_11; //Missing ET variables
 	//___________________________________________
 	//Reconstructed variables____________________
-	double h_tt_px, h_tt_py, h_tt_pz, h_tt_|p|, h_tt_E, h_tt_mass; //Higgs->tau tau variables
-	double h_tt_svFit_px, h_tt_svFit_py, h_tt_svFit_pz, h_tt_svFit_|p|, h_tt_svFit_E, h_tt_svFit_mass, h_tt_svFit_mT; //SVFit vector
-	double h_bb_px, h_bb_py, h_bb_pz, h_bb_|p|, h_bb_E, h_bb_mass; //Higgs->bb variables
-	double diH_px, diH_py, diH_pz, diH_|p|, diH_E, diH_mass; //di-Higgs variables
+	double h_tt_px, h_tt_py, h_tt_pz, h_tt_P, h_tt_E, h_tt_mass; //Higgs->tau tau variables
+	double h_tt_svFit_px, h_tt_svFit_py, h_tt_svFit_pz, h_tt_svFit_P, h_tt_svFit_E, h_tt_svFit_mass, h_tt_svFit_mT; //SVFit vector
+	double h_bb_px, h_bb_py, h_bb_pz, h_bb_P, h_bb_E, h_bb_mass; //Higgs->bb variables
+	double diH_px, diH_py, diH_pz, diH_P, diH_E, diH_mass; //di-Higgs variables
 	double diH_kinFit_mass, diH_kinFit_chi2, diH_kinFit_conv; //Kinfit variables
 	//___________________________________________
 	//Twist______________________________________
@@ -577,7 +577,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_0_px", &t_0_px);
 	mu_tau_b_b->Branch("t_0_py", &t_0_py);
 	mu_tau_b_b->Branch("t_0_pz", &t_0_pz);
-	mu_tau_b_b->Branch("t_0_|p|", &t_0_|p|);
+	mu_tau_b_b->Branch("t_0_P", &t_0_P);
 	mu_tau_b_b->Branch("t_0_E", &t_0_E);
 	mu_tau_b_b->Branch("t_0_mass", &t_0_mass);
 	mu_tau_b_b->Branch("t_0_mT", &t_0_mT);
@@ -585,7 +585,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_1_px", &t_1_px);
 	mu_tau_b_b->Branch("t_1_py", &t_1_py);
 	mu_tau_b_b->Branch("t_1_pz", &t_1_pz);
-	mu_tau_b_b->Branch("t_1_|p|", &t_1_|p|);
+	mu_tau_b_b->Branch("t_1_P", &t_1_P);
 	mu_tau_b_b->Branch("t_1_E", &t_1_E);
 	mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
 	mu_tau_b_b->Branch("t_1_mT", &t_1_mT);
@@ -593,7 +593,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("b_0_px", &b_0_px);
 	mu_tau_b_b->Branch("b_0_py", &b_0_py);
 	mu_tau_b_b->Branch("b_0_pz", &b_0_pz);
-	mu_tau_b_b->Branch("b_0_|p|", &b_0_|p|);
+	mu_tau_b_b->Branch("b_0_P", &b_0_P);
 	mu_tau_b_b->Branch("b_0_E", &b_0_E);
 	mu_tau_b_b->Branch("b_0_mass", &b_0_mass);
 	mu_tau_b_b->Branch("b_0_csv", &b_0_csv);
@@ -603,7 +603,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("b_1_px", &b_1_px);
 	mu_tau_b_b->Branch("b_1_py", &b_1_py);
 	mu_tau_b_b->Branch("b_1_pz", &b_1_pz);
-	mu_tau_b_b->Branch("b_1_|p|", &b_1_|p|);
+	mu_tau_b_b->Branch("b_1_P", &b_1_P);
 	mu_tau_b_b->Branch("b_1_E", &b_1_E);
 	mu_tau_b_b->Branch("b_1_mass", &b_1_mass);
 	mu_tau_b_b->Branch("b_1_csv", &b_1_csv);
@@ -620,14 +620,14 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("h_tt_px", &h_tt_px);
 	mu_tau_b_b->Branch("h_tt_py", &h_tt_py);
 	mu_tau_b_b->Branch("h_tt_pz", &h_tt_pz);
-	mu_tau_b_b->Branch("h_tt_|p|", &h_tt_|p|);
+	mu_tau_b_b->Branch("h_tt_P", &h_tt_P);
 	mu_tau_b_b->Branch("h_tt_E", &h_tt_E);
 	mu_tau_b_b->Branch("h_tt_mass", &h_tt_mass);
 
 	mu_tau_b_b->Branch("h_tt_svFit_px", &h_tt_svFit_px);
 	mu_tau_b_b->Branch("h_tt_svFit_py", &h_tt_svFit_py);
 	mu_tau_b_b->Branch("h_tt_svFit_pz", &h_tt_svFit_pz);
-	mu_tau_b_b->Branch("h_tt_svFit_|p|", &h_tt_svFit_|p|);
+	mu_tau_b_b->Branch("h_tt_svFit_P", &h_tt_svFit_P);
 	mu_tau_b_b->Branch("h_tt_svFit_E", &h_tt_svFit_E);
 	mu_tau_b_b->Branch("h_tt_svFit_mass", &h_tt_svFit_mass);
 	mu_tau_b_b->Branch("h_tt_svFit_mT", &h_tt_svFit_mT);
@@ -635,14 +635,14 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("h_bb_px", &h_bb_px);
 	mu_tau_b_b->Branch("h_bb_py", &h_bb_py);
 	mu_tau_b_b->Branch("h_bb_pz", &h_bb_pz);
-	mu_tau_b_b->Branch("h_bb_|p|", &h_bb_|p|);
+	mu_tau_b_b->Branch("h_bb_P", &h_bb_P);
 	mu_tau_b_b->Branch("h_bb_E", &h_bb_E);
 	mu_tau_b_b->Branch("h_bb_mass", &h_bb_mass);
 
 	mu_tau_b_b->Branch("diH_px", &diH_px);
 	mu_tau_b_b->Branch("diH_py", &diH_py);
 	mu_tau_b_b->Branch("diH_pz", &diH_pz);
-	mu_tau_b_b->Branch("diH_|p|", &diH_|p|);
+	mu_tau_b_b->Branch("diH_P", &diH_P);
 	mu_tau_b_b->Branch("diH_E", &diH_E);
 	mu_tau_b_b->Branch("diH_mass", &diH_mass);
 
@@ -790,7 +790,7 @@ int main(int argc, char* argv[])
 				t_0_px = t_0_p4.Px();
 				t_0_py = t_0_p4.Py();
 				t_0_pz = t_0_p4.Pz();
-				t_0_|p| = t_0_p4.P();
+				t_0_P = t_0_p4.P();
 				t_0_E = t_0_p4.E();
 				t_0_mass = t_0_p4.M();
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
@@ -800,7 +800,7 @@ int main(int argc, char* argv[])
 				t_1_px = t_1_p4.Px();
 				t_1_py = t_1_p4.Py();
 				t_1_pz = t_1_p4.Pz();
-				t_1_|p| = t_1_p4.P();
+				t_1_P = t_1_p4.P();
 				t_1_E = t_1_p4.E();
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
@@ -831,14 +831,14 @@ int main(int argc, char* argv[])
 				b_0_px = bjet0_p4.Px();
 				b_0_py = bjet0_p4.Py();
 				b_0_pz = bjet0_p4.Pz();
-				b_0_|p| = bjet0_p4.P();
+				b_0_P = bjet0_p4.P();
 				b_0_E = bjet0_p4.E();
 				b_0_mass = bjet0_p4.M();
 
 				b_1_px = bjet1_p4.Px();
 				b_1_py = bjet1_p4.Py();
 				b_1_pz = bjet1_p4.Pz();
-				b_1_|p| = bjet1_p4.P();
+				b_1_P = bjet1_p4.P();
 				b_1_E = bjet1_p4.E();
 				b_1_mass = bjet1_p4.M();
 				//SVFit_______________________________
@@ -846,7 +846,7 @@ int main(int argc, char* argv[])
 				h_tt_svFit_px = svFit_p4.Px();
 				h_tt_svFit_py = svFit_p4.Py();
 				h_tt_svFit_pz = svFit_p4.Pz();
-				h_tt_svFit_|p| = svFit_p4.P();
+				h_tt_svFit_P = svFit_p4.P();
 				h_tt_svFit_E = svFit_p4.E();
 				h_tt_svFit_mass = svFit_p4.M();
 				h_tt_svFit_mT = *r_svfit_mT;
@@ -859,7 +859,7 @@ int main(int argc, char* argv[])
 				h_bb_px = hbb_p4.Px();
 				h_bb_py = hbb_p4.Py();
 				h_bb_pz = hbb_p4.Pz();
-				h_bb_|p| = hbb_p4.P();
+				h_bb_P = hbb_p4.P();
 				h_bb_E = hbb_p4.E();
 				h_bb_mass = hbb_p4.M();
 				//h->tautau___________________________
@@ -867,7 +867,7 @@ int main(int argc, char* argv[])
 				h_tt_px = htt_p4.Px();
 				h_tt_py = htt_p4.Py();
 				h_tt_pz = htt_p4.Pz();
-				h_tt_|p| = htt_p4.P();
+				h_tt_P = htt_p4.P();
 				h_tt_E = htt_p4.E();
 				h_tt_mass = htt_p4.M();
 				//Di-higgs____________________________
@@ -875,7 +875,7 @@ int main(int argc, char* argv[])
 				diH_px = hh_p4.Px();
 				diH_py = hh_p4.Py();
 				diH_pz = hh_p4.Pz();
-				diH_|p| = hh_p4.P();
+				diH_P = hh_p4.P();
 				diH_E = hh_p4.E();
 				diH_mass = hh_p4.M();
 				//Shapes__________________________
@@ -889,13 +889,13 @@ int main(int argc, char* argv[])
 					&spherocityEigen0, &spherocityEigen1, &spherocityEigen2);
 				//________________________________
 				//Twist___________________________
-				twist_b_0_b_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, bjet1_p4)/ROOT::Math::VectorUtil::DeltaEta(bjet0_p4, bjet1_p4)));
-				twist_b_0_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_0_p4)/ROOT::Math::VectorUtil::DeltaEta(bjet0_p4, t_0_p4)));
-				twist_b_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_1_p4)/ROOT::Math::VectorUtil::DeltaEta(bjet0_p4, t_1_p4)));
-				twist_b_1_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_0_p4)/ROOT::Math::VectorUtil::DeltaEta(bjet1_p4, t_0_p4)));
-				twist_b_1_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_1_p4)/ROOT::Math::VectorUtil::DeltaEta(bjet1_p4, t_1_p4)));
-				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/ROOT::Math::VectorUtil::DeltaEta(t_0_p4, t_1_p4)));
-				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/ROOT::Math::VectorUtil::DeltaEta(hbb_p4, htt_p4)));
+				twist_b_0_b_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, bjet1_p4)/(bjet0_p4.Eta()-bjet1_p4.Eta())));
+				twist_b_0_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_0_p4)/(bjet0_p4.Eta()-t_0_p4.Eta())));
+				twist_b_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_1_p4)/(bjet0_p4.Eta()-t_1_p4.Eta())));
+				twist_b_1_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_0_p4)/(bjet1_p4.Eta()-t_0_p4.Eta())));
+				twist_b_1_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_1_p4)/(bjet1_p4.Eta()-t_1_p4.Eta())));
+				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/(t_0_p4.Eta()-t_1_p4.Eta())));
+				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/(hbb_p4.Eta()-htt_p4.Eta())));
 				//____________________________________
 				//dR__________________________________
 				dR_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
