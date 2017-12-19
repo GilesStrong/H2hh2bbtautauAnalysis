@@ -529,7 +529,8 @@ int main(int argc, char* argv[])
 
 	//Low-level variables________________________
 	double t_0_px, t_0_py, t_0_pz, t_0_P, t_0_E, t_0_mass, t_0_mT; //Tau 0 variables
-	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mass, t_1_mT; //Tau 1 variables
+	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mT; //Tau 1 variables 
+	//double t_1_mass;
 	double b_0_px, b_0_py, b_0_pz, b_0_P, b_0_E, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_px, b_1_py, b_1_pz, b_1_P, b_1_E, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
 	double met_px, met_py, met_pT; //met_cov_00, met_cov_01, met_cov_10, met_cov_11; //Missing ET variables
