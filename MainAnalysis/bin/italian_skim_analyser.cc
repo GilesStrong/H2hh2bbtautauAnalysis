@@ -497,7 +497,7 @@ void getPrimaryEventShapes(math::XYZTLorentzVector* v_tau_0, math::XYZTLorentzVe
 	//___________________________________________
 }
 
-double getXsec(std::string filename) {
+double getXSec(std::string filename) {
 	double xSec;
 
 	if (filename.find("ggHH_SM") != std::string::npos) xSec = 0.03353 * 2 * 5.809e-01 * 6.256e-02;
