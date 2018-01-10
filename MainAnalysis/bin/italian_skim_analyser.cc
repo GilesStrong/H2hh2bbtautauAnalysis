@@ -497,6 +497,23 @@ void getPrimaryEventShapes(math::XYZTLorentzVector* v_tau_0, math::XYZTLorentzVe
 	//___________________________________________
 }
 
+double getXsec(std::string filename) {
+	double xSec;
+
+	if (filename.find("ggHH_SM") != std::string::npos) xSec = 0.03353 * 2 * 5.809e-01 * 6.256e-02;
+	if (filename.find("TT") != std::string::npos) xSec = 831.76;
+	if (filename.find("DYJetsToLL_M-50") != std::string::npos) xSec = 5765.4;
+	if (filename.find("EWK") != std::string::npos) xSec = 25.62+20.25+3.987;
+	if (filename.find("tW") != std::string::npos) xSec = 35.6*2;
+	if (filename.find("Wjets") != std::string::npos) xSec = 61526.7;
+	if (filename.find("WZ") != std::string::npos) xSec = 3.03+5.60+4.43+10.71;
+	if (filename.find("WW") != std::string::npos) xSec = 12.18+50.00+51.72;
+	if (filename.find("ZH") != std::string::npos) xSec = 0.06+0.05+0.36;
+	if (filename.find("ZZ") != std::string::npos) xSec = 0.56+3.22+1.21+7.06+4.04;
+
+	return xSec;
+}
+
 int main(int argc, char* argv[])
 {
 	using pat::Muon;
@@ -522,7 +539,7 @@ int main(int argc, char* argv[])
 
 	fwlite::TFileService fs = fwlite::TFileService(outputFile_.c_str());
 
-	double weight;
+	double weight, xSec;
 
 	math::XYZTLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
@@ -660,7 +677,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
 	mu_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
 
-	mu_tau_b_b->Branch("twist_b_0_b_1", &dR_b_0_b_1);
+	mu_tau_b_b->Branch("dR_b_0_b_1", &dR_b_0_b_1);
 	mu_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
 	mu_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
 	mu_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
@@ -742,6 +759,10 @@ int main(int argc, char* argv[])
 		if(filename.find("ToHHTo2B2Tau") != std::string::npos) runOnSignal = true;
 
 		if( inFile ){
+			xSec = getXSec(filename):
+
+			TTreeReader summaryReader("summary", inFile);
+			TTreeReaderValue<double> r_totalShapeWeight(summaryReader, "totalShapeWeight");
 
 			TTreeReader reader("muTau", inFile);
 
@@ -776,7 +797,7 @@ int main(int argc, char* argv[])
 			while (reader.Next()) {
 				//Getting objects____________________
 				//General info_______________________
-				weight = *r_weight;
+				weight = xSec*(*r_weight)/(*r_totalShapeWeight);
 				nJets = *r_njets;
 				hT_jets = *r_jet_HT;
 				//MET________________________________
