@@ -763,6 +763,7 @@ int main(int argc, char* argv[])
 
 			TTreeReader summaryReader("summary", inFile);
 			TTreeReaderValue<double> r_totalShapeWeight(summaryReader, "totalShapeWeight");
+			totalWeight = -1
 			while (summaryReader.Next()) {
 				totalWeight = *r_totalShapeWeight; //Got to be a nicer way than this
 			}
