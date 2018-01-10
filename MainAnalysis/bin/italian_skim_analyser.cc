@@ -759,7 +759,7 @@ int main(int argc, char* argv[])
 		if(filename.find("ToHHTo2B2Tau") != std::string::npos) runOnSignal = true;
 
 		if( inFile ){
-			xSec = getXSec(filename):
+			xSec = getXSec(filename);
 
 			TTreeReader summaryReader("summary", inFile);
 			TTreeReaderValue<double> r_totalShapeWeight(summaryReader, "totalShapeWeight");
