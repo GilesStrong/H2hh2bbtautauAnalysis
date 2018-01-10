@@ -539,7 +539,7 @@ int main(int argc, char* argv[])
 
 	fwlite::TFileService fs = fwlite::TFileService(outputFile_.c_str());
 
-	double weight, xSec;
+	double weight, xSec, totalWeight;
 
 	math::XYZTLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
@@ -763,6 +763,9 @@ int main(int argc, char* argv[])
 
 			TTreeReader summaryReader("summary", inFile);
 			TTreeReaderValue<double> r_totalShapeWeight(summaryReader, "totalShapeWeight");
+			while (summaryReader.Next()) {
+				totalWeight = *r_totalShapeWeight; //Got to be a nicer way than this
+			}
 
 			TTreeReader reader("muTau", inFile);
 
@@ -797,7 +800,7 @@ int main(int argc, char* argv[])
 			while (reader.Next()) {
 				//Getting objects____________________
 				//General info_______________________
-				weight = xSec*(*r_weight)/(*r_totalShapeWeight);
+				weight = xSec*(*r_weight)/totalWeight;
 				nJets = *r_njets;
 				hT_jets = *r_jet_HT;
 				//MET________________________________

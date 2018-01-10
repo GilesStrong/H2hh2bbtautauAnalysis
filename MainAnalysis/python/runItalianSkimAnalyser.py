@@ -30,8 +30,8 @@ if __name__ == "__main__":
     parser = optparse.OptionParser()
     
     parser.add_option("--cores", action="store", type="int", default=-1, dest="cores")
-    parser.add_option("--edmfolder", action="store", type="string", default="", dest="edmfolder")
-    parser.add_option("--fwoutputfolder", action="store", type="string", default="", dest="fwoutputfolder")
+    parser.add_option("--edmfolder", action="store", type="string", default="/eos/user/k/kandroso/cms-it-hh-bbtautau/Tuples2016_v3/Skimmed_miniGen/", dest="edmfolder")
+    parser.add_option("--fwoutputfolder", action="store", type="string", default="/eos/user/g/gstrong/cms/n-tuples/hh_v3/", dest="fwoutputfolder")
     parser.add_option("--debug", action="store_true", dest="debug")
     parser.add_option("--dryrun", action="store_true", dest="dryrun")
     (options, pfade) = parser.parse_args()
