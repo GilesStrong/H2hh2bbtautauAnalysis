@@ -164,9 +164,9 @@ bool checkBJets(pat::Jet* bjet0, pat::Jet* bjet1,
 	}
 	//___________________________________________
 	//Check jets_________________________________
-	double dr_tautau_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
-	double dr_tautau_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
-	if (dr_tautau_0 > R || dr_tautau_1 > R) { //particle(s) outside jet
+	double dR_0 = ROOT::Math::VectorUtil::DeltaR(gen_bjet0->p4(), bjet0->p4());
+	double dR_1 = ROOT::Math::VectorUtil::DeltaR(gen_bjet1->p4(), bjet1->p4());
+	if (dR_0 > R || dR_1 > R) { //particle(s) outside jet
 		return false;
 	} else {
 		return true;
@@ -281,26 +281,26 @@ bool truthFlag(TH1D* mcPlots,
 		// }
 		// //_______________________________________
 		// //Check taus_____________________________
-		// int leptonMother_tautau_0 = ancestrySearch(lightLepton_0, tau_0, tau_1, branchParticle);
-		// if (leptonMother_tautau_0 == -1) {
+		// int leptonMother_0 = ancestrySearch(lightLepton_0, tau_0, tau_1, branchParticle);
+		// if (leptonMother_0 == -1) {
 		// 	if (debug) std::cout << "MC check fails due to ancestry check\n";
 		// 	chain->Delete();
 		// 	return false; //Light lepton 0 did not come from tau decay
 		// }
-		// int leptonMother_tautau_1 = ancestrySearch(lightLepton_1, tau_0, tau_1, branchParticle);
-		// if (leptonMother_tautau_1 == -1) {
+		// int leptonMother_1 = ancestrySearch(lightLepton_1, tau_0, tau_1, branchParticle);
+		// if (leptonMother_1 == -1) {
 		// 	if (debug) std::cout << "MC check fails due to ancestry check\n";
 		// 	chain->Delete();
 		// 	return false; //Light lepton 1 did not come from tau decay
 		// }
-		// if (leptonMother_tautau_0 == leptonMother_tautau_1) {
+		// if (leptonMother_0 == leptonMother_1) {
 		// 	if (debug) std::cout << "MC check fails due to both leptons coming from same tau\n";
 		// 	chain->Delete();
 		// 	return false; //Leptons both came from same mother (somehow)
 		// }
 		// mcPlots->Fill(("h->#tau#tau->" + typeLookup(mode) + " pass").c_str(), 1);
-		// if ((lightLepton_0->PT > lightLepton_1->PT & leptonMother_tautau_0 == 1) |
-		// 	(lightLepton_0->PT < lightLepton_1->PT & leptonMother_tautau_0 == 0)) {
+		// if ((lightLepton_0->PT > lightLepton_1->PT & leptonMother_0 == 1) |
+		// 	(lightLepton_0->PT < lightLepton_1->PT & leptonMother_0 == 0)) {
 		// 	tau_0 = tau_1;
 		// tau_1 = (GenParticle*)branchParticle->At(moveToEnd(higgs->D1, branchParticle));
 	// }
@@ -393,7 +393,7 @@ std::vector<double> getEigenValues(TMatrixD in) {
 	double sum = 0;
 	for (double n : eigenValues)
 		sum += n;
-	std::for_tautau_each(eigenValues.begin(), eigenValues.end(), [sum](double i) { return i/sum; });
+	std::for_each(eigenValues.begin(), eigenValues.end(), [sum](double i) { return i/sum; });
 	return eigenValues;
 }
 
@@ -552,7 +552,7 @@ int main(int argc, char* argv[])
 	//Low-level variables________________________
 	double t_0_px, t_0_py, t_0_pz, t_0_P, t_0_E, t_0_mass, t_0_mT; //Tau 0 variables
 	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mT; //Tau 1 variables 
-	//double t_1_mass;
+	double t_1_mass;
 	double b_0_px, b_0_py, b_0_pz, b_0_P, b_0_E, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_px, b_1_py, b_1_pz, b_1_P, b_1_E, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
 	double met_px, met_py, met_pT; //met_cov_00, met_cov_01, met_cov_10, met_cov_11; //Missing ET variables
@@ -570,11 +570,11 @@ int main(int argc, char* argv[])
 	double twist_t_0_t_1;
 	double twist_h_bb_h_tt;
 	//___________________________________________
-	//Deltar_tautau_____________________________________
-	double dr_tautau_b_0_b_1, dr_tautau_b_0_t_0, dr_tautau_b_0_t_1;
-	double dr_tautau_b_1_t_0, dr_tautau_b_1_t_1;
-	double dr_tautau_t_0_t_1;
-	double dr_tautau_h_bb_h_tt;
+	//DeltaR_____________________________________
+	double dR_b_0_b_1, dR_b_0_t_0, dR_b_0_t_1;
+	double dR_b_1_t_0, dR_b_1_t_1;
+	double dR_t_0_t_1;
+	double dR_h_bb_h_tt;
 	//___________________________________________
 	//Global event variables_____________________
 	double nJets;
@@ -682,13 +682,13 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
 	mu_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
 
-	mu_tau_b_b->Branch("dr_tautau_b_0_b_1", &dr_tautau_b_0_b_1);
-	mu_tau_b_b->Branch("dr_tautau_b_0_t_0", &dr_tautau_b_0_t_0);
-	mu_tau_b_b->Branch("dr_tautau_b_0_t_1", &dr_tautau_b_0_t_1);
-	mu_tau_b_b->Branch("dr_tautau_b_1_t_0", &dr_tautau_b_1_t_0);
-	mu_tau_b_b->Branch("dr_tautau_b_1_t_1", &dr_tautau_b_1_t_1);
-	mu_tau_b_b->Branch("dr_tautau_t_0_t_1", &dr_tautau_t_0_t_1);
-	mu_tau_b_b->Branch("dr_tautau_h_bb_h_tt", &dr_tautau_h_bb_h_tt);
+	mu_tau_b_b->Branch("dR_b_0_b_1", &dR_b_0_b_1);
+	mu_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
+	mu_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
+	mu_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
+	mu_tau_b_b->Branch("dR_b_1_t_1", &dR_b_1_t_1);
+	mu_tau_b_b->Branch("dR_t_0_t_1", &dR_t_0_t_1);
+	mu_tau_b_b->Branch("dR_h_bb_h_tt", &dR_h_bb_h_tt);
 
 	mu_tau_b_b->Branch("nJets", &nJets);
 	mu_tau_b_b->Branch("hT", &hT);
@@ -840,13 +840,13 @@ int main(int argc, char* argv[])
 	e_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
 	e_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
 
-	e_tau_b_b->Branch("dr_tautau_b_0_b_1", &dr_tautau_b_0_b_1);
-	e_tau_b_b->Branch("dr_tautau_b_0_t_0", &dr_tautau_b_0_t_0);
-	e_tau_b_b->Branch("dr_tautau_b_0_t_1", &dr_tautau_b_0_t_1);
-	e_tau_b_b->Branch("dr_tautau_b_1_t_0", &dr_tautau_b_1_t_0);
-	e_tau_b_b->Branch("dr_tautau_b_1_t_1", &dr_tautau_b_1_t_1);
-	e_tau_b_b->Branch("dr_tautau_t_0_t_1", &dr_tautau_t_0_t_1);
-	e_tau_b_b->Branch("dr_tautau_h_bb_h_tt", &dr_tautau_h_bb_h_tt);
+	e_tau_b_b->Branch("dR_b_0_b_1", &dR_b_0_b_1);
+	e_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
+	e_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
+	e_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
+	e_tau_b_b->Branch("dR_b_1_t_1", &dR_b_1_t_1);
+	e_tau_b_b->Branch("dR_t_0_t_1", &dR_t_0_t_1);
+	e_tau_b_b->Branch("dR_h_bb_h_tt", &dR_h_bb_h_tt);
 
 	e_tau_b_b->Branch("nJets", &nJets);
 	e_tau_b_b->Branch("hT", &hT);
@@ -998,13 +998,13 @@ int main(int argc, char* argv[])
 	tau_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
 	tau_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
 
-	tau_tau_b_b->Branch("dr_tautau_b_0_b_1", &dr_tautau_b_0_b_1);
-	tau_tau_b_b->Branch("dr_tautau_b_0_t_0", &dr_tautau_b_0_t_0);
-	tau_tau_b_b->Branch("dr_tautau_b_0_t_1", &dr_tautau_b_0_t_1);
-	tau_tau_b_b->Branch("dr_tautau_b_1_t_0", &dr_tautau_b_1_t_0);
-	tau_tau_b_b->Branch("dr_tautau_b_1_t_1", &dr_tautau_b_1_t_1);
-	tau_tau_b_b->Branch("dr_tautau_t_0_t_1", &dr_tautau_t_0_t_1);
-	tau_tau_b_b->Branch("dr_tautau_h_bb_h_tt", &dr_tautau_h_bb_h_tt);
+	tau_tau_b_b->Branch("dR_b_0_b_1", &dR_b_0_b_1);
+	tau_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
+	tau_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
+	tau_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
+	tau_tau_b_b->Branch("dR_b_1_t_1", &dR_b_1_t_1);
+	tau_tau_b_b->Branch("dR_t_0_t_1", &dR_t_0_t_1);
+	tau_tau_b_b->Branch("dR_h_bb_h_tt", &dR_h_bb_h_tt);
 
 	tau_tau_b_b->Branch("nJets", &nJets);
 	tau_tau_b_b->Branch("hT", &hT);
@@ -1083,10 +1083,10 @@ int main(int argc, char* argv[])
 			xSec = getXSec(filename);
 
 			TTreeReader summaryReader("summary", inFile);
-			TTreeReaderValue<double> r_tautau_totalShapeWeight(summaryReader, "totalShapeWeight");
+			TTreeReaderValue<double> r_totalShapeWeight(summaryReader, "totalShapeWeight");
 			totalWeight = -1;
 			while (summaryReader.Next()) {
-				totalWeight = *r_tautau_totalShapeWeight; //Got to be a nicer way than this
+				totalWeight = *r_totalShapeWeight; //Got to be a nicer way than this
 			}
 
 			//MuTau______________________________
@@ -1094,49 +1094,49 @@ int main(int argc, char* argv[])
 
 			//Define event features______________
 			//General info_______________________
-			TTreeReaderValue<double> r_tautau_mutau_weight(mutau_reader, "weight_total");
-			TTreeReaderValue<unsigned int> r_tautau_mutau_njets(mutau_reader, "n_jets");
-			TTreeReaderValue<float> r_tautau_mutau_jet_HT(mutau_reader, "ht_other_tautau_mutau_jets");
+			TTreeReaderValue<double> r_mutau_weight(mutau_reader, "weight_total");
+			TTreeReaderValue<unsigned int> r_mutau_njets(mutau_reader, "n_jets");
+			TTreeReaderValue<float> r_mutau_jet_HT(mutau_reader, "ht_other_mutau_jets");
 			//Tau_0______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_mutau_t_0_p4(mutau_reader, "p4_2");
-			TTreeReaderValue<int> r_tautau_mutau_gen_t_0_match(mutau_reader, "gen_match_2");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_mutau_t_0_p4(mutau_reader, "p4_2");
+			TTreeReaderValue<int> r_mutau_gen_t_0_match(mutau_reader, "gen_match_2");
 			//Tau_1______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_mutau_t_1_p4(mutau_reader, "p4_1");
-			TTreeReaderValue<int> r_tautau_mutau_gen_t_1_match(mutau_reader, "gen_match_1");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_mutau_t_1_p4(mutau_reader, "p4_1");
+			TTreeReaderValue<int> r_mutau_gen_t_1_match(mutau_reader, "gen_match_1");
 			//MET________________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_mutau_met_p4(mutau_reader, "pfMET_p4");
-			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_tautau_mutau_met_cov(reader, "pfMET_cov");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_mutau_met_p4(mutau_reader, "pfMET_p4");
+			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_mutau_met_cov(reader, "pfMET_cov");
 			//Jets_______________________________
-			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_tautau_mutau_jets_p4(mutau_reader, "jets_p4");
-			TTreeReaderValue<std::vector<float> > r_tautau_mutau_jets_csv(mutau_reader, "jets_csv");
-			TTreeReaderValue<std::vector<float> > r_tautau_mutau_jets_rawf(mutau_reader, "jets_rawf");
-			TTreeReaderValue<std::vector<float> > r_tautau_mutau_jets_mva(mutau_reader, "jets_mva");
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_mutau_jets_p4(mutau_reader, "jets_p4");
+			TTreeReaderValue<std::vector<float> > r_mutau_jets_csv(mutau_reader, "jets_csv");
+			TTreeReaderValue<std::vector<float> > r_mutau_jets_rawf(mutau_reader, "jets_rawf");
+			TTreeReaderValue<std::vector<float> > r_mutau_jets_mva(mutau_reader, "jets_mva");
 			//SVFit______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_mutau_svfit_p4(mutau_reader, "SVfit_p4");
-			TTreeReaderValue<float> r_tautau_mutau_svfit_mT(mutau_reader, "SVfit_mt");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_mutau_svfit_p4(mutau_reader, "SVfit_p4");
+			TTreeReaderValue<float> r_mutau_svfit_mT(mutau_reader, "SVfit_mt");
 			//KinFit______________________________
-			TTreeReaderValue<std::vector<float> > r_tautau_mutau_kinFit_mH(mutau_reader, "kinFit_m");
-			TTreeReaderValue<std::vector<float> > r_tautau_mutau_kinFit_chi2(mutau_reader, "kinFit_chi2");
-			TTreeReaderValue<std::vector<int> > r_tautau_mutau_kinFit_conv(mutau_reader, "kinFit_convergence");
+			TTreeReaderValue<std::vector<float> > r_mutau_kinFit_mH(mutau_reader, "kinFit_m");
+			TTreeReaderValue<std::vector<float> > r_mutau_kinFit_chi2(mutau_reader, "kinFit_chi2");
+			TTreeReaderValue<std::vector<int> > r_mutau_kinFit_conv(mutau_reader, "kinFit_convergence");
 			//___________________________________
 
 			while (mutau_reader.Next()) {
 				//Getting objects____________________
 				//General info_______________________
-				weight = xSec*(*r_tautau_mutau_totalShapeWeight)/totalWeight;
-				nJets = *r_tautau_mutau_njets;
-				hT_jets = *r_tautau_mutau_jet_HT;
+				weight = xSec*(*r_mutau_totalShapeWeight)/totalWeight;
+				nJets = *r_mutau_njets;
+				hT_jets = *r_mutau_jet_HT;
 				//MET________________________________
-				met_p4 = *r_tautau_mutau_met_p4;
+				met_p4 = *r_mutau_met_p4;
 				met_px = met_p4.Px();
 				met_py = met_p4.Py();
 				met_pT = met_p4.Pt();
-				/*met_cov_00 = (*r_tautau_mutau_met_cov)(0, 0);
-				met_cov_01 = (*r_tautau_mutau_met_cov)(0, 1);
-				met_cov_10 = (*r_tautau_mutau_met_cov)(1, 0);
-				met_cov_11 = (*r_tautau_mutau_met_cov)(1, 1);*/
+				/*met_cov_00 = (*r_mutau_met_cov)(0, 0);
+				met_cov_01 = (*r_mutau_met_cov)(0, 1);
+				met_cov_10 = (*r_mutau_met_cov)(1, 0);
+				met_cov_11 = (*r_mutau_met_cov)(1, 1);*/
 				//Tau_0______________________________
-				t_0_p4 = *r_tautau_mutau_t_0_p4;
+				t_0_p4 = *r_mutau_t_0_p4;
 				t_0_px = t_0_p4.Px();
 				t_0_py = t_0_p4.Py();
 				t_0_pz = t_0_p4.Pz();
@@ -1144,9 +1144,9 @@ int main(int argc, char* argv[])
 				t_0_E = t_0_p4.E();
 				t_0_mass = t_0_p4.M();
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
-				gen_t_0_match = *r_tautau_mutau_gen_t_0_match;
+				gen_t_0_match = *r_mutau_gen_t_0_match;
 				//Tau_1______________________________
-				t_1_p4 = *r_tautau_mutau_t_1_p4;
+				t_1_p4 = *r_mutau_t_1_p4;
 				t_1_px = t_1_p4.Px();
 				t_1_py = t_1_p4.Py();
 				t_1_pz = t_1_p4.Pz();
@@ -1154,28 +1154,28 @@ int main(int argc, char* argv[])
 				t_1_E = t_1_p4.E();
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
-				gen_t_1_match = *r_tautau_mutau_gen_t_1_match;
+				gen_t_1_match = *r_mutau_gen_t_1_match;
 				//Jets_______________________________
-				bjet0_p4 = (*r_tautau_mutau_jets_p4)[0];
-				bjet1_p4 = (*r_tautau_mutau_jets_p4)[1];
+				bjet0_p4 = (*r_mutau_jets_p4)[0];
+				bjet1_p4 = (*r_mutau_jets_p4)[1];
 				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
-					bjet0_p4 = (*r_tautau_mutau_jets_p4)[1];
-					b_0_csv = (*r_tautau_mutau_jets_csv)[1];
-					b_0_rawf = (*r_tautau_mutau_jets_rawf)[1];
-					b_0_mva = (*r_tautau_mutau_jets_mva)[1];
+					bjet0_p4 = (*r_mutau_jets_p4)[1];
+					b_0_csv = (*r_mutau_jets_csv)[1];
+					b_0_rawf = (*r_mutau_jets_rawf)[1];
+					b_0_mva = (*r_mutau_jets_mva)[1];
 
-					bjet1_p4 = (*r_tautau_mutau_jets_p4)[0];
-					b_1_csv = (*r_tautau_mutau_jets_csv)[0];
-					b_1_rawf = (*r_tautau_mutau_jets_rawf)[0];
-					b_1_mva = (*r_tautau_mutau_jets_mva)[0];
+					bjet1_p4 = (*r_mutau_jets_p4)[0];
+					b_1_csv = (*r_mutau_jets_csv)[0];
+					b_1_rawf = (*r_mutau_jets_rawf)[0];
+					b_1_mva = (*r_mutau_jets_mva)[0];
 				} else {
-					b_0_csv = (*r_tautau_mutau_jets_csv)[0];
-					b_0_rawf = (*r_tautau_mutau_jets_rawf)[0];
-					b_0_mva = (*r_tautau_mutau_jets_mva)[0];
+					b_0_csv = (*r_mutau_jets_csv)[0];
+					b_0_rawf = (*r_mutau_jets_rawf)[0];
+					b_0_mva = (*r_mutau_jets_mva)[0];
 
-					b_1_csv = (*r_tautau_mutau_jets_csv)[1];
-					b_1_rawf = (*r_tautau_mutau_jets_rawf)[1];
-					b_1_mva = (*r_tautau_mutau_jets_mva)[1];
+					b_1_csv = (*r_mutau_jets_csv)[1];
+					b_1_rawf = (*r_mutau_jets_rawf)[1];
+					b_1_mva = (*r_mutau_jets_mva)[1];
 				}
 
 				b_0_px = bjet0_p4.Px();
@@ -1192,18 +1192,18 @@ int main(int argc, char* argv[])
 				b_1_E = bjet1_p4.E();
 				b_1_mass = bjet1_p4.M();
 				//SVFit_______________________________
-				svFit_p4 = *r_tautau_mutau_svfit_p4;
+				svFit_p4 = *r_mutau_svfit_p4;
 				h_tt_svFit_px = svFit_p4.Px();
 				h_tt_svFit_py = svFit_p4.Py();
 				h_tt_svFit_pz = svFit_p4.Pz();
 				h_tt_svFit_P = svFit_p4.P();
 				h_tt_svFit_E = svFit_p4.E();
 				h_tt_svFit_mass = svFit_p4.M();
-				h_tt_svFit_mT = *r_tautau_mutau_svfit_mT;
+				h_tt_svFit_mT = *r_mutau_svfit_mT;
 				//KinFit______________________________
-				diH_kinFit_mass = (*r_tautau_mutau_kinFit_mH)[0];
-				diH_kinFit_chi2 = (*r_tautau_mutau_kinFit_chi2)[0];
-				diH_kinFit_conv = (*r_tautau_mutau_kinFit_conv)[0];
+				diH_kinFit_mass = (*r_mutau_kinFit_mH)[0];
+				diH_kinFit_chi2 = (*r_mutau_kinFit_chi2)[0];
+				diH_kinFit_conv = (*r_mutau_kinFit_conv)[0];
 				//h->bb_______________________________
 				hbb_p4 = bjet0_p4+bjet1_p4;
 				h_bb_px = hbb_p4.Px();
@@ -1247,14 +1247,14 @@ int main(int argc, char* argv[])
 				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/(t_0_p4.Eta()-t_1_p4.Eta())));
 				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/(hbb_p4.Eta()-htt_p4.Eta())));
 				//____________________________________
-				//dr_tautau_mutau__________________________________
-				dr_tautau_mutau_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
-				dr_tautau_mutau_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
-				dr_tautau_mutau_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
-				dr_tautau_mutau_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
-				dr_tautau_mutau_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
-				dr_tautau_mutau_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
-				dr_tautau_mutau_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
+				//dr_mutau__________________________________
+				dr_mutau_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
+				dr_mutau_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
+				dr_mutau_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
+				dr_mutau_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
+				dr_mutau_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
+				dr_mutau_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
+				dr_mutau_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
 				//____________________________________
 				
 				//MC truth_____________________
@@ -1363,49 +1363,49 @@ int main(int argc, char* argv[])
 
 			//Define event features______________
 			//General info_______________________
-			TTreeReaderValue<double> r_tautau_etau_weight(etau_reader, "weight_total");
-			TTreeReaderValue<unsigned int> r_tautau_etau_njets(etau_reader, "n_jets");
-			TTreeReaderValue<float> r_tautau_etau_jet_HT(etau_reader, "ht_other_tautau_etau_jets");
+			TTreeReaderValue<double> r_etau_weight(etau_reader, "weight_total");
+			TTreeReaderValue<unsigned int> r_etau_njets(etau_reader, "n_jets");
+			TTreeReaderValue<float> r_etau_jet_HT(etau_reader, "ht_other_etau_jets");
 			//Tau_0______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_etau_t_0_p4(etau_reader, "p4_2");
-			TTreeReaderValue<int> r_tautau_etau_gen_t_0_match(etau_reader, "gen_match_2");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_etau_t_0_p4(etau_reader, "p4_2");
+			TTreeReaderValue<int> r_etau_gen_t_0_match(etau_reader, "gen_match_2");
 			//Tau_1______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_etau_t_1_p4(etau_reader, "p4_1");
-			TTreeReaderValue<int> r_tautau_etau_gen_t_1_match(etau_reader, "gen_match_1");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_etau_t_1_p4(etau_reader, "p4_1");
+			TTreeReaderValue<int> r_etau_gen_t_1_match(etau_reader, "gen_match_1");
 			//MET________________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_etau_met_p4(etau_reader, "pfMET_p4");
-			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_tautau_etau_met_cov(reader, "pfMET_cov");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_etau_met_p4(etau_reader, "pfMET_p4");
+			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_etau_met_cov(reader, "pfMET_cov");
 			//Jets_______________________________
-			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_tautau_etau_jets_p4(etau_reader, "jets_p4");
-			TTreeReaderValue<std::vector<float> > r_tautau_etau_jets_csv(etau_reader, "jets_csv");
-			TTreeReaderValue<std::vector<float> > r_tautau_etau_jets_rawf(etau_reader, "jets_rawf");
-			TTreeReaderValue<std::vector<float> > r_tautau_etau_jets_mva(etau_reader, "jets_mva");
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_etau_jets_p4(etau_reader, "jets_p4");
+			TTreeReaderValue<std::vector<float> > r_etau_jets_csv(etau_reader, "jets_csv");
+			TTreeReaderValue<std::vector<float> > r_etau_jets_rawf(etau_reader, "jets_rawf");
+			TTreeReaderValue<std::vector<float> > r_etau_jets_mva(etau_reader, "jets_mva");
 			//SVFit______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_etau_svfit_p4(etau_reader, "SVfit_p4");
-			TTreeReaderValue<float> r_tautau_etau_svfit_mT(etau_reader, "SVfit_mt");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_etau_svfit_p4(etau_reader, "SVfit_p4");
+			TTreeReaderValue<float> r_etau_svfit_mT(etau_reader, "SVfit_mt");
 			//KinFit______________________________
-			TTreeReaderValue<std::vector<float> > r_tautau_etau_kinFit_mH(etau_reader, "kinFit_m");
-			TTreeReaderValue<std::vector<float> > r_tautau_etau_kinFit_chi2(etau_reader, "kinFit_chi2");
-			TTreeReaderValue<std::vector<int> > r_tautau_etau_kinFit_conv(etau_reader, "kinFit_convergence");
+			TTreeReaderValue<std::vector<float> > r_etau_kinFit_mH(etau_reader, "kinFit_m");
+			TTreeReaderValue<std::vector<float> > r_etau_kinFit_chi2(etau_reader, "kinFit_chi2");
+			TTreeReaderValue<std::vector<int> > r_etau_kinFit_conv(etau_reader, "kinFit_convergence");
 			//___________________________________
 
 			while (etau_reader.Next()) {
 				//Getting objects____________________
 				//General info_______________________
-				weight = xSec*(*r_tautau_etau_totalShapeWeight)/totalWeight;
-				nJets = *r_tautau_etau_njets;
-				hT_jets = *r_tautau_etau_jet_HT;
+				weight = xSec*(*r_etau_totalShapeWeight)/totalWeight;
+				nJets = *r_etau_njets;
+				hT_jets = *r_etau_jet_HT;
 				//MET________________________________
-				met_p4 = *r_tautau_etau_met_p4;
+				met_p4 = *r_etau_met_p4;
 				met_px = met_p4.Px();
 				met_py = met_p4.Py();
 				met_pT = met_p4.Pt();
-				/*met_cov_00 = (*r_tautau_etau_met_cov)(0, 0);
-				met_cov_01 = (*r_tautau_etau_met_cov)(0, 1);
-				met_cov_10 = (*r_tautau_etau_met_cov)(1, 0);
-				met_cov_11 = (*r_tautau_etau_met_cov)(1, 1);*/
+				/*met_cov_00 = (*r_etau_met_cov)(0, 0);
+				met_cov_01 = (*r_etau_met_cov)(0, 1);
+				met_cov_10 = (*r_etau_met_cov)(1, 0);
+				met_cov_11 = (*r_etau_met_cov)(1, 1);*/
 				//Tau_0______________________________
-				t_0_p4 = *r_tautau_etau_t_0_p4;
+				t_0_p4 = *r_etau_t_0_p4;
 				t_0_px = t_0_p4.Px();
 				t_0_py = t_0_p4.Py();
 				t_0_pz = t_0_p4.Pz();
@@ -1413,9 +1413,9 @@ int main(int argc, char* argv[])
 				t_0_E = t_0_p4.E();
 				t_0_mass = t_0_p4.M();
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
-				gen_t_0_match = *r_tautau_etau_gen_t_0_match;
+				gen_t_0_match = *r_etau_gen_t_0_match;
 				//Tau_1______________________________
-				t_1_p4 = *r_tautau_etau_t_1_p4;
+				t_1_p4 = *r_etau_t_1_p4;
 				t_1_px = t_1_p4.Px();
 				t_1_py = t_1_p4.Py();
 				t_1_pz = t_1_p4.Pz();
@@ -1423,28 +1423,28 @@ int main(int argc, char* argv[])
 				t_1_E = t_1_p4.E();
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
-				gen_t_1_match = *r_tautau_etau_gen_t_1_match;
+				gen_t_1_match = *r_etau_gen_t_1_match;
 				//Jets_______________________________
-				bjet0_p4 = (*r_tautau_etau_jets_p4)[0];
-				bjet1_p4 = (*r_tautau_etau_jets_p4)[1];
+				bjet0_p4 = (*r_etau_jets_p4)[0];
+				bjet1_p4 = (*r_etau_jets_p4)[1];
 				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
-					bjet0_p4 = (*r_tautau_etau_jets_p4)[1];
-					b_0_csv = (*r_tautau_etau_jets_csv)[1];
-					b_0_rawf = (*r_tautau_etau_jets_rawf)[1];
-					b_0_mva = (*r_tautau_etau_jets_mva)[1];
+					bjet0_p4 = (*r_etau_jets_p4)[1];
+					b_0_csv = (*r_etau_jets_csv)[1];
+					b_0_rawf = (*r_etau_jets_rawf)[1];
+					b_0_mva = (*r_etau_jets_mva)[1];
 
-					bjet1_p4 = (*r_tautau_etau_jets_p4)[0];
-					b_1_csv = (*r_tautau_etau_jets_csv)[0];
-					b_1_rawf = (*r_tautau_etau_jets_rawf)[0];
-					b_1_mva = (*r_tautau_etau_jets_mva)[0];
+					bjet1_p4 = (*r_etau_jets_p4)[0];
+					b_1_csv = (*r_etau_jets_csv)[0];
+					b_1_rawf = (*r_etau_jets_rawf)[0];
+					b_1_mva = (*r_etau_jets_mva)[0];
 				} else {
-					b_0_csv = (*r_tautau_etau_jets_csv)[0];
-					b_0_rawf = (*r_tautau_etau_jets_rawf)[0];
-					b_0_mva = (*r_tautau_etau_jets_mva)[0];
+					b_0_csv = (*r_etau_jets_csv)[0];
+					b_0_rawf = (*r_etau_jets_rawf)[0];
+					b_0_mva = (*r_etau_jets_mva)[0];
 
-					b_1_csv = (*r_tautau_etau_jets_csv)[1];
-					b_1_rawf = (*r_tautau_etau_jets_rawf)[1];
-					b_1_mva = (*r_tautau_etau_jets_mva)[1];
+					b_1_csv = (*r_etau_jets_csv)[1];
+					b_1_rawf = (*r_etau_jets_rawf)[1];
+					b_1_mva = (*r_etau_jets_mva)[1];
 				}
 
 				b_0_px = bjet0_p4.Px();
@@ -1461,18 +1461,18 @@ int main(int argc, char* argv[])
 				b_1_E = bjet1_p4.E();
 				b_1_mass = bjet1_p4.M();
 				//SVFit_______________________________
-				svFit_p4 = *r_tautau_etau_svfit_p4;
+				svFit_p4 = *r_etau_svfit_p4;
 				h_tt_svFit_px = svFit_p4.Px();
 				h_tt_svFit_py = svFit_p4.Py();
 				h_tt_svFit_pz = svFit_p4.Pz();
 				h_tt_svFit_P = svFit_p4.P();
 				h_tt_svFit_E = svFit_p4.E();
 				h_tt_svFit_mass = svFit_p4.M();
-				h_tt_svFit_mT = *r_tautau_etau_svfit_mT;
+				h_tt_svFit_mT = *r_etau_svfit_mT;
 				//KinFit______________________________
-				diH_kinFit_mass = (*r_tautau_etau_kinFit_mH)[0];
-				diH_kinFit_chi2 = (*r_tautau_etau_kinFit_chi2)[0];
-				diH_kinFit_conv = (*r_tautau_etau_kinFit_conv)[0];
+				diH_kinFit_mass = (*r_etau_kinFit_mH)[0];
+				diH_kinFit_chi2 = (*r_etau_kinFit_chi2)[0];
+				diH_kinFit_conv = (*r_etau_kinFit_conv)[0];
 				//h->bb_______________________________
 				hbb_p4 = bjet0_p4+bjet1_p4;
 				h_bb_px = hbb_p4.Px();
@@ -1516,14 +1516,14 @@ int main(int argc, char* argv[])
 				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/(t_0_p4.Eta()-t_1_p4.Eta())));
 				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/(hbb_p4.Eta()-htt_p4.Eta())));
 				//____________________________________
-				//dr_tautau_etau__________________________________
-				dr_tautau_etau_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
-				dr_tautau_etau_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
-				dr_tautau_etau_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
-				dr_tautau_etau_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
-				dr_tautau_etau_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
-				dr_tautau_etau_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
-				dr_tautau_etau_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
+				//dr_etau__________________________________
+				dr_etau_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
+				dr_etau_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
+				dr_etau_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
+				dr_etau_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
+				dr_etau_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
+				dr_etau_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
+				dr_etau_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
 				//____________________________________
 				
 				//MC truth_____________________
