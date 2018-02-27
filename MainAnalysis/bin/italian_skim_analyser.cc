@@ -1674,13 +1674,13 @@ int main(int argc, char* argv[])
 				met_cov_10 = (*r_tautau_met_cov)(1, 0);
 				met_cov_11 = (*r_tautau_met_cov)(1, 1);*/
 				if (t_0_p4.Pt() < t_1_p4.Pt()) { //Order jets by pT
-					t_0_p4 = r_tautau_t_1_p4;
-					t_1_p4 = r_tautau_t_0_p4;
+					t_0_p4 = *r_tautau_t_1_p4;
+					t_1_p4 = *r_tautau_t_0_p4;
 					gen_t_0_match = *r_tautau_gen_t_1_match;
 					gen_t_1_match = *r_tautau_gen_t_0_match;
 				} else {
-					t_0_p4 = r_tautau_t_0_p4;
-					t_1_p4 = r_tautau_t_1_p4;
+					t_0_p4 = *r_tautau_t_0_p4;
+					t_1_p4 = *r_tautau_t_1_p4;
 					gen_t_0_match = *r_tautau_gen_t_0_match;
 					gen_t_1_match = *r_tautau_gen_t_1_match;
 				}
