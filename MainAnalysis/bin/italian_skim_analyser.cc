@@ -1096,7 +1096,7 @@ int main(int argc, char* argv[])
 			//General info_______________________
 			TTreeReaderValue<double> r_mutau_weight(mutau_reader, "weight_total");
 			TTreeReaderValue<unsigned int> r_mutau_njets(mutau_reader, "n_jets");
-			TTreeReaderValue<float> r_mutau_jet_HT(mutau_reader, "ht_other_mutau_jets");
+			TTreeReaderValue<float> r_mutau_jet_HT(mutau_reader, "ht_other_jets");
 			//Tau_0______________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_mutau_t_0_p4(mutau_reader, "p4_2");
 			TTreeReaderValue<int> r_mutau_gen_t_0_match(mutau_reader, "gen_match_2");
@@ -1365,7 +1365,7 @@ int main(int argc, char* argv[])
 			//General info_______________________
 			TTreeReaderValue<double> r_etau_weight(etau_reader, "weight_total");
 			TTreeReaderValue<unsigned int> r_etau_njets(etau_reader, "n_jets");
-			TTreeReaderValue<float> r_etau_jet_HT(etau_reader, "ht_other_etau_jets");
+			TTreeReaderValue<float> r_etau_jet_HT(etau_reader, "ht_other_jets");
 			//Tau_0______________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_etau_t_0_p4(etau_reader, "p4_2");
 			TTreeReaderValue<int> r_etau_gen_t_0_match(etau_reader, "gen_match_2");
@@ -1634,7 +1634,7 @@ int main(int argc, char* argv[])
 			//General info_______________________
 			TTreeReaderValue<double> r_tautau_weight(tauTau_reader, "weight_total");
 			TTreeReaderValue<unsigned int> r_tautau_njets(tauTau_reader, "n_jets");
-			TTreeReaderValue<float> r_tautau_jet_HT(tauTau_reader, "ht_other_tautau_jets");
+			TTreeReaderValue<float> r_tautau_jet_HT(tauTau_reader, "ht_other_jets");
 			//Tau_0______________________________
 			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_tautau_t_0_p4(tauTau_reader, "p4_2");
 			TTreeReaderValue<int> r_tautau_gen_t_0_match(tauTau_reader, "gen_match_2");
