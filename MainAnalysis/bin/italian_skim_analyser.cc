@@ -411,7 +411,7 @@ void getEventShapes(std::vector<double> sphericityV, std::vector<double> spheroc
 
 void getGlobalEventInfo(math::XYZTLorentzVector* v_tau_0, math::XYZTLorentzVector* v_tau_1,
 	math::XYZTLorentzVector* v_bJet_0, math::XYZTLorentzVector* v_bJet_1, math::XYZTLorentzVector* v_met,
-	double*  hT, double*  sT, double* centrality, double* eVis) {
+	double*  hT, double*  sT, double* centrality, double* eVis, bool tautau=false) {
 	/*Fills referenced variables with global event information*/
 	if (debug) std::cout << "Getting global event info\n";
 	//Reset variables____________________________
@@ -424,10 +424,15 @@ void getGlobalEventInfo(math::XYZTLorentzVector* v_tau_0, math::XYZTLorentzVecto
 	*hT += v_bJet_0->Et();
 	*hT += v_bJet_1->Et();
 	*hT += v_tau_0->Et();
+	if (tautau == true) {
+		*hT += v_tau_1->Et();
+	}
 	//____________________________________________
 	//ST__________________________________________
 	*sT += *hT;
-	*sT += v_tau_1->Pt();
+	if (tautau == false) {
+		*sT += v_tau_1->Pt();
+	}
 	*sT += v_met->Pt();
 	//____________________________________________
 	//Centrality__________________________________
@@ -605,7 +610,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_1_pz", &t_1_pz);
 	mu_tau_b_b->Branch("t_1_P", &t_1_P);
 	mu_tau_b_b->Branch("t_1_E", &t_1_E);
-	//mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
+	mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
 	mu_tau_b_b->Branch("t_1_mT", &t_1_mT);
 
 	mu_tau_b_b->Branch("b_0_px", &b_0_px);
@@ -748,6 +753,322 @@ int main(int argc, char* argv[])
 
 	mu_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
 	mu_tau_b_b->Branch("gen_weight", &weight);
+
+	TTree* e_tau_b_b = flatData.make<TTree>("e_tau_b_b", "#e #tau_{h} b #bar{b}");
+	e_tau_b_b->Branch("t_0_px", &t_0_px);
+	e_tau_b_b->Branch("t_0_py", &t_0_py);
+	e_tau_b_b->Branch("t_0_pz", &t_0_pz);
+	e_tau_b_b->Branch("t_0_P", &t_0_P);
+	e_tau_b_b->Branch("t_0_E", &t_0_E);
+	e_tau_b_b->Branch("t_0_mass", &t_0_mass);
+	e_tau_b_b->Branch("t_0_mT", &t_0_mT);
+
+	e_tau_b_b->Branch("t_1_px", &t_1_px);
+	e_tau_b_b->Branch("t_1_py", &t_1_py);
+	e_tau_b_b->Branch("t_1_pz", &t_1_pz);
+	e_tau_b_b->Branch("t_1_P", &t_1_P);
+	e_tau_b_b->Branch("t_1_E", &t_1_E);
+	e_tau_b_b->Branch("t_1_mass", &t_1_mass);
+	e_tau_b_b->Branch("t_1_mT", &t_1_mT);
+
+	e_tau_b_b->Branch("b_0_px", &b_0_px);
+	e_tau_b_b->Branch("b_0_py", &b_0_py);
+	e_tau_b_b->Branch("b_0_pz", &b_0_pz);
+	e_tau_b_b->Branch("b_0_P", &b_0_P);
+	e_tau_b_b->Branch("b_0_E", &b_0_E);
+	e_tau_b_b->Branch("b_0_mass", &b_0_mass);
+	e_tau_b_b->Branch("b_0_csv", &b_0_csv);
+	e_tau_b_b->Branch("b_0_rawf", &b_0_rawf);
+	e_tau_b_b->Branch("b_0_mva", &b_0_mva);
+
+	e_tau_b_b->Branch("b_1_px", &b_1_px);
+	e_tau_b_b->Branch("b_1_py", &b_1_py);
+	e_tau_b_b->Branch("b_1_pz", &b_1_pz);
+	e_tau_b_b->Branch("b_1_P", &b_1_P);
+	e_tau_b_b->Branch("b_1_E", &b_1_E);
+	e_tau_b_b->Branch("b_1_mass", &b_1_mass);
+	e_tau_b_b->Branch("b_1_csv", &b_1_csv);
+	e_tau_b_b->Branch("b_1_rawf", &b_1_rawf);
+	e_tau_b_b->Branch("b_1_mva", &b_1_mva);
+
+	e_tau_b_b->Branch("met_px", &met_px);
+	e_tau_b_b->Branch("met_py", &met_py);
+	e_tau_b_b->Branch("met_pT", &met_pT);
+	/*e_tau_b_b->Branch("met_cov_00", &met_cov_00);
+	e_tau_b_b->Branch("met_cov_01", &met_cov_01);
+	e_tau_b_b->Branch("met_cov_10", &met_cov_10);
+	e_tau_b_b->Branch("met_cov_11", &met_cov_11);*/
+
+	e_tau_b_b->Branch("h_tt_px", &h_tt_px);
+	e_tau_b_b->Branch("h_tt_py", &h_tt_py);
+	e_tau_b_b->Branch("h_tt_pz", &h_tt_pz);
+	e_tau_b_b->Branch("h_tt_P", &h_tt_P);
+	e_tau_b_b->Branch("h_tt_E", &h_tt_E);
+	e_tau_b_b->Branch("h_tt_mass", &h_tt_mass);
+
+	e_tau_b_b->Branch("h_tt_svFit_px", &h_tt_svFit_px);
+	e_tau_b_b->Branch("h_tt_svFit_py", &h_tt_svFit_py);
+	e_tau_b_b->Branch("h_tt_svFit_pz", &h_tt_svFit_pz);
+	e_tau_b_b->Branch("h_tt_svFit_P", &h_tt_svFit_P);
+	e_tau_b_b->Branch("h_tt_svFit_E", &h_tt_svFit_E);
+	e_tau_b_b->Branch("h_tt_svFit_mass", &h_tt_svFit_mass);
+	e_tau_b_b->Branch("h_tt_svFit_mT", &h_tt_svFit_mT);
+
+	e_tau_b_b->Branch("h_bb_px", &h_bb_px);
+	e_tau_b_b->Branch("h_bb_py", &h_bb_py);
+	e_tau_b_b->Branch("h_bb_pz", &h_bb_pz);
+	e_tau_b_b->Branch("h_bb_P", &h_bb_P);
+	e_tau_b_b->Branch("h_bb_E", &h_bb_E);
+	e_tau_b_b->Branch("h_bb_mass", &h_bb_mass);
+
+	e_tau_b_b->Branch("diH_px", &diH_px);
+	e_tau_b_b->Branch("diH_py", &diH_py);
+	e_tau_b_b->Branch("diH_pz", &diH_pz);
+	e_tau_b_b->Branch("diH_P", &diH_P);
+	e_tau_b_b->Branch("diH_E", &diH_E);
+	e_tau_b_b->Branch("diH_mass", &diH_mass);
+
+	e_tau_b_b->Branch("diH_kinFit_mass", &diH_kinFit_mass);
+	e_tau_b_b->Branch("diH_kinFit_chi2", &diH_kinFit_chi2);
+	e_tau_b_b->Branch("diH_kinFit_conv", &diH_kinFit_conv);
+
+	e_tau_b_b->Branch("twist_b_0_b_1", &twist_b_0_b_1);
+	e_tau_b_b->Branch("twist_b_0_t_0", &twist_b_0_t_0);
+	e_tau_b_b->Branch("twist_b_0_t_1", &twist_b_0_t_1);
+	e_tau_b_b->Branch("twist_b_1_t_0", &twist_b_1_t_0);
+	e_tau_b_b->Branch("twist_b_1_t_1", &twist_b_1_t_1);
+	e_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
+	e_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
+
+	e_tau_b_b->Branch("dR_b_0_b_1", &dR_b_0_b_1);
+	e_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
+	e_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
+	e_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
+	e_tau_b_b->Branch("dR_b_1_t_1", &dR_b_1_t_1);
+	e_tau_b_b->Branch("dR_t_0_t_1", &dR_t_0_t_1);
+	e_tau_b_b->Branch("dR_h_bb_h_tt", &dR_h_bb_h_tt);
+
+	e_tau_b_b->Branch("nJets", &nJets);
+	e_tau_b_b->Branch("hT", &hT);
+	e_tau_b_b->Branch("hT_jets", &hT_jets);
+	e_tau_b_b->Branch("sT", &sT);
+	e_tau_b_b->Branch("centrality", &centrality);
+	e_tau_b_b->Branch("eVis", &eVis);
+
+	e_tau_b_b->Branch("sphericity", &sphericity);
+	e_tau_b_b->Branch("spherocity", &spherocity);
+	e_tau_b_b->Branch("aplanarity", &aplanarity);
+	e_tau_b_b->Branch("aplanority", &aplanority);
+	e_tau_b_b->Branch("upsilon", &upsilon);
+	e_tau_b_b->Branch("dShape", &dShape);
+
+	e_tau_b_b->Branch("sphericityEigen0", &sphericityEigen0);
+	e_tau_b_b->Branch("sphericityEigen1", &sphericityEigen1);
+	e_tau_b_b->Branch("sphericityEigen2", &sphericityEigen2);
+	e_tau_b_b->Branch("spherocityEigen0", &spherocityEigen0);
+	e_tau_b_b->Branch("spherocityEigen1", &spherocityEigen1);
+	e_tau_b_b->Branch("spherocityEigen2", &spherocityEigen2);
+
+/*	e_tau_b_b->Branch("gen_t_0_px", &gen_t_0_px);
+	e_tau_b_b->Branch("gen_t_0_py", &gen_t_0_py);
+	e_tau_b_b->Branch("gen_t_0_pz", &gen_t_0_pz);
+	e_tau_b_b->Branch("gen_t_0_E", &gen_t_0_E); */
+	e_tau_b_b->Branch("gen_t_0_match", &gen_t_0_match);
+
+/*	e_tau_b_b->Branch("gen_t_1_px", &gen_t_1_px);
+	e_tau_b_b->Branch("gen_t_1_py", &gen_t_1_py);
+	e_tau_b_b->Branch("gen_t_1_pz", &gen_t_1_pz);
+	e_tau_b_b->Branch("gen_t_1_E", &gen_t_1_E);*/
+	e_tau_b_b->Branch("gen_t_1_match", &gen_t_1_match);
+
+/*	e_tau_b_b->Branch("gen_b_0_px", &gen_b_0_px);
+	e_tau_b_b->Branch("gen_b_0_py", &gen_b_0_py);
+	e_tau_b_b->Branch("gen_b_0_pz", &gen_b_0_pz);
+	e_tau_b_b->Branch("gen_b_0_E", &gen_b_0_E);*/
+	//e_tau_b_b->Branch("gen_b_0_match", &gen_b_0_match);
+
+/*	e_tau_b_b->Branch("gen_b_1_px", &gen_b_1_px);
+	e_tau_b_b->Branch("gen_b_1_py", &gen_b_1_py);
+	e_tau_b_b->Branch("gen_b_1_pz", &gen_b_1_pz);
+	e_tau_b_b->Branch("gen_b_1_E", &gen_b_1_E);*/
+	//e_tau_b_b->Branch("gen_b_1_match", &gen_b_1_match);
+
+/*	e_tau_b_b->Branch("gen_diH_px", &gen_diH_px);
+	e_tau_b_b->Branch("gen_diH_py", &gen_diH_py);
+	e_tau_b_b->Branch("gen_diH_pz", &gen_diH_pz);
+	e_tau_b_b->Branch("gen_diH_E", &gen_diH_E);
+	e_tau_b_b->Branch("gen_diH_mass", &gen_diH_mass);
+
+	e_tau_b_b->Branch("gen_h_bb_px", &gen_h_bb_px);
+	e_tau_b_b->Branch("gen_h_bb_py", &gen_h_bb_py);
+	e_tau_b_b->Branch("gen_h_bb_pz", &gen_h_bb_pz);
+	e_tau_b_b->Branch("gen_h_bb_E", &gen_h_bb_E);
+
+	e_tau_b_b->Branch("gen_h_tt_px", &gen_h_tt_px);
+	e_tau_b_b->Branch("gen_h_tt_py", &gen_h_tt_py);
+	e_tau_b_b->Branch("gen_h_tt_pz", &gen_h_tt_pz);
+	e_tau_b_b->Branch("gen_h_tt_E", &gen_h_tt_E);*/
+
+	e_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
+	e_tau_b_b->Branch("gen_weight", &weight);
+
+	TTree* tau_tau_b_b = flatData.make<TTree>("tau_tau_b_b", "#tau #tau_{h} b #bar{b}");
+	tau_tau_b_b->Branch("t_0_px", &t_0_px);
+	tau_tau_b_b->Branch("t_0_py", &t_0_py);
+	tau_tau_b_b->Branch("t_0_pz", &t_0_pz);
+	tau_tau_b_b->Branch("t_0_P", &t_0_P);
+	tau_tau_b_b->Branch("t_0_E", &t_0_E);
+	tau_tau_b_b->Branch("t_0_mass", &t_0_mass);
+	tau_tau_b_b->Branch("t_0_mT", &t_0_mT);
+
+	tau_tau_b_b->Branch("t_1_px", &t_1_px);
+	tau_tau_b_b->Branch("t_1_py", &t_1_py);
+	tau_tau_b_b->Branch("t_1_pz", &t_1_pz);
+	tau_tau_b_b->Branch("t_1_P", &t_1_P);
+	tau_tau_b_b->Branch("t_1_E", &t_1_E);
+	tau_tau_b_b->Branch("t_1_mass", &t_1_mass);
+	tau_tau_b_b->Branch("t_1_mT", &t_1_mT);
+
+	tau_tau_b_b->Branch("b_0_px", &b_0_px);
+	tau_tau_b_b->Branch("b_0_py", &b_0_py);
+	tau_tau_b_b->Branch("b_0_pz", &b_0_pz);
+	tau_tau_b_b->Branch("b_0_P", &b_0_P);
+	tau_tau_b_b->Branch("b_0_E", &b_0_E);
+	tau_tau_b_b->Branch("b_0_mass", &b_0_mass);
+	tau_tau_b_b->Branch("b_0_csv", &b_0_csv);
+	tau_tau_b_b->Branch("b_0_rawf", &b_0_rawf);
+	tau_tau_b_b->Branch("b_0_mva", &b_0_mva);
+
+	tau_tau_b_b->Branch("b_1_px", &b_1_px);
+	tau_tau_b_b->Branch("b_1_py", &b_1_py);
+	tau_tau_b_b->Branch("b_1_pz", &b_1_pz);
+	tau_tau_b_b->Branch("b_1_P", &b_1_P);
+	tau_tau_b_b->Branch("b_1_E", &b_1_E);
+	tau_tau_b_b->Branch("b_1_mass", &b_1_mass);
+	tau_tau_b_b->Branch("b_1_csv", &b_1_csv);
+	tau_tau_b_b->Branch("b_1_rawf", &b_1_rawf);
+	tau_tau_b_b->Branch("b_1_mva", &b_1_mva);
+
+	tau_tau_b_b->Branch("met_px", &met_px);
+	tau_tau_b_b->Branch("met_py", &met_py);
+	tau_tau_b_b->Branch("met_pT", &met_pT);
+	/*tau_tau_b_b->Branch("met_cov_00", &met_cov_00);
+	tau_tau_b_b->Branch("met_cov_01", &met_cov_01);
+	tau_tau_b_b->Branch("met_cov_10", &met_cov_10);
+	tau_tau_b_b->Branch("met_cov_11", &met_cov_11);*/
+
+	tau_tau_b_b->Branch("h_tt_px", &h_tt_px);
+	tau_tau_b_b->Branch("h_tt_py", &h_tt_py);
+	tau_tau_b_b->Branch("h_tt_pz", &h_tt_pz);
+	tau_tau_b_b->Branch("h_tt_P", &h_tt_P);
+	tau_tau_b_b->Branch("h_tt_E", &h_tt_E);
+	tau_tau_b_b->Branch("h_tt_mass", &h_tt_mass);
+
+	tau_tau_b_b->Branch("h_tt_svFit_px", &h_tt_svFit_px);
+	tau_tau_b_b->Branch("h_tt_svFit_py", &h_tt_svFit_py);
+	tau_tau_b_b->Branch("h_tt_svFit_pz", &h_tt_svFit_pz);
+	tau_tau_b_b->Branch("h_tt_svFit_P", &h_tt_svFit_P);
+	tau_tau_b_b->Branch("h_tt_svFit_E", &h_tt_svFit_E);
+	tau_tau_b_b->Branch("h_tt_svFit_mass", &h_tt_svFit_mass);
+	tau_tau_b_b->Branch("h_tt_svFit_mT", &h_tt_svFit_mT);
+
+	tau_tau_b_b->Branch("h_bb_px", &h_bb_px);
+	tau_tau_b_b->Branch("h_bb_py", &h_bb_py);
+	tau_tau_b_b->Branch("h_bb_pz", &h_bb_pz);
+	tau_tau_b_b->Branch("h_bb_P", &h_bb_P);
+	tau_tau_b_b->Branch("h_bb_E", &h_bb_E);
+	tau_tau_b_b->Branch("h_bb_mass", &h_bb_mass);
+
+	tau_tau_b_b->Branch("diH_px", &diH_px);
+	tau_tau_b_b->Branch("diH_py", &diH_py);
+	tau_tau_b_b->Branch("diH_pz", &diH_pz);
+	tau_tau_b_b->Branch("diH_P", &diH_P);
+	tau_tau_b_b->Branch("diH_E", &diH_E);
+	tau_tau_b_b->Branch("diH_mass", &diH_mass);
+
+	tau_tau_b_b->Branch("diH_kinFit_mass", &diH_kinFit_mass);
+	tau_tau_b_b->Branch("diH_kinFit_chi2", &diH_kinFit_chi2);
+	tau_tau_b_b->Branch("diH_kinFit_conv", &diH_kinFit_conv);
+
+	tau_tau_b_b->Branch("twist_b_0_b_1", &twist_b_0_b_1);
+	tau_tau_b_b->Branch("twist_b_0_t_0", &twist_b_0_t_0);
+	tau_tau_b_b->Branch("twist_b_0_t_1", &twist_b_0_t_1);
+	tau_tau_b_b->Branch("twist_b_1_t_0", &twist_b_1_t_0);
+	tau_tau_b_b->Branch("twist_b_1_t_1", &twist_b_1_t_1);
+	tau_tau_b_b->Branch("twist_t_0_t_1", &twist_t_0_t_1);
+	tau_tau_b_b->Branch("twist_h_bb_h_tt", &twist_h_bb_h_tt);
+
+	tau_tau_b_b->Branch("dR_b_0_b_1", &dR_b_0_b_1);
+	tau_tau_b_b->Branch("dR_b_0_t_0", &dR_b_0_t_0);
+	tau_tau_b_b->Branch("dR_b_0_t_1", &dR_b_0_t_1);
+	tau_tau_b_b->Branch("dR_b_1_t_0", &dR_b_1_t_0);
+	tau_tau_b_b->Branch("dR_b_1_t_1", &dR_b_1_t_1);
+	tau_tau_b_b->Branch("dR_t_0_t_1", &dR_t_0_t_1);
+	tau_tau_b_b->Branch("dR_h_bb_h_tt", &dR_h_bb_h_tt);
+
+	tau_tau_b_b->Branch("nJets", &nJets);
+	tau_tau_b_b->Branch("hT", &hT);
+	tau_tau_b_b->Branch("hT_jets", &hT_jets);
+	tau_tau_b_b->Branch("sT", &sT);
+	tau_tau_b_b->Branch("centrality", &centrality);
+	tau_tau_b_b->Branch("eVis", &eVis);
+
+	tau_tau_b_b->Branch("sphericity", &sphericity);
+	tau_tau_b_b->Branch("spherocity", &spherocity);
+	tau_tau_b_b->Branch("aplanarity", &aplanarity);
+	tau_tau_b_b->Branch("aplanority", &aplanority);
+	tau_tau_b_b->Branch("upsilon", &upsilon);
+	tau_tau_b_b->Branch("dShape", &dShape);
+
+	tau_tau_b_b->Branch("sphericityEigen0", &sphericityEigen0);
+	tau_tau_b_b->Branch("sphericityEigen1", &sphericityEigen1);
+	tau_tau_b_b->Branch("sphericityEigen2", &sphericityEigen2);
+	tau_tau_b_b->Branch("spherocityEigen0", &spherocityEigen0);
+	tau_tau_b_b->Branch("spherocityEigen1", &spherocityEigen1);
+	tau_tau_b_b->Branch("spherocityEigen2", &spherocityEigen2);
+
+/*	tau_tau_b_b->Branch("gen_t_0_px", &gen_t_0_px);
+	tau_tau_b_b->Branch("gen_t_0_py", &gen_t_0_py);
+	tau_tau_b_b->Branch("gen_t_0_pz", &gen_t_0_pz);
+	tau_tau_b_b->Branch("gen_t_0_E", &gen_t_0_E); */
+	tau_tau_b_b->Branch("gen_t_0_match", &gen_t_0_match);
+
+/*	tau_tau_b_b->Branch("gen_t_1_px", &gen_t_1_px);
+	tau_tau_b_b->Branch("gen_t_1_py", &gen_t_1_py);
+	tau_tau_b_b->Branch("gen_t_1_pz", &gen_t_1_pz);
+	tau_tau_b_b->Branch("gen_t_1_E", &gen_t_1_E);*/
+	tau_tau_b_b->Branch("gen_t_1_match", &gen_t_1_match);
+
+/*	tau_tau_b_b->Branch("gen_b_0_px", &gen_b_0_px);
+	tau_tau_b_b->Branch("gen_b_0_py", &gen_b_0_py);
+	tau_tau_b_b->Branch("gen_b_0_pz", &gen_b_0_pz);
+	tau_tau_b_b->Branch("gen_b_0_E", &gen_b_0_E);*/
+	//tau_tau_b_b->Branch("gen_b_0_match", &gen_b_0_match);
+
+/*	tau_tau_b_b->Branch("gen_b_1_px", &gen_b_1_px);
+	tau_tau_b_b->Branch("gen_b_1_py", &gen_b_1_py);
+	tau_tau_b_b->Branch("gen_b_1_pz", &gen_b_1_pz);
+	tau_tau_b_b->Branch("gen_b_1_E", &gen_b_1_E);*/
+	//tau_tau_b_b->Branch("gen_b_1_match", &gen_b_1_match);
+
+/*	tau_tau_b_b->Branch("gen_diH_px", &gen_diH_px);
+	tau_tau_b_b->Branch("gen_diH_py", &gen_diH_py);
+	tau_tau_b_b->Branch("gen_diH_pz", &gen_diH_pz);
+	tau_tau_b_b->Branch("gen_diH_E", &gen_diH_E);
+	tau_tau_b_b->Branch("gen_diH_mass", &gen_diH_mass);
+
+	tau_tau_b_b->Branch("gen_h_bb_px", &gen_h_bb_px);
+	tau_tau_b_b->Branch("gen_h_bb_py", &gen_h_bb_py);
+	tau_tau_b_b->Branch("gen_h_bb_pz", &gen_h_bb_pz);
+	tau_tau_b_b->Branch("gen_h_bb_E", &gen_h_bb_E);
+
+	tau_tau_b_b->Branch("gen_h_tt_px", &gen_h_tt_px);
+	tau_tau_b_b->Branch("gen_h_tt_py", &gen_h_tt_py);
+	tau_tau_b_b->Branch("gen_h_tt_pz", &gen_h_tt_pz);
+	tau_tau_b_b->Branch("gen_h_tt_E", &gen_h_tt_E);*/
+
+	tau_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
+	tau_tau_b_b->Branch("gen_weight", &weight);
 	//___________________________________________
 
 	// loop over all input files:
@@ -768,40 +1089,41 @@ int main(int argc, char* argv[])
 				totalWeight = *r_totalShapeWeight; //Got to be a nicer way than this
 			}
 
-			TTreeReader reader("muTau", inFile);
+			//MuTau______________________________
+			TTreeReader mutau_reader("muTau", inFile);
 
 			//Define event features______________
 			//General info_______________________
-			TTreeReaderValue<double> r_weight(reader, "weight_total");
-			TTreeReaderValue<unsigned int> r_njets(reader, "n_jets");
-			TTreeReaderValue<float> r_jet_HT(reader, "ht_other_jets");
+			TTreeReaderValue<double> r_weight(mutau_reader, "weight_total");
+			TTreeReaderValue<unsigned int> r_njets(mutau_reader, "n_jets");
+			TTreeReaderValue<float> r_jet_HT(mutau_reader, "ht_other_jets");
 			//Tau_0______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_0_p4(reader, "p4_2");
-			TTreeReaderValue<int> r_gen_t_0_match(reader, "gen_match_2");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_0_p4(mutau_reader, "p4_2");
+			TTreeReaderValue<int> r_gen_t_0_match(mutau_reader, "gen_match_2");
 			//Tau_1______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_1_p4(reader, "p4_1");
-			TTreeReaderValue<int> r_gen_t_1_match(reader, "gen_match_1");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_1_p4(mutau_reader, "p4_1");
+			TTreeReaderValue<int> r_gen_t_1_match(mutau_reader, "gen_match_1");
 			//MET________________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(reader, "pfMET_p4");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(mutau_reader, "pfMET_p4");
 			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_met_cov(reader, "pfMET_cov");
 			//Jets_______________________________
-			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_jets_p4(reader, "jets_p4");
-			TTreeReaderValue<std::vector<float> > r_jets_csv(reader, "jets_csv");
-			TTreeReaderValue<std::vector<float> > r_jets_rawf(reader, "jets_rawf");
-			TTreeReaderValue<std::vector<float> > r_jets_mva(reader, "jets_mva");
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_jets_p4(mutau_reader, "jets_p4");
+			TTreeReaderValue<std::vector<float> > r_jets_csv(mutau_reader, "jets_csv");
+			TTreeReaderValue<std::vector<float> > r_jets_rawf(mutau_reader, "jets_rawf");
+			TTreeReaderValue<std::vector<float> > r_jets_mva(mutau_reader, "jets_mva");
 			//SVFit______________________________
-			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(reader, "SVfit_p4");
-			TTreeReaderValue<float> r_svfit_mT(reader, "SVfit_mt");
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(mutau_reader, "SVfit_p4");
+			TTreeReaderValue<float> r_svfit_mT(mutau_reader, "SVfit_mt");
 			//KinFit______________________________
-			TTreeReaderValue<std::vector<float> > r_kinFit_mH(reader, "kinFit_m");
-			TTreeReaderValue<std::vector<float> > r_kinFit_chi2(reader, "kinFit_chi2");
-			TTreeReaderValue<std::vector<int> > r_kinFit_conv(reader, "kinFit_convergence");
+			TTreeReaderValue<std::vector<float> > r_kinFit_mH(mutau_reader, "kinFit_m");
+			TTreeReaderValue<std::vector<float> > r_kinFit_chi2(mutau_reader, "kinFit_chi2");
+			TTreeReaderValue<std::vector<int> > r_kinFit_conv(mutau_reader, "kinFit_convergence");
 			//___________________________________
 
-			while (reader.Next()) {
+			while (mutau_reader.Next()) {
 				//Getting objects____________________
 				//General info_______________________
-				weight = xSec*(*r_weight)/totalWeight;
+				weight = xSec*(*r_totalShapeWeight)/totalWeight;
 				nJets = *r_njets;
 				hT_jets = *r_jet_HT;
 				//MET________________________________
@@ -830,13 +1152,13 @@ int main(int argc, char* argv[])
 				t_1_pz = t_1_p4.Pz();
 				t_1_P = t_1_p4.P();
 				t_1_E = t_1_p4.E();
-				//t_1_mass = t_1_p4.M();
+				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
 				gen_t_1_match = *r_gen_t_1_match;
 				//Jets_______________________________
 				bjet0_p4 = (*r_jets_p4)[0];
 				bjet1_p4 = (*r_jets_p4)[1];
-				if (bjet0_p4.Pt() > bjet1_p4.Pt()) { //Order jets by pT
+				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
 					bjet0_p4 = (*r_jets_p4)[1];
 					b_0_csv = (*r_jets_csv)[1];
 					b_0_rawf = (*r_jets_rawf)[1];
@@ -1032,6 +1354,551 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//_____________________________
 				mu_tau_b_b->Fill();
+				//________________________________
+
+			}
+
+			//MuTau______________________________
+			TTreeReader etau_reader("eTau", inFile);
+
+			//Define event features______________
+			//General info_______________________
+			TTreeReaderValue<double> r_weight(etau_reader, "weight_total");
+			TTreeReaderValue<unsigned int> r_njets(etau_reader, "n_jets");
+			TTreeReaderValue<float> r_jet_HT(etau_reader, "ht_other_jets");
+			//Tau_0______________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_0_p4(etau_reader, "p4_2");
+			TTreeReaderValue<int> r_gen_t_0_match(etau_reader, "gen_match_2");
+			//Tau_1______________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_1_p4(etau_reader, "p4_1");
+			TTreeReaderValue<int> r_gen_t_1_match(etau_reader, "gen_match_1");
+			//MET________________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(etau_reader, "pfMET_p4");
+			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_met_cov(reader, "pfMET_cov");
+			//Jets_______________________________
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_jets_p4(etau_reader, "jets_p4");
+			TTreeReaderValue<std::vector<float> > r_jets_csv(etau_reader, "jets_csv");
+			TTreeReaderValue<std::vector<float> > r_jets_rawf(etau_reader, "jets_rawf");
+			TTreeReaderValue<std::vector<float> > r_jets_mva(etau_reader, "jets_mva");
+			//SVFit______________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(etau_reader, "SVfit_p4");
+			TTreeReaderValue<float> r_svfit_mT(etau_reader, "SVfit_mt");
+			//KinFit______________________________
+			TTreeReaderValue<std::vector<float> > r_kinFit_mH(etau_reader, "kinFit_m");
+			TTreeReaderValue<std::vector<float> > r_kinFit_chi2(etau_reader, "kinFit_chi2");
+			TTreeReaderValue<std::vector<int> > r_kinFit_conv(etau_reader, "kinFit_convergence");
+			//___________________________________
+
+			while (etau_reader.Next()) {
+				//Getting objects____________________
+				//General info_______________________
+				weight = xSec*(*r_totalShapeWeight)/totalWeight;
+				nJets = *r_njets;
+				hT_jets = *r_jet_HT;
+				//MET________________________________
+				met_p4 = *r_met_p4;
+				met_px = met_p4.Px();
+				met_py = met_p4.Py();
+				met_pT = met_p4.Pt();
+				/*met_cov_00 = (*r_met_cov)(0, 0);
+				met_cov_01 = (*r_met_cov)(0, 1);
+				met_cov_10 = (*r_met_cov)(1, 0);
+				met_cov_11 = (*r_met_cov)(1, 1);*/
+				//Tau_0______________________________
+				t_0_p4 = *r_t_0_p4;
+				t_0_px = t_0_p4.Px();
+				t_0_py = t_0_p4.Py();
+				t_0_pz = t_0_p4.Pz();
+				t_0_P = t_0_p4.P();
+				t_0_E = t_0_p4.E();
+				t_0_mass = t_0_p4.M();
+				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				gen_t_0_match = *r_gen_t_0_match;
+				//Tau_1______________________________
+				t_1_p4 = *r_t_1_p4;
+				t_1_px = t_1_p4.Px();
+				t_1_py = t_1_p4.Py();
+				t_1_pz = t_1_p4.Pz();
+				t_1_P = t_1_p4.P();
+				t_1_E = t_1_p4.E();
+				t_1_mass = t_1_p4.M();
+				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				gen_t_1_match = *r_gen_t_1_match;
+				//Jets_______________________________
+				bjet0_p4 = (*r_jets_p4)[0];
+				bjet1_p4 = (*r_jets_p4)[1];
+				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
+					bjet0_p4 = (*r_jets_p4)[1];
+					b_0_csv = (*r_jets_csv)[1];
+					b_0_rawf = (*r_jets_rawf)[1];
+					b_0_mva = (*r_jets_mva)[1];
+
+					bjet1_p4 = (*r_jets_p4)[0];
+					b_1_csv = (*r_jets_csv)[0];
+					b_1_rawf = (*r_jets_rawf)[0];
+					b_1_mva = (*r_jets_mva)[0];
+				} else {
+					b_0_csv = (*r_jets_csv)[0];
+					b_0_rawf = (*r_jets_rawf)[0];
+					b_0_mva = (*r_jets_mva)[0];
+
+					b_1_csv = (*r_jets_csv)[1];
+					b_1_rawf = (*r_jets_rawf)[1];
+					b_1_mva = (*r_jets_mva)[1];
+				}
+
+				b_0_px = bjet0_p4.Px();
+				b_0_py = bjet0_p4.Py();
+				b_0_pz = bjet0_p4.Pz();
+				b_0_P = bjet0_p4.P();
+				b_0_E = bjet0_p4.E();
+				b_0_mass = bjet0_p4.M();
+
+				b_1_px = bjet1_p4.Px();
+				b_1_py = bjet1_p4.Py();
+				b_1_pz = bjet1_p4.Pz();
+				b_1_P = bjet1_p4.P();
+				b_1_E = bjet1_p4.E();
+				b_1_mass = bjet1_p4.M();
+				//SVFit_______________________________
+				svFit_p4 = *r_svfit_p4;
+				h_tt_svFit_px = svFit_p4.Px();
+				h_tt_svFit_py = svFit_p4.Py();
+				h_tt_svFit_pz = svFit_p4.Pz();
+				h_tt_svFit_P = svFit_p4.P();
+				h_tt_svFit_E = svFit_p4.E();
+				h_tt_svFit_mass = svFit_p4.M();
+				h_tt_svFit_mT = *r_svfit_mT;
+				//KinFit______________________________
+				diH_kinFit_mass = (*r_kinFit_mH)[0];
+				diH_kinFit_chi2 = (*r_kinFit_chi2)[0];
+				diH_kinFit_conv = (*r_kinFit_conv)[0];
+				//h->bb_______________________________
+				hbb_p4 = bjet0_p4+bjet1_p4;
+				h_bb_px = hbb_p4.Px();
+				h_bb_py = hbb_p4.Py();
+				h_bb_pz = hbb_p4.Pz();
+				h_bb_P = hbb_p4.P();
+				h_bb_E = hbb_p4.E();
+				h_bb_mass = hbb_p4.M();
+				//h->tautau___________________________
+				htt_p4 = t_0_p4+t_1_p4+met_p4;
+				h_tt_px = htt_p4.Px();
+				h_tt_py = htt_p4.Py();
+				h_tt_pz = htt_p4.Pz();
+				h_tt_P = htt_p4.P();
+				h_tt_E = htt_p4.E();
+				h_tt_mass = htt_p4.M();
+				//Di-higgs____________________________
+				hh_p4 = hbb_p4+htt_p4;
+				diH_px = hh_p4.Px();
+				diH_py = hh_p4.Py();
+				diH_pz = hh_p4.Pz();
+				diH_P = hh_p4.P();
+				diH_E = hh_p4.E();
+				diH_mass = hh_p4.M();
+				//Shapes__________________________
+				getGlobalEventInfo(&t_0_p4, &t_1_p4, &bjet0_p4, &bjet0_p4, &met_p4,
+					&hT, &sT, &centrality, &eVis);
+				getPrimaryEventShapes(&t_0_p4, &t_1_p4, &bjet0_p4, &bjet0_p4,
+					&sphericity, &spherocity,
+					&aplanarity, &aplanority,
+					&upsilon, &dShape,
+					&sphericityEigen0, &sphericityEigen1, &sphericityEigen2,
+					&spherocityEigen0, &spherocityEigen1, &spherocityEigen2);
+				//________________________________
+				//Twist___________________________
+				twist_b_0_b_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, bjet1_p4)/(bjet0_p4.Eta()-bjet1_p4.Eta())));
+				twist_b_0_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_0_p4)/(bjet0_p4.Eta()-t_0_p4.Eta())));
+				twist_b_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_1_p4)/(bjet0_p4.Eta()-t_1_p4.Eta())));
+				twist_b_1_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_0_p4)/(bjet1_p4.Eta()-t_0_p4.Eta())));
+				twist_b_1_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_1_p4)/(bjet1_p4.Eta()-t_1_p4.Eta())));
+				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/(t_0_p4.Eta()-t_1_p4.Eta())));
+				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/(hbb_p4.Eta()-htt_p4.Eta())));
+				//____________________________________
+				//dR__________________________________
+				dR_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
+				dR_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
+				dR_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
+				dR_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
+				dR_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
+				dR_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
+				dR_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
+				//____________________________________
+				
+				//MC truth_____________________
+				//Reset variables______________
+				/*gen_t_0_px = 0;
+				gen_t_0_py = 0;
+				gen_t_0_pz = 0;
+				gen_t_0_E = 0;
+				gen_t_1_px = 0;
+				gen_t_1_py = 0;
+				gen_t_1_pz = 0;
+				gen_t_1_E = 0;
+				gen_b_0_px = 0;
+				gen_b_0_py = 0;
+				gen_b_0_pz = 0;
+				gen_b_0_E = 0;
+				//gen_b_0_match = 0;
+				gen_b_1_px = 0;
+				gen_b_1_py = 0;
+				gen_b_1_pz = 0;
+				gen_b_1_E = 0;
+				//gen_b_1_match = 0;
+				gen_diH_px = 0;
+				gen_diH_py = 0;
+				gen_diH_pz = 0;
+				gen_diH_E = 0;
+				gen_diH_mass = 0;
+				gen_h_bb_px = 0;
+				gen_h_bb_py = 0;
+				gen_h_bb_pz = 0;
+				gen_h_bb_E = 0;
+				gen_h_tt_px = 0;
+				gen_h_tt_py = 0;
+				gen_h_tt_pz = 0;
+				gen_h_tt_E = 0;*/
+				//_____________________________
+				//_____________________________
+				if (runOnSignal) { //TODO:Add this
+					continue;
+					/*//Get gen info______________
+					int gen_hBB_key, gen_hTauTau_key;
+					if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts, higgsDecay)) { //If both Higgs found
+						const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
+						const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
+						const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
+						const reco::Candidate* gen_bjet1 = gen_hBB.daughter(1);
+						const reco::Candidate* gen_tau0 = gen_hTauTau.daughter(0);
+						const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
+						//__________________________
+						//Check FSs_________________
+						gen_mctMatch = truthFlag(mcCuts,//Checks final-state selection was correct
+							&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
+							&bjet1, &bjet2, &tau, &muon);
+						//__________________________
+						//Get 4-momenta_____________
+						gen_hbb_p4 = gen_hBB.p4();
+						gen_htt_p4 = gen_hTauTau.p4();
+						gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
+						gen_tau0_p4 = gen_tau0->p4();
+						gen_tau1_p4 = gen_tau1->p4();
+						gen_bjet0_p4 = gen_bjet0->p4();
+						gen_bjet1_p4 = gen_bjet1->p4();
+						//__________________________
+						//Decompose info____________
+						gen_t_0_px = gen_tau0_p4.Px();
+						gen_t_0_py = gen_tau0_p4.Py();
+						gen_t_0_pz = gen_tau0_p4.Pz();
+						gen_t_0_E = gen_tau0_p4.E();
+						gen_t_1_px = gen_tau1_p4.Px();
+						gen_t_1_py = gen_tau1_p4.Py();
+						gen_t_1_pz = gen_tau1_p4.Pz();
+						gen_t_1_E = gen_tau1_p4.E();
+						gen_b_0_px = gen_bjet0_p4.Px();
+						gen_b_0_py = gen_bjet0_p4.Py();
+						gen_b_0_pz = gen_bjet0_p4.Pz();
+						gen_b_0_E = gen_bjet0_p4.E();
+						gen_b_1_px = gen_bjet1_p4.Px();
+						gen_b_1_py = gen_bjet1_p4.Py();
+						gen_b_1_pz = gen_bjet1_p4.Pz();
+						gen_b_1_E = gen_bjet1_p4.E();
+						gen_diH_px = gen_hh_p4.Px();
+						gen_diH_py = gen_hh_p4.Py();
+						gen_diH_pz = gen_hh_p4.Pz();
+						gen_diH_E = gen_hh_p4.E();
+						gen_diH_mass = gen_hh_p4.M();
+						gen_h_bb_px = gen_hbb_p4.Px();
+						gen_h_bb_py = gen_hbb_p4.Py();
+						gen_h_bb_pz = gen_hbb_p4.Pz();
+						gen_h_bb_E = gen_hbb_p4.E();
+						gen_h_tt_px = gen_htt_p4.Px();
+						gen_h_tt_py = gen_htt_p4.Py();
+						gen_h_tt_pz = gen_htt_p4.Pz();
+						gen_h_tt_E = gen_htt_p4.E();
+						//__________________________
+					}*/
+				}
+				//_____________________________
+				//_____________________________
+				e_tau_b_b->Fill();
+				//________________________________
+
+			}
+
+			//TauTau______________________________
+			TTreeReader tauTau_reader("tauTau", inFile);
+
+			//Define event features______________
+			//General info_______________________
+			TTreeReaderValue<double> r_weight(tauTau_reader, "weight_total");
+			TTreeReaderValue<unsigned int> r_njets(tauTau_reader, "n_jets");
+			TTreeReaderValue<float> r_jet_HT(tauTau_reader, "ht_other_jets");
+			//Tau_0______________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_0_p4(tauTau_reader, "p4_2");
+			TTreeReaderValue<int> r_gen_t_0_match(tauTau_reader, "gen_match_2");
+			//Tau_1______________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_t_1_p4(tauTau_reader, "p4_1");
+			TTreeReaderValue<int> r_gen_t_1_match(tauTau_reader, "gen_match_1");
+			//MET________________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_met_p4(tauTau_reader, "pfMET_p4");
+			//TTreeReaderValue<ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepStd<double,2,2> > > r_met_cov(reader, "pfMET_cov");
+			//Jets_______________________________
+			TTreeReaderValue<std::vector<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > > > r_jets_p4(tauTau_reader, "jets_p4");
+			TTreeReaderValue<std::vector<float> > r_jets_csv(tauTau_reader, "jets_csv");
+			TTreeReaderValue<std::vector<float> > r_jets_rawf(tauTau_reader, "jets_rawf");
+			TTreeReaderValue<std::vector<float> > r_jets_mva(tauTau_reader, "jets_mva");
+			//SVFit______________________________
+			TTreeReaderValue<ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > > r_svfit_p4(tauTau_reader, "SVfit_p4");
+			TTreeReaderValue<float> r_svfit_mT(tauTau_reader, "SVfit_mt");
+			//KinFit______________________________
+			TTreeReaderValue<std::vector<float> > r_kinFit_mH(tauTau_reader, "kinFit_m");
+			TTreeReaderValue<std::vector<float> > r_kinFit_chi2(tauTau_reader, "kinFit_chi2");
+			TTreeReaderValue<std::vector<int> > r_kinFit_conv(tauTau_reader, "kinFit_convergence");
+			//___________________________________
+
+			while (tauTau_reader.Next()) {
+				//Getting objects____________________
+				//General info_______________________
+				weight = xSec*(*r_totalShapeWeight)/totalWeight;
+				nJets = *r_njets;
+				hT_jets = *r_jet_HT;
+				//MET________________________________
+				met_p4 = *r_met_p4;
+				met_px = met_p4.Px();
+				met_py = met_p4.Py();
+				met_pT = met_p4.Pt();
+				/*met_cov_00 = (*r_met_cov)(0, 0);
+				met_cov_01 = (*r_met_cov)(0, 1);
+				met_cov_10 = (*r_met_cov)(1, 0);
+				met_cov_11 = (*r_met_cov)(1, 1);*/
+				if (t_0_p4.Pt() < t_1_p4.Pt()) { //Order jets by pT
+					t_0_p4 = r_t_1_p4;
+					t_1_p4 = r_t_0_p4;
+					gen_t_0_match = *r_gen_t_1_match;
+					gen_t_1_match = *r_gen_t_0_match;
+				} else {
+					t_0_p4 = r_t_0_p4;
+					t_1_p4 = r_t_1_p4;
+					gen_t_0_match = *r_gen_t_0_match;
+					gen_t_1_match = *r_gen_t_1_match;
+				}
+				//Tau_0______________________________
+				t_0_px = t_0_p4.Px();
+				t_0_py = t_0_p4.Py();
+				t_0_pz = t_0_p4.Pz();
+				t_0_P = t_0_p4.P();
+				t_0_E = t_0_p4.E();
+				t_0_mass = t_0_p4.M();
+				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				//Tau_1______________________________
+				t_1_px = t_1_p4.Px();
+				t_1_py = t_1_p4.Py();
+				t_1_pz = t_1_p4.Pz();
+				t_1_P = t_1_p4.P();
+				t_1_E = t_1_p4.E();
+				t_1_mass = t_1_p4.M();
+				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				//Jets_______________________________
+				bjet0_p4 = (*r_jets_p4)[0];
+				bjet1_p4 = (*r_jets_p4)[1];
+				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
+					bjet0_p4 = (*r_jets_p4)[1];
+					b_0_csv = (*r_jets_csv)[1];
+					b_0_rawf = (*r_jets_rawf)[1];
+					b_0_mva = (*r_jets_mva)[1];
+
+					bjet1_p4 = (*r_jets_p4)[0];
+					b_1_csv = (*r_jets_csv)[0];
+					b_1_rawf = (*r_jets_rawf)[0];
+					b_1_mva = (*r_jets_mva)[0];
+				} else {
+					b_0_csv = (*r_jets_csv)[0];
+					b_0_rawf = (*r_jets_rawf)[0];
+					b_0_mva = (*r_jets_mva)[0];
+
+					b_1_csv = (*r_jets_csv)[1];
+					b_1_rawf = (*r_jets_rawf)[1];
+					b_1_mva = (*r_jets_mva)[1];
+				}
+
+				b_0_px = bjet0_p4.Px();
+				b_0_py = bjet0_p4.Py();
+				b_0_pz = bjet0_p4.Pz();
+				b_0_P = bjet0_p4.P();
+				b_0_E = bjet0_p4.E();
+				b_0_mass = bjet0_p4.M();
+
+				b_1_px = bjet1_p4.Px();
+				b_1_py = bjet1_p4.Py();
+				b_1_pz = bjet1_p4.Pz();
+				b_1_P = bjet1_p4.P();
+				b_1_E = bjet1_p4.E();
+				b_1_mass = bjet1_p4.M();
+				//SVFit_______________________________
+				svFit_p4 = *r_svfit_p4;
+				h_tt_svFit_px = svFit_p4.Px();
+				h_tt_svFit_py = svFit_p4.Py();
+				h_tt_svFit_pz = svFit_p4.Pz();
+				h_tt_svFit_P = svFit_p4.P();
+				h_tt_svFit_E = svFit_p4.E();
+				h_tt_svFit_mass = svFit_p4.M();
+				h_tt_svFit_mT = *r_svfit_mT;
+				//KinFit______________________________
+				diH_kinFit_mass = (*r_kinFit_mH)[0];
+				diH_kinFit_chi2 = (*r_kinFit_chi2)[0];
+				diH_kinFit_conv = (*r_kinFit_conv)[0];
+				//h->bb_______________________________
+				hbb_p4 = bjet0_p4+bjet1_p4;
+				h_bb_px = hbb_p4.Px();
+				h_bb_py = hbb_p4.Py();
+				h_bb_pz = hbb_p4.Pz();
+				h_bb_P = hbb_p4.P();
+				h_bb_E = hbb_p4.E();
+				h_bb_mass = hbb_p4.M();
+				//h->tautau___________________________
+				htt_p4 = t_0_p4+t_1_p4+met_p4;
+				h_tt_px = htt_p4.Px();
+				h_tt_py = htt_p4.Py();
+				h_tt_pz = htt_p4.Pz();
+				h_tt_P = htt_p4.P();
+				h_tt_E = htt_p4.E();
+				h_tt_mass = htt_p4.M();
+				//Di-higgs____________________________
+				hh_p4 = hbb_p4+htt_p4;
+				diH_px = hh_p4.Px();
+				diH_py = hh_p4.Py();
+				diH_pz = hh_p4.Pz();
+				diH_P = hh_p4.P();
+				diH_E = hh_p4.E();
+				diH_mass = hh_p4.M();
+				//Shapes__________________________
+				getGlobalEventInfo(&t_0_p4, &t_1_p4, &bjet0_p4, &bjet0_p4, &met_p4,
+					&hT, &sT, &centrality, &eVis);
+				getPrimaryEventShapes(&t_0_p4, &t_1_p4, &bjet0_p4, &bjet0_p4,
+					&sphericity, &spherocity,
+					&aplanarity, &aplanority,
+					&upsilon, &dShape,
+					&sphericityEigen0, &sphericityEigen1, &sphericityEigen2,
+					&spherocityEigen0, &spherocityEigen1, &spherocityEigen2);
+				//________________________________
+				//Twist___________________________
+				twist_b_0_b_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, bjet1_p4)/(bjet0_p4.Eta()-bjet1_p4.Eta())));
+				twist_b_0_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_0_p4)/(bjet0_p4.Eta()-t_0_p4.Eta())));
+				twist_b_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet0_p4, t_1_p4)/(bjet0_p4.Eta()-t_1_p4.Eta())));
+				twist_b_1_t_0 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_0_p4)/(bjet1_p4.Eta()-t_0_p4.Eta())));
+				twist_b_1_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(bjet1_p4, t_1_p4)/(bjet1_p4.Eta()-t_1_p4.Eta())));
+				twist_t_0_t_1 = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(t_0_p4, t_1_p4)/(t_0_p4.Eta()-t_1_p4.Eta())));
+				twist_h_bb_h_tt = atan(std::abs(ROOT::Math::VectorUtil::DeltaPhi(hbb_p4, htt_p4)/(hbb_p4.Eta()-htt_p4.Eta())));
+				//____________________________________
+				//dR__________________________________
+				dR_b_0_b_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, bjet1_p4);
+				dR_b_0_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_0_p4);
+				dR_b_0_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet0_p4, t_1_p4);
+				dR_b_1_t_0 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_0_p4);
+				dR_b_1_t_1 = ROOT::Math::VectorUtil::DeltaR(bjet1_p4, t_1_p4);
+				dR_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
+				dR_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
+				//____________________________________
+				
+				//MC truth_____________________
+				//Reset variables______________
+				/*gen_t_0_px = 0;
+				gen_t_0_py = 0;
+				gen_t_0_pz = 0;
+				gen_t_0_E = 0;
+				gen_t_1_px = 0;
+				gen_t_1_py = 0;
+				gen_t_1_pz = 0;
+				gen_t_1_E = 0;
+				gen_b_0_px = 0;
+				gen_b_0_py = 0;
+				gen_b_0_pz = 0;
+				gen_b_0_E = 0;
+				//gen_b_0_match = 0;
+				gen_b_1_px = 0;
+				gen_b_1_py = 0;
+				gen_b_1_pz = 0;
+				gen_b_1_E = 0;
+				//gen_b_1_match = 0;
+				gen_diH_px = 0;
+				gen_diH_py = 0;
+				gen_diH_pz = 0;
+				gen_diH_E = 0;
+				gen_diH_mass = 0;
+				gen_h_bb_px = 0;
+				gen_h_bb_py = 0;
+				gen_h_bb_pz = 0;
+				gen_h_bb_E = 0;
+				gen_h_tt_px = 0;
+				gen_h_tt_py = 0;
+				gen_h_tt_pz = 0;
+				gen_h_tt_E = 0;*/
+				//_____________________________
+				//_____________________________
+				if (runOnSignal) { //TODO:Add this
+					continue;
+					/*//Get gen info______________
+					int gen_hBB_key, gen_hTauTau_key;
+					if (getGenParticles(genParticles, &gen_hBB_key, &gen_hTauTau_key, mcCuts, higgsDecay)) { //If both Higgs found
+						const reco::GenParticle& gen_hBB = (*genParticles)[gen_hBB_key];
+						const reco::GenParticle& gen_hTauTau = (*genParticles)[gen_hTauTau_key];
+						const reco::Candidate* gen_bjet0 = gen_hBB.daughter(0);
+						const reco::Candidate* gen_bjet1 = gen_hBB.daughter(1);
+						const reco::Candidate* gen_tau0 = gen_hTauTau.daughter(0);
+						const reco::Candidate* gen_tau1 = gen_hTauTau.daughter(1);
+						//__________________________
+						//Check FSs_________________
+						gen_mctMatch = truthFlag(mcCuts,//Checks final-state selection was correct
+							&gen_hBB, &gen_hTauTau, gen_bjet0, gen_bjet1, gen_tau0, gen_tau1,
+							&bjet1, &bjet2, &tau, &muon);
+						//__________________________
+						//Get 4-momenta_____________
+						gen_hbb_p4 = gen_hBB.p4();
+						gen_htt_p4 = gen_hTauTau.p4();
+						gen_hh_p4 = gen_hbb_p4 + gen_htt_p4;
+						gen_tau0_p4 = gen_tau0->p4();
+						gen_tau1_p4 = gen_tau1->p4();
+						gen_bjet0_p4 = gen_bjet0->p4();
+						gen_bjet1_p4 = gen_bjet1->p4();
+						//__________________________
+						//Decompose info____________
+						gen_t_0_px = gen_tau0_p4.Px();
+						gen_t_0_py = gen_tau0_p4.Py();
+						gen_t_0_pz = gen_tau0_p4.Pz();
+						gen_t_0_E = gen_tau0_p4.E();
+						gen_t_1_px = gen_tau1_p4.Px();
+						gen_t_1_py = gen_tau1_p4.Py();
+						gen_t_1_pz = gen_tau1_p4.Pz();
+						gen_t_1_E = gen_tau1_p4.E();
+						gen_b_0_px = gen_bjet0_p4.Px();
+						gen_b_0_py = gen_bjet0_p4.Py();
+						gen_b_0_pz = gen_bjet0_p4.Pz();
+						gen_b_0_E = gen_bjet0_p4.E();
+						gen_b_1_px = gen_bjet1_p4.Px();
+						gen_b_1_py = gen_bjet1_p4.Py();
+						gen_b_1_pz = gen_bjet1_p4.Pz();
+						gen_b_1_E = gen_bjet1_p4.E();
+						gen_diH_px = gen_hh_p4.Px();
+						gen_diH_py = gen_hh_p4.Py();
+						gen_diH_pz = gen_hh_p4.Pz();
+						gen_diH_E = gen_hh_p4.E();
+						gen_diH_mass = gen_hh_p4.M();
+						gen_h_bb_px = gen_hbb_p4.Px();
+						gen_h_bb_py = gen_hbb_p4.Py();
+						gen_h_bb_pz = gen_hbb_p4.Pz();
+						gen_h_bb_E = gen_hbb_p4.E();
+						gen_h_tt_px = gen_htt_p4.Px();
+						gen_h_tt_py = gen_htt_p4.Py();
+						gen_h_tt_pz = gen_htt_p4.Pz();
+						gen_h_tt_E = gen_htt_p4.E();
+						//__________________________
+					}*/
+				}
+				//_____________________________
+				//_____________________________
+				tau_tau_b_b->Fill();
 				//________________________________
 
 			}
