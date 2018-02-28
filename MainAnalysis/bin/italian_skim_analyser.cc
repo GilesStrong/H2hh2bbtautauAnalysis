@@ -1256,7 +1256,11 @@ int main(int argc, char* argv[])
 				dR_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
 				dR_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
 				//____________________________________
-				
+				//Acceptance__________________________
+				if (h_tt_svFit_mass-125 >= 70) continue;
+				if (diH_kinFit_conv <= 0) continue;
+				if (dR_t_0_t_1 >= 3.5) continue;
+				if (h_tt_svFit_mT >= 190) continue;
 				//MC truth_____________________
 				//Reset variables______________
 				/*gen_t_0_px = 0;
@@ -1525,7 +1529,11 @@ int main(int argc, char* argv[])
 				dR_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
 				dR_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
 				//____________________________________
-				
+				//Acceptance__________________________
+				if (h_tt_svFit_mass-125 >= 75) continue;
+				if (diH_kinFit_conv <= 0) continue;
+				if (dR_t_0_t_1 >= 3.34) continue;
+				if (h_tt_svFit_mT >= 195) continue;
 				//MC truth_____________________
 				//Reset variables______________
 				/*gen_t_0_px = 0;
@@ -1801,7 +1809,11 @@ int main(int argc, char* argv[])
 				dR_t_0_t_1 = ROOT::Math::VectorUtil::DeltaR(t_0_p4, t_1_p4);
 				dR_h_bb_h_tt = ROOT::Math::VectorUtil::DeltaR(hbb_p4, htt_p4);
 				//____________________________________
-				
+				//Acceptance__________________________
+				if (h_tt_svFit_mass-125 >= 60) continue;
+				if (diH_kinFit_conv <= 0) continue;
+				if (dR_t_0_t_1 >= 3.26) continue;
+				if (h_tt_svFit_mT >= 170) continue;
 				//MC truth_____________________
 				//Reset variables______________
 				/*gen_t_0_px = 0;
