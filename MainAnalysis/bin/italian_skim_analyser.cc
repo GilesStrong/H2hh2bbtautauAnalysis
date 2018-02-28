@@ -546,7 +546,7 @@ int main(int argc, char* argv[])
 
 	double weight, xSec, totalWeight;
 
-	ROOT::Math::LorentzVector<double> t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
+	TLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
 
 	//Low-level variables________________________
@@ -1123,7 +1123,7 @@ int main(int argc, char* argv[])
 			while (mutau_reader.Next()) {
 				//Getting objects____________________
 				//Order objects______________________
-				t_0_p4.SetPxPyPzE(r_mutau_t_0_p4.Px, r_mutau_t_0_p4.Py, r_mutau_t_0_p4.Pz, r_mutau_t_0_p4.E);
+				t_0_p4.SetPxPyPzE(*r_mutau_t_0_p4.Px, *r_mutau_t_0_p4.Py, *r_mutau_t_0_p4.Pz, *r_mutau_t_0_p4.E);
 				t_1_p4 = *r_mutau_t_1_p4;
 				bjet0_p4 = (*r_mutau_jets_p4)[0];
 				bjet1_p4 = (*r_mutau_jets_p4)[1];
