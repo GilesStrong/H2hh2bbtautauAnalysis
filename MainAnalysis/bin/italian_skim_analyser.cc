@@ -1123,7 +1123,7 @@ int main(int argc, char* argv[])
 			while (mutau_reader.Next()) {
 				//Getting objects____________________
 				//Order objects______________________
-				t_0_p4.SetPxPyPzE(*r_mutau_t_0_p4.Px, *r_mutau_t_0_p4.Py, *r_mutau_t_0_p4.Pz, *r_mutau_t_0_p4.E);
+				t_0_p4.SetPxPyPzE((*r_mutau_t_0_p4).Px, (*r_mutau_t_0_p4).Py, (*r_mutau_t_0_p4).Pz, (*r_mutau_t_0_p4).E);
 				t_1_p4 = *r_mutau_t_1_p4;
 				bjet0_p4 = (*r_mutau_jets_p4)[0];
 				bjet1_p4 = (*r_mutau_jets_p4)[1];
