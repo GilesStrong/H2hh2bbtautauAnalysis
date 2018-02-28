@@ -1122,40 +1122,9 @@ int main(int argc, char* argv[])
 
 			while (mutau_reader.Next()) {
 				//Getting objects____________________
-				//General info_______________________
-				weight = xSec*(*r_totalShapeWeight)/totalWeight;
-				nJets = *r_mutau_njets;
-				hT_jets = *r_mutau_jet_HT;
-				//MET________________________________
-				met_p4 = *r_mutau_met_p4;
-				met_px = met_p4.Px();
-				met_py = met_p4.Py();
-				met_pT = met_p4.Pt();
-				/*met_cov_00 = (*r_mutau_met_cov)(0, 0);
-				met_cov_01 = (*r_mutau_met_cov)(0, 1);
-				met_cov_10 = (*r_mutau_met_cov)(1, 0);
-				met_cov_11 = (*r_mutau_met_cov)(1, 1);*/
-				//Tau_0______________________________
+				//Order objects______________________
 				t_0_p4 = *r_mutau_t_0_p4;
-				t_0_px = t_0_p4.Px();
-				t_0_py = t_0_p4.Py();
-				t_0_pz = t_0_p4.Pz();
-				t_0_P = t_0_p4.P();
-				t_0_E = t_0_p4.E();
-				t_0_mass = t_0_p4.M();
-				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
-				gen_t_0_match = *r_mutau_gen_t_0_match;
-				//Tau_1______________________________
 				t_1_p4 = *r_mutau_t_1_p4;
-				t_1_px = t_1_p4.Px();
-				t_1_py = t_1_p4.Py();
-				t_1_pz = t_1_p4.Pz();
-				t_1_P = t_1_p4.P();
-				t_1_E = t_1_p4.E();
-				t_1_mass = t_1_p4.M();
-				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
-				gen_t_1_match = *r_mutau_gen_t_1_match;
-				//Jets_______________________________
 				bjet0_p4 = (*r_mutau_jets_p4)[0];
 				bjet1_p4 = (*r_mutau_jets_p4)[1];
 				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
@@ -1177,7 +1146,43 @@ int main(int argc, char* argv[])
 					b_1_rawf = (*r_mutau_jets_rawf)[1];
 					b_1_mva = (*r_mutau_jets_mva)[1];
 				}
-
+				met_p4 = *r_mutau_met_p4;
+				//Rotate event_______________________
+				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
+				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
+				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+				t_1_p4.SetPhi(0);
+				//General info_______________________
+				weight = xSec*(*r_totalShapeWeight)/totalWeight;
+				nJets = *r_mutau_njets;
+				hT_jets = *r_mutau_jet_HT;
+				//MET________________________________
+				met_px = met_p4.Px();
+				met_py = met_p4.Py();
+				met_pT = met_p4.Pt();
+				/*met_cov_00 = (*r_mutau_met_cov)(0, 0);
+				met_cov_01 = (*r_mutau_met_cov)(0, 1);
+				met_cov_10 = (*r_mutau_met_cov)(1, 0);
+				met_cov_11 = (*r_mutau_met_cov)(1, 1);*/
+				//Tau_0______________________________
+				t_0_px = t_0_p4.Px();
+				t_0_py = t_0_p4.Py();
+				t_0_pz = t_0_p4.Pz();
+				t_0_P = t_0_p4.P();
+				t_0_E = t_0_p4.E();
+				t_0_mass = t_0_p4.M();
+				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				gen_t_0_match = *r_mutau_gen_t_0_match;
+				//Tau_1______________________________
+				t_1_px = t_1_p4.Px();
+				t_1_py = t_1_p4.Py();
+				t_1_pz = t_1_p4.Pz();
+				t_1_P = t_1_p4.P();
+				t_1_E = t_1_p4.E();
+				t_1_mass = t_1_p4.M();
+				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				gen_t_1_match = *r_mutau_gen_t_1_match;
+				//Jets_______________________________
 				b_0_px = bjet0_p4.Px();
 				b_0_py = bjet0_p4.Py();
 				b_0_pz = bjet0_p4.Pz();
