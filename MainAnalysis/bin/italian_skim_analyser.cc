@@ -1360,9 +1360,9 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//_____________________________
 				//Acceptance___________________
-				if ((h_tt_svFit_mass-125 < 70) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.5) & (h_tt_svFit_mT < 190)) {
+				//if ((h_tt_svFit_mass-125 < 70) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.5) & (h_tt_svFit_mT < 190)) {
 					mu_tau_b_b->Fill();
-				}
+				//}
 				//________________________________
 
 			}
@@ -1637,9 +1637,9 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//_____________________________
 				//Acceptance___________________
-				if ((h_tt_svFit_mass-125 < 75) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.34) & (h_tt_svFit_mT < 195)) {
+				//if ((h_tt_svFit_mass-125 < 75) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.34) & (h_tt_svFit_mT < 195)) {
 					e_tau_b_b->Fill();
-				}
+				//}
 				//________________________________
 			}
 
@@ -1920,9 +1920,9 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//_____________________________
 				//Acceptance___________________
-				if ((h_tt_svFit_mass-125 < 60) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.26) & (h_tt_svFit_mT < 170)) {
+				//if ((h_tt_svFit_mass-125 < 60) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.26) & (h_tt_svFit_mT < 170)) {
 					tau_tau_b_b->Fill();
-				}
+				//}
 				//________________________________
 
 			}
