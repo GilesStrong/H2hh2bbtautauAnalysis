@@ -1091,7 +1091,7 @@ int main(int argc, char* argv[])
 			}
 
 			//mutau______________________________
-			TTreeReader mutau_reader("mutau", inFile);
+			TTreeReader mutau_reader("muTau", inFile);
 
 			//Define event features______________
 			//General info_______________________
