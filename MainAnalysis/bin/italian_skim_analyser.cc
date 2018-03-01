@@ -1151,6 +1151,7 @@ int main(int argc, char* argv[])
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
 				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
 				t_1_p4.SetPhi(0);
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
@@ -1429,13 +1430,13 @@ int main(int argc, char* argv[])
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
 				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
 				t_1_p4.SetPhi(0);
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
 				nJets = *r_etau_njets;
 				hT_jets = *r_etau_jet_HT;
 				//MET________________________________
-				met_p4 = *r_etau_met_p4;
 				met_px = met_p4.Px();
 				met_py = met_p4.Py();
 				met_pT = met_p4.Pt();
@@ -1444,7 +1445,6 @@ int main(int argc, char* argv[])
 				met_cov_10 = (*r_etau_met_cov)(1, 0);
 				met_cov_11 = (*r_etau_met_cov)(1, 1);*/
 				//Tau_0______________________________
-				t_0_p4 = *r_etau_t_0_p4;
 				t_0_px = t_0_p4.Px();
 				t_0_py = t_0_p4.Py();
 				t_0_pz = t_0_p4.Pz();
@@ -1454,7 +1454,6 @@ int main(int argc, char* argv[])
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
 				gen_t_0_match = *r_etau_gen_t_0_match;
 				//Tau_1______________________________
-				t_1_p4 = *r_etau_t_1_p4;
 				t_1_px = t_1_p4.Px();
 				t_1_py = t_1_p4.Py();
 				t_1_pz = t_1_p4.Pz();
@@ -1464,28 +1463,6 @@ int main(int argc, char* argv[])
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
 				gen_t_1_match = *r_etau_gen_t_1_match;
 				//Jets_______________________________
-				bjet0_p4 = (*r_etau_jets_p4)[0];
-				bjet1_p4 = (*r_etau_jets_p4)[1];
-				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
-					bjet0_p4 = (*r_etau_jets_p4)[1];
-					b_0_csv = (*r_etau_jets_csv)[1];
-					b_0_rawf = (*r_etau_jets_rawf)[1];
-					b_0_mva = (*r_etau_jets_mva)[1];
-
-					bjet1_p4 = (*r_etau_jets_p4)[0];
-					b_1_csv = (*r_etau_jets_csv)[0];
-					b_1_rawf = (*r_etau_jets_rawf)[0];
-					b_1_mva = (*r_etau_jets_mva)[0];
-				} else {
-					b_0_csv = (*r_etau_jets_csv)[0];
-					b_0_rawf = (*r_etau_jets_rawf)[0];
-					b_0_mva = (*r_etau_jets_mva)[0];
-
-					b_1_csv = (*r_etau_jets_csv)[1];
-					b_1_rawf = (*r_etau_jets_rawf)[1];
-					b_1_mva = (*r_etau_jets_mva)[1];
-				}
-
 				b_0_px = bjet0_p4.Px();
 				b_0_py = bjet0_p4.Py();
 				b_0_pz = bjet0_p4.Pz();
@@ -1703,9 +1680,18 @@ int main(int argc, char* argv[])
 
 			while (tauTau_reader.Next()) {
 				//Getting objects____________________
-				//Order objects______________________
-				t_0_p4.SetPxPyPzE((*r_tautau_t_0_p4).Px(), (*r_tautau_t_0_p4).Py(), (*r_tautau_t_0_p4).Pz(), (*r_tautau_t_0_p4).E());
-				t_1_p4.SetPxPyPzE((*r_tautau_t_1_p4).Px(), (*r_tautau_t_1_p4).Py(), (*r_tautau_t_1_p4).Pz(), (*r_tautau_t_1_p4).E());
+				//Order objects______________________t_1 = hardest tau
+				t_1_p4.SetPxPyPzE((*r_tautau_t_0_p4).Px(), (*r_tautau_t_0_p4).Py(), (*r_tautau_t_0_p4).Pz(), (*r_tautau_t_0_p4).E());
+				t_0_p4.SetPxPyPzE((*r_tautau_t_1_p4).Px(), (*r_tautau_t_1_p4).Py(), (*r_tautau_t_1_p4).Pz(), (*r_tautau_t_1_p4).E());
+				if (t_1_p4.Pt() < t_0_p4.Pt()) { //Order jets by pT
+					t_1_p4.SetPxPyPzE((*r_tautau_t_1_p4).Px(), (*r_tautau_t_1_p4).Py(), (*r_tautau_t_1_p4).Pz(), (*r_tautau_t_1_p4).E());
+					t_0_p4.SetPxPyPzE((*r_tautau_t_0_p4).Px(), (*r_tautau_t_0_p4).Py(), (*r_tautau_t_0_p4).Pz(), (*r_tautau_t_0_p4).E());
+					gen_t_1_match = *r_tautau_gen_t_1_match;
+					gen_t_0_match = *r_tautau_gen_t_0_match;
+				} else {
+					gen_t_1_match = *r_tautau_gen_t_0_match;
+					gen_t_0_match = *r_tautau_gen_t_1_match;
+				}
 				bjet0_p4.SetPxPyPzE((*r_tautau_jets_p4)[0].Px(), (*r_tautau_jets_p4)[0].Py(), (*r_tautau_jets_p4)[0].Pz(), (*r_tautau_jets_p4)[0].E());
 				bjet1_p4.SetPxPyPzE((*r_tautau_jets_p4)[1].Px(), (*r_tautau_jets_p4)[1].Py(), (*r_tautau_jets_p4)[1].Pz(), (*r_tautau_jets_p4)[1].E());
 				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
@@ -1732,13 +1718,13 @@ int main(int argc, char* argv[])
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
 				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
 				t_1_p4.SetPhi(0);
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
 				nJets = *r_tautau_njets;
 				hT_jets = *r_tautau_jet_HT;
 				//MET________________________________
-				met_p4 = *r_tautau_met_p4;
 				met_px = met_p4.Px();
 				met_py = met_p4.Py();
 				met_pT = met_p4.Pt();
@@ -1746,17 +1732,6 @@ int main(int argc, char* argv[])
 				met_cov_01 = (*r_tautau_met_cov)(0, 1);
 				met_cov_10 = (*r_tautau_met_cov)(1, 0);
 				met_cov_11 = (*r_tautau_met_cov)(1, 1);*/
-				if (t_0_p4.Pt() < t_1_p4.Pt()) { //Order jets by pT
-					t_0_p4 = *r_tautau_t_1_p4;
-					t_1_p4 = *r_tautau_t_0_p4;
-					gen_t_0_match = *r_tautau_gen_t_1_match;
-					gen_t_1_match = *r_tautau_gen_t_0_match;
-				} else {
-					t_0_p4 = *r_tautau_t_0_p4;
-					t_1_p4 = *r_tautau_t_1_p4;
-					gen_t_0_match = *r_tautau_gen_t_0_match;
-					gen_t_1_match = *r_tautau_gen_t_1_match;
-				}
 				//Tau_0______________________________
 				t_0_px = t_0_p4.Px();
 				t_0_py = t_0_p4.Py();
@@ -1774,28 +1749,6 @@ int main(int argc, char* argv[])
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
 				//Jets_______________________________
-				bjet0_p4 = (*r_tautau_jets_p4)[0];
-				bjet1_p4 = (*r_tautau_jets_p4)[1];
-				if (bjet0_p4.Pt() < bjet1_p4.Pt()) { //Order jets by pT
-					bjet0_p4 = (*r_tautau_jets_p4)[1];
-					b_0_csv = (*r_tautau_jets_csv)[1];
-					b_0_rawf = (*r_tautau_jets_rawf)[1];
-					b_0_mva = (*r_tautau_jets_mva)[1];
-
-					bjet1_p4 = (*r_tautau_jets_p4)[0];
-					b_1_csv = (*r_tautau_jets_csv)[0];
-					b_1_rawf = (*r_tautau_jets_rawf)[0];
-					b_1_mva = (*r_tautau_jets_mva)[0];
-				} else {
-					b_0_csv = (*r_tautau_jets_csv)[0];
-					b_0_rawf = (*r_tautau_jets_rawf)[0];
-					b_0_mva = (*r_tautau_jets_mva)[0];
-
-					b_1_csv = (*r_tautau_jets_csv)[1];
-					b_1_rawf = (*r_tautau_jets_rawf)[1];
-					b_1_mva = (*r_tautau_jets_mva)[1];
-				}
-
 				b_0_px = bjet0_p4.Px();
 				b_0_py = bjet0_p4.Py();
 				b_0_pz = bjet0_p4.Pz();
