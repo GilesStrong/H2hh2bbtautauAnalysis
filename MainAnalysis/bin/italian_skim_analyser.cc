@@ -1147,7 +1147,7 @@ int main(int argc, char* argv[])
 					b_1_mva = (*r_mutau_jets_mva)[1];
 				}
 				met_p4.SetPxPyPzE((*r_mutau_met_p4).Px(), (*r_mutau_met_p4).Py(), (*r_mutau_met_p4).Pz(), (*r_mutau_met_p4).E());
-				svFit_p4.SetPhi(*r_mutau_svfit_p4).Px(), (*r_mutau_svfit_p4).Py(), (*r_mutau_svfit_p4).Pz(), (*r_mutau_svfit_p4).E();
+				svFit_p4.SetPxPyPzE(*r_mutau_svfit_p4).Px(), (*r_mutau_svfit_p4).Py(), (*r_mutau_svfit_p4).Pz(), (*r_mutau_svfit_p4).E();
 				//Rotate event_______________________
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
@@ -1425,7 +1425,7 @@ int main(int argc, char* argv[])
 					b_1_mva = (*r_etau_jets_mva)[1];
 				}
 				met_p4.SetPxPyPzE((*r_etau_met_p4).Px(), (*r_etau_met_p4).Py(), (*r_etau_met_p4).Pz(), (*r_etau_met_p4).E());
-				svFit_p4.SetPhi(*r_etau_svfit_p4).Px(), (*r_etau_svfit_p4).Py(), (*r_etau_svfit_p4).Pz(), (*r_etau_svfit_p4).E();
+				svFit_p4.SetPxPyPzE(*r_etau_svfit_p4).Px(), (*r_etau_svfit_p4).Py(), (*r_etau_svfit_p4).Pz(), (*r_etau_svfit_p4).E();
 				//Rotate event_______________________
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
@@ -1711,7 +1711,7 @@ int main(int argc, char* argv[])
 					b_1_mva = (*r_tautau_jets_mva)[1];
 				}
 				met_p4.SetPxPyPzE((*r_tautau_met_p4).Px(), (*r_tautau_met_p4).Py(), (*r_tautau_met_p4).Pz(), (*r_tautau_met_p4).E());
-				svFit_p4.SetPhi(*r_tautau_svfit_p4).Px(), (*r_tautau_svfit_p4).Py(), (*r_tautau_svfit_p4).Pz(), (*r_tautau_svfit_p4).E();
+				svFit_p4.SetPxPyPzE(*r_tautau_svfit_p4).Px(), (*r_tautau_svfit_p4).Py(), (*r_tautau_svfit_p4).Pz(), (*r_tautau_svfit_p4).E();
 				//Rotate event_______________________
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
