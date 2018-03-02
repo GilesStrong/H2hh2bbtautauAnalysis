@@ -546,8 +546,7 @@ int main(int argc, char* argv[])
 
 	double weight, xSec, totalWeight;
 
-	TLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, hbb_p4, htt_p4, hh_p4;
-	math::XYZTLorentzVector svFit_p4;
+	TLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
 
 	//Low-level variables________________________
@@ -1148,11 +1147,13 @@ int main(int argc, char* argv[])
 					b_1_mva = (*r_mutau_jets_mva)[1];
 				}
 				met_p4.SetPxPyPzE((*r_mutau_met_p4).Px(), (*r_mutau_met_p4).Py(), (*r_mutau_met_p4).Pz(), (*r_mutau_met_p4).E());
+				svFit_p4.SetPhi(*r_mutau_svfit_p4).Px(), (*r_mutau_svfit_p4).Py(), (*r_mutau_svfit_p4).Pz(), (*r_mutau_svfit_p4).E();
 				//Rotate event_______________________
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
 				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
 				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
+				svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
 				t_1_p4.SetPhi(0);
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
@@ -1199,7 +1200,6 @@ int main(int argc, char* argv[])
 				b_1_E = bjet1_p4.E();
 				b_1_mass = bjet1_p4.M();
 				//SVFit_______________________________
-				svFit_p4 = *r_mutau_svfit_p4;
 				h_tt_svFit_px = svFit_p4.Px();
 				h_tt_svFit_py = svFit_p4.Py();
 				h_tt_svFit_pz = svFit_p4.Pz();
@@ -1425,11 +1425,13 @@ int main(int argc, char* argv[])
 					b_1_mva = (*r_etau_jets_mva)[1];
 				}
 				met_p4.SetPxPyPzE((*r_etau_met_p4).Px(), (*r_etau_met_p4).Py(), (*r_etau_met_p4).Pz(), (*r_etau_met_p4).E());
+				svFit_p4.SetPhi(*r_etau_svfit_p4).Px(), (*r_etau_svfit_p4).Py(), (*r_etau_svfit_p4).Pz(), (*r_etau_svfit_p4).E();
 				//Rotate event_______________________
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
 				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
 				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
+				svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
 				t_1_p4.SetPhi(0);
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
@@ -1476,7 +1478,6 @@ int main(int argc, char* argv[])
 				b_1_E = bjet1_p4.E();
 				b_1_mass = bjet1_p4.M();
 				//SVFit_______________________________
-				svFit_p4 = *r_etau_svfit_p4;
 				h_tt_svFit_px = svFit_p4.Px();
 				h_tt_svFit_py = svFit_p4.Py();
 				h_tt_svFit_pz = svFit_p4.Pz();
@@ -1710,11 +1711,13 @@ int main(int argc, char* argv[])
 					b_1_mva = (*r_tautau_jets_mva)[1];
 				}
 				met_p4.SetPxPyPzE((*r_tautau_met_p4).Px(), (*r_tautau_met_p4).Py(), (*r_tautau_met_p4).Pz(), (*r_tautau_met_p4).E());
+				svFit_p4.SetPhi(*r_tautau_svfit_p4).Px(), (*r_tautau_svfit_p4).Py(), (*r_tautau_svfit_p4).Pz(), (*r_tautau_svfit_p4).E();
 				//Rotate event_______________________
 				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
 				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
 				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
 				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
+				svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
 				t_1_p4.SetPhi(0);
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
@@ -1759,7 +1762,6 @@ int main(int argc, char* argv[])
 				b_1_E = bjet1_p4.E();
 				b_1_mass = bjet1_p4.M();
 				//SVFit_______________________________
-				svFit_p4 = *r_tautau_svfit_p4;
 				h_tt_svFit_px = svFit_p4.Px();
 				h_tt_svFit_py = svFit_p4.Py();
 				h_tt_svFit_pz = svFit_p4.Pz();
