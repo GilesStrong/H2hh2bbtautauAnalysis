@@ -1686,7 +1686,6 @@ int main(int argc, char* argv[])
 			//___________________________________
 
 			while (tauTau_reader.Next()) {
-				std::cout << "Tau\n";
 				//Getting objects____________________
 				//Order objects______________________t_1 = hardest tau
 				t_1_p4.SetPxPyPzE((*r_tautau_t_0_p4).Px(), (*r_tautau_t_0_p4).Py(), (*r_tautau_t_0_p4).Pz(), (*r_tautau_t_0_p4).E());

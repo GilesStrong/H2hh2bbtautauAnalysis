@@ -69,7 +69,7 @@ if __name__ == "__main__":
         # ignore non-edm files
         if "monitor" in edmfile: continue
 
-        if 'Tau' not in edmfile: continue
+        #if 'Tau' not in edmfile: continue
         
         outputfile = options.fwoutputfolder + "/" + edmfile.split("/")[-1]
         
