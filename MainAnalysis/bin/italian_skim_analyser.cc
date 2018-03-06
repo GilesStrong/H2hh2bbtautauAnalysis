@@ -545,6 +545,7 @@ int main(int argc, char* argv[])
 	fwlite::TFileService fs = fwlite::TFileService(outputFile_.c_str());
 
 	double weight, xSec, totalWeight;
+	bool accept;
 
 	TLorentzVector t_0_p4, t_1_p4, bjet0_p4, bjet1_p4, met_p4, svFit_p4, hbb_p4, htt_p4, hh_p4;
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
@@ -753,6 +754,7 @@ int main(int argc, char* argv[])
 
 	mu_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
 	mu_tau_b_b->Branch("gen_weight", &weight);
+	mu_tau_b_b->Branch("accepted", &accept);
 
 	TTree* e_tau_b_b = flatData.make<TTree>("e_tau_b_b", "#e #tau_{h} b #bar{b}");
 	e_tau_b_b->Branch("t_0_px", &t_0_px);
@@ -911,6 +913,7 @@ int main(int argc, char* argv[])
 
 	e_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
 	e_tau_b_b->Branch("gen_weight", &weight);
+	e_tau_b_b->Branch("accepted", &accept);
 
 	TTree* tau_tau_b_b = flatData.make<TTree>("tau_tau_b_b", "#tau #tau_{h} b #bar{b}");
 	tau_tau_b_b->Branch("t_0_px", &t_0_px);
@@ -1069,6 +1072,7 @@ int main(int argc, char* argv[])
 
 	tau_tau_b_b->Branch("gen_mctMatch", &gen_mctMatch);
 	tau_tau_b_b->Branch("gen_weight", &weight);
+	tau_tau_b_b->Branch("accepted", &accept);
 	//___________________________________________
 
 	// loop over all input files:
@@ -1361,8 +1365,11 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//Acceptance___________________
 				if ((h_tt_svFit_mass > 64) & (h_tt_svFit_mass < 212) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.94) & (h_tt_svFit_mT < 204) & (t_1_mT < 881)) {
-					mu_tau_b_b->Fill();
+					accept = true;
+				} else {
+					accept = false;
 				}
+				mu_tau_b_b->Fill();
 				//________________________________
 
 			}
@@ -1639,8 +1646,11 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//Acceptance___________________
 				if ((h_tt_svFit_mass > 63) & (h_tt_svFit_mass < 216) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.45) & (h_tt_svFit_mT < 210) & (t_1_mT < 478)) {
-					e_tau_b_b->Fill();
+					accept = true;
+				} else {
+					accept = false;
 				}
+				e_tau_b_b->Fill();
 				//________________________________
 			}
 
@@ -1923,8 +1933,11 @@ int main(int argc, char* argv[])
 				//_____________________________
 				//Acceptance___________________
 				if ((h_tt_svFit_mass > 67) & (h_tt_svFit_mass < 182) & (diH_kinFit_conv > 0) & (dR_t_0_t_1 < 3.38)) {
-					tau_tau_b_b->Fill();
+					accept = true;
+				} else {
+					accept = false;
 				}
+				tau_tau_b_b->Fill();
 				//________________________________
 
 			}
