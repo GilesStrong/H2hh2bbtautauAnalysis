@@ -1406,6 +1406,7 @@ int main(int argc, char* argv[])
 			//___________________________________
 
 			while (etau_reader.Next()) {
+				std::cout << "E\n";
 				//Getting objects____________________
 				//Order objects______________________
 				t_0_p4.SetPxPyPzE((*r_etau_t_0_p4).Px(), (*r_etau_t_0_p4).Py(), (*r_etau_t_0_p4).Pz(), (*r_etau_t_0_p4).E());
