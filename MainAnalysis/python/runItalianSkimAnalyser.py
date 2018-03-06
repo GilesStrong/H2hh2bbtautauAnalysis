@@ -69,9 +69,6 @@ if __name__ == "__main__":
         # ignore non-edm files
         if "monitor" in edmfile: continue
         
-        # we have allData.root, so ignore the seperate datasets
-        if "SingleMuon" in edmfile: continue
-        
         outputfile = options.fwoutputfolder + "/" + edmfile.split("/")[-1]
         
         more = ""
