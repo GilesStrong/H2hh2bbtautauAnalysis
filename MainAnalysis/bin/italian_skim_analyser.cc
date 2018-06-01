@@ -49,6 +49,7 @@ const double eMass = 0.0005109989; //GeV
 const double muMass = 0.1056583715; //GeV
 bool debug = false;
 bool mcDebug = false;
+bool rotate = false;
 
 std::pair<int, int> getJets(edm::Handle<std::vector<pat::Jet>> selectedjets,
 	std::string mode="CSV", std::string bTagAlgo="pfCombinedInclusiveSecondaryVertexV2BJetTags") {
@@ -1153,12 +1154,14 @@ int main(int argc, char* argv[])
 				met_p4.SetPxPyPzE((*r_mutau_met_p4).Px(), (*r_mutau_met_p4).Py(), (*r_mutau_met_p4).Pz(), (*r_mutau_met_p4).E());
 				svFit_p4.SetPxPyPzE((*r_mutau_svfit_p4).Px(), (*r_mutau_svfit_p4).Py(), (*r_mutau_svfit_p4).Pz(), (*r_mutau_svfit_p4).E());
 				//Rotate event_______________________
-				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
-				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
-				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
-				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
-				svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
-				t_1_p4.SetPhi(0);
+				if (rotate) {
+					t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
+					bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
+					bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+					met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
+					svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
+					t_1_p4.SetPhi(0);
+				}
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
 				nJets = *r_mutau_njets;
@@ -1434,12 +1437,14 @@ int main(int argc, char* argv[])
 				met_p4.SetPxPyPzE((*r_etau_met_p4).Px(), (*r_etau_met_p4).Py(), (*r_etau_met_p4).Pz(), (*r_etau_met_p4).E());
 				svFit_p4.SetPxPyPzE((*r_etau_svfit_p4).Px(), (*r_etau_svfit_p4).Py(), (*r_etau_svfit_p4).Pz(), (*r_etau_svfit_p4).E());
 				//Rotate event_______________________
-				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
-				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
-				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
-				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
-				svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
-				t_1_p4.SetPhi(0);
+				if (rotate) {
+					t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
+					bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
+					bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+					met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
+					svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
+					t_1_p4.SetPhi(0);
+				}
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
 				nJets = *r_etau_njets;
@@ -1723,12 +1728,14 @@ int main(int argc, char* argv[])
 				met_p4.SetPxPyPzE((*r_tautau_met_p4).Px(), (*r_tautau_met_p4).Py(), (*r_tautau_met_p4).Pz(), (*r_tautau_met_p4).E());
 				svFit_p4.SetPxPyPzE((*r_tautau_svfit_p4).Px(), (*r_tautau_svfit_p4).Py(), (*r_tautau_svfit_p4).Pz(), (*r_tautau_svfit_p4).E());
 				//Rotate event_______________________
-				t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
-				bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
-				bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
-				met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
-				svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
-				t_1_p4.SetPhi(0);
+				if (rotate) {
+					t_0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, t_0_p4));
+					bjet0_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet0_p4));
+					bjet1_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, bjet1_p4));
+					met_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, met_p4));
+					svFit_p4.SetPhi(ROOT::Math::VectorUtil::DeltaPhi(t_1_p4, svFit_p4));
+					t_1_p4.SetPhi(0);
+				}
 				//General info_______________________
 				weight = xSec*(*r_totalShapeWeight)/totalWeight;
 				nJets = *r_tautau_njets;
