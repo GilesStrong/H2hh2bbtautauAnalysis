@@ -552,9 +552,8 @@ int main(int argc, char* argv[])
 	math::XYZTLorentzVector gen_tau0_p4, gen_tau1_p4, gen_bjet0_p4, gen_bjet1_p4, gen_hbb_p4, gen_htt_p4, gen_hh_p4;
 
 	//Low-level variables________________________
-	double t_0_px, t_0_py, t_0_pz, t_0_P, t_0_E, t_0_mass, t_0_mT; //Tau 0 variables
-	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mT; //Tau 1 variables 
-	double t_1_mass;
+	double t_0_px, t_0_py, t_0_pz, t_0_P, t_0_E, t_0_mass, t_0_mT, t_0_mT2; //Tau 0 variables
+	double t_1_px, t_1_py, t_1_pz, t_1_P, t_1_E, t_1_mass, t_1_mT, t_0_mT2; //Tau 1 variables 
 	double b_0_px, b_0_py, b_0_pz, b_0_P, b_0_E, b_0_mass, b_0_csv, b_0_rawf, b_0_mva; //b-jet 0 variables
 	double b_1_px, b_1_py, b_1_pz, b_1_P, b_1_E, b_1_mass, b_1_csv, b_1_rawf, b_1_mva; //b-jet 1 variables
 	double met_px, met_py, met_pT; //met_cov_00, met_cov_01, met_cov_10, met_cov_11; //Missing ET variables
@@ -606,6 +605,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_0_E", &t_0_E);
 	mu_tau_b_b->Branch("t_0_mass", &t_0_mass);
 	mu_tau_b_b->Branch("t_0_mT", &t_0_mT);
+	mu_tau_b_b->Branch("t_0_mT2", &t_0_mT2);
 
 	mu_tau_b_b->Branch("t_1_px", &t_1_px);
 	mu_tau_b_b->Branch("t_1_py", &t_1_py);
@@ -613,7 +613,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_1_P", &t_1_P);
 	mu_tau_b_b->Branch("t_1_E", &t_1_E);
 	mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
-	mu_tau_b_b->Branch("t_1_mT", &t_1_mT);
+	mu_tau_b_b->Branch("t_1_mT2", &t_1_mT2);
 
 	mu_tau_b_b->Branch("b_0_px", &b_0_px);
 	mu_tau_b_b->Branch("b_0_py", &b_0_py);
@@ -1182,6 +1182,7 @@ int main(int argc, char* argv[])
 				t_0_E = t_0_p4.E();
 				t_0_mass = t_0_p4.M();
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				t_0_mT2 = t_0_p4.Mt2();
 				gen_t_0_match = *r_mutau_gen_t_0_match;
 				//Tau_1______________________________
 				t_1_px = t_1_p4.Px();
@@ -1191,6 +1192,7 @@ int main(int argc, char* argv[])
 				t_1_E = t_1_p4.E();
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				t_1_mT2 = t_1_p4.Mt2();
 				gen_t_1_match = *r_mutau_gen_t_1_match;
 				//Jets_______________________________
 				b_0_px = bjet0_p4.Px();
@@ -1465,6 +1467,7 @@ int main(int argc, char* argv[])
 				t_0_E = t_0_p4.E();
 				t_0_mass = t_0_p4.M();
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				t_0_mT2 = t_0_p4.Mt2();
 				gen_t_0_match = *r_etau_gen_t_0_match;
 				//Tau_1______________________________
 				t_1_px = t_1_p4.Px();
@@ -1474,6 +1477,7 @@ int main(int argc, char* argv[])
 				t_1_E = t_1_p4.E();
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				t_1_mT2 = t_1_p4.Mt2();
 				gen_t_1_match = *r_etau_gen_t_1_match;
 				//Jets_______________________________
 				b_0_px = bjet0_p4.Px();
@@ -1756,6 +1760,7 @@ int main(int argc, char* argv[])
 				t_0_E = t_0_p4.E();
 				t_0_mass = t_0_p4.M();
 				t_0_mT = sqrt(2 * t_0_p4.Pt() * met_p4.Pt() * (1-cos(t_0_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				t_0_mT2 = t_0_p4.Mt2();
 				//Tau_1______________________________
 				t_1_px = t_1_p4.Px();
 				t_1_py = t_1_p4.Py();
@@ -1764,6 +1769,7 @@ int main(int argc, char* argv[])
 				t_1_E = t_1_p4.E();
 				t_1_mass = t_1_p4.M();
 				t_1_mT = sqrt(2 * t_1_p4.Pt() * met_p4.Pt() * (1-cos(t_1_p4.Phi()-met_p4.Phi()))); //TODO: Generalise this
+				t_1_mT2 = t_1_p4.Mt2();
 				//Jets_______________________________
 				b_0_px = bjet0_p4.Px();
 				b_0_py = bjet0_p4.Py();
