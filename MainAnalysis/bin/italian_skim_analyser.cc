@@ -766,6 +766,7 @@ int main(int argc, char* argv[])
 	e_tau_b_b->Branch("t_0_E", &t_0_E);
 	e_tau_b_b->Branch("t_0_mass", &t_0_mass);
 	e_tau_b_b->Branch("t_0_mT", &t_0_mT);
+	e_tau_b_b->Branch("t_0_mT2", &t_0_mT2);
 
 	e_tau_b_b->Branch("t_1_px", &t_1_px);
 	e_tau_b_b->Branch("t_1_py", &t_1_py);
@@ -774,6 +775,7 @@ int main(int argc, char* argv[])
 	e_tau_b_b->Branch("t_1_E", &t_1_E);
 	e_tau_b_b->Branch("t_1_mass", &t_1_mass);
 	e_tau_b_b->Branch("t_1_mT", &t_1_mT);
+	e_tau_b_b->Branch("t_1_mT2", &t_1_mT2);
 
 	e_tau_b_b->Branch("b_0_px", &b_0_px);
 	e_tau_b_b->Branch("b_0_py", &b_0_py);
@@ -925,6 +927,7 @@ int main(int argc, char* argv[])
 	tau_tau_b_b->Branch("t_0_E", &t_0_E);
 	tau_tau_b_b->Branch("t_0_mass", &t_0_mass);
 	tau_tau_b_b->Branch("t_0_mT", &t_0_mT);
+	tau_tau_b_b->Branch("t_0_mT2", &t_0_mT2);
 
 	tau_tau_b_b->Branch("t_1_px", &t_1_px);
 	tau_tau_b_b->Branch("t_1_py", &t_1_py);
@@ -933,6 +936,7 @@ int main(int argc, char* argv[])
 	tau_tau_b_b->Branch("t_1_E", &t_1_E);
 	tau_tau_b_b->Branch("t_1_mass", &t_1_mass);
 	tau_tau_b_b->Branch("t_1_mT", &t_1_mT);
+	tau_tau_b_b->Branch("t_1_mT2", &t_1_mT2);
 
 	tau_tau_b_b->Branch("b_0_px", &b_0_px);
 	tau_tau_b_b->Branch("b_0_py", &b_0_py);
