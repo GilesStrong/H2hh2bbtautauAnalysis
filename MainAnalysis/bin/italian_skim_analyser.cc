@@ -613,7 +613,7 @@ int main(int argc, char* argv[])
 	mu_tau_b_b->Branch("t_1_P", &t_1_P);
 	mu_tau_b_b->Branch("t_1_E", &t_1_E);
 	mu_tau_b_b->Branch("t_1_mass", &t_1_mass);
-	mu_tau_b_b->Branch("t_0_mT", &t_0_mT);
+	mu_tau_b_b->Branch("t_1_mT", &t_0_mT);
 	mu_tau_b_b->Branch("t_1_mT2", &t_1_mT2);
 
 	mu_tau_b_b->Branch("b_0_px", &b_0_px);
